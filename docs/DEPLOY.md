@@ -54,16 +54,9 @@ Oracle's free tier rules change from time to time, and in 2026 Oracle reduced th
 
 ## 2. Put the code in a private GitHub repository
 
-1. On github.com, click **New repository**. Name it `tropang-potchi`, choose **Private**, and don't add a README.
-2. On your laptop, in the project folder, run (replace `YOUR-USERNAME`):
+Done already: the code is in the private repository `Wardiee/TPOrganization` (branch `main`). To send new changes from your laptop later, run `git push` in the project folder.
 
-   ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/tropang-potchi.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-3. Check on github.com that the repository says **Private**.
+If you ever set this up again from scratch: create a **Private** repository on github.com without a README, then in the project folder run `git remote add origin <repo address>`, `git branch -M main` and `git push -u origin main`.
 
 Your `.env`, uploaded files (`storage/app/private`) and `node_modules` are excluded automatically by `.gitignore`.
 
@@ -196,14 +189,14 @@ FLUSH PRIVILEGES;"
 **Get the code.** Because the repository is private, GitHub needs a token:
 
 1. On github.com: profile picture → **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
-2. Repository access: **Only select repositories** → `tropang-potchi`. Permissions: **Contents: Read-only**. Generate and copy the token.
+2. Repository access: **Only select repositories** → `TPOrganization`. Permissions: **Contents: Read-only**. Generate and copy the token.
 
 On the server:
 
 ```bash
 sudo mkdir -p /var/www && sudo chown ubuntu:ubuntu /var/www
 cd /var/www
-git clone https://github.com/YOUR-USERNAME/tropang-potchi.git
+git clone https://github.com/Wardiee/TPOrganization.git tropang-potchi
 # Username: your GitHub username. Password: paste the token.
 cd tropang-potchi
 git config credential.helper store   # remembers the token for future updates
