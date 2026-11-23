@@ -10,12 +10,20 @@ class DatabaseSeeder extends Seeder
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Seed the admin account and the founder's real records from database/seeders/data.
      */
     public function run(): void
     {
         $this->call([
             AdminUserSeeder::class,
+            ChapterSeeder::class,
+            PositionSeeder::class,
+            FolderSeeder::class,
+            HistoryEventSeeder::class,
+            MemberSeeder::class,
+            OrgChartSeeder::class,
+            ActivitySeeder::class,
+            TaskSeeder::class,
         ]);
     }
 }

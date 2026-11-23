@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Follow up with the 7 floating members",
+    "detail": "4 need more participation, 2 need more familiarity with the group, 1 other remark.",
+    "category": "Members",
+    "priority": "Medium",
+    "due_on": null,
+    "link_route": "members.index",
+    "completed_on": null
+  },
+  {
+    "title": "Import members list from Excel",
+    "detail": "TROPANGPOTCHI_INFO 2026 · 42 members, 6 activities.",
+    "category": "Records",
+    "priority": null,
+    "due_on": "2026-11-22",
+    "link_route": "members.index",
+    "completed_on": "2026-11-22"
+  }
+]
