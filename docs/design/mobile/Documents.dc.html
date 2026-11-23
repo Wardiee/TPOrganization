@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Documents and photos – Tropang Potchi app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<header style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; padding: 8px 16px 12px">
+<a href="More.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; margin-left: -8px; padding: 0 8px; color: #3446B0; text-decoration: none; font-size: 15px; font-weight: 600"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>More</a>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.01em">Documents &amp; photos</h1>
+</div>
+</header>
+
+<main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 0 0 24px">
+
+<section aria-labelledby="fold-h" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="fold-h" style="margin: 0; padding: 0 16px; font-size: 12px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.08em">Folders</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 16px">
+<sc-for list="{{folders}}" as="f" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="{{f.style}}">
+<svg aria-hidden="true" width="26" height="22" viewBox="0 0 26 22"><path d="M1 4a3 3 0 0 1 3-3h6l3 3h9a3 3 0 0 1 3 3v11a3 3 0 0 1-3 3H4a3 3 0 0 1-3-3z" fill="{{f.fill}}" stroke="{{f.stroke}}" stroke-width="1.5"></path></svg>
+<span style="font-size: 14px; font-weight: 600">{{f.name}}</span>
+<span style="font-size: 12px; color: {{f.sub}}">{{f.count}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="files-h" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="files-h" style="margin: 0; padding: 0 16px; font-size: 12px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.08em">{{listTitle}}</h2>
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<div style="margin: 0 16px; padding: 28px 16px; border-radius: 16px; border: 1.5px dashed #C9C5B4; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+<span style="font-size: 15px; font-weight: 600">This folder is empty</span>
+<span style="font-size: 13px; color: #5C6070">Add photos from your phone or files from your drive.</span>
+</div>
+</sc-if>
+<sc-if value="{{hasFiles}}" hint-placeholder-val="{{ true }}">
+<ul style="list-style: none; margin: 0 16px; padding: 0; background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; overflow: hidden">
+<sc-for list="{{files}}" as="x" hint-placeholder-count="4">
+<li style="display: flex; align-items: center; gap: 12px; min-height: 68px; padding: 10px 14px; border-bottom: 1px solid #F0EEE6">
+<sc-if value="{{x.isLogo}}" hint-placeholder-val="{{ false }}"><img src="/images/logo.png" alt="" style="width: 44px; height: 44px; flex: 0 0 44px; border-radius: 8px; background: #F0EFE8; object-fit: contain"></sc-if>
+<sc-if value="{{x.noThumb}}" hint-placeholder-val="{{ true }}"><span style="{{x.badge}}">{{x.ext}}</span></sc-if>
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1 1 auto; min-width: 0">
+<span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{x.name}}</span>
+<span style="font-size: 12px; color: #5C6070; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{x.meta}}</span>
+</span>
+<button type="button" aria-label="{{x.menu}}" style="flex: 0 0 44px; width: 44px; height: 44px; border-radius: 10px; border: 0; background: transparent; color: #5C6070; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="19" r="1.8"></circle></svg></button>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+</section>
+
+</main>
+
+<div style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 10px 16px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; border-radius: 12px; border: 1px solid #D6D3C6; background: #FFFFFF; color: #16181D; font: 600 14px Inter, sans-serif; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><circle cx="12" cy="13" r="3.5"></circle></svg>Take photo</button>
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; border-radius: 12px; border: 0; background: #1C2566; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"></path></svg>Upload file</button>
+</div>
+
+<nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px 20px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Home</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg></span>Members</a>
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg></span>Attendance</a>
+<a href="Calendar.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg></span>Birthdays</a>
+<a href="More.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #1C2566; font-size: 11px; font-weight: 700"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px; background: #F5D547"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>More</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var TP_FILES = [
+  ['TROPANGPOTCHI_INFO updated 2026.xlsx', 'XLSX', 'Member Records', '363 KB', 'Nov 22, 2026'],
+  ['Updated Organizational Chart.png', 'PNG', 'Org Charts', '747 KB', 'Nov 22, 2026'],
+  ['TP logo (transparent).png', 'PNG', 'Branding & Logos', '341 KB', 'Nov 22, 2026'],
+  ['Logo symbols and meanings.png', 'PNG', 'Branding & Logos', '997 KB', 'Nov 22, 2026']
+];
+var TP_FOLDERS = [['All files', 4], ['Member Records', 1], ['Org Charts', 1], ['Branding & Logos', 2], ['Activity Photos', 0], ['Member Documents', 0]];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { folder: 'All files' }; }
+  renderVals() {
+    var self = this, s = this.state;
+    var folders = TP_FOLDERS.map(function (f) {
+      var on = s.folder === f[0];
+      return { name: f[0], count: f[1] === 0 ? 'Empty' : f[1] + (f[1] === 1 ? ' file' : ' files'), on: on,
+        fill: on ? '#F5D547' : '#FFF6D1', stroke: on ? '#F5D547' : '#C9A400', sub: on ? '#DCE0F5' : '#5C6070',
+        pick: function () { self.setState({ folder: f[0] }); },
+        style: 'display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-height: 92px; padding: 14px; border-radius: 14px; cursor: pointer; text-align: left; font-family: Inter, sans-serif; border: 1px solid ' + (on ? '#1C2566' : '#E4E2D8') + '; background: ' + (on ? '#1C2566' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#16181D') };
+    });
+    var files = TP_FILES.filter(function (f) { return s.folder === 'All files' || f[2] === s.folder; }).map(function (f) {
+      var c = f[1] === 'XLSX' ? ['#DFF3E6', '#17603A'] : ['#E3E7FA', '#27317A'];
+      var isLogo = f[0].indexOf('TP logo') === 0;
+      return { name: f[0], ext: f[1], meta: f[2] + ' · ' + f[3] + ' · ' + f[4], isLogo: isLogo, noThumb: !isLogo, menu: 'Options for ' + f[0],
+        badge: 'flex: 0 0 44px; width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; background: ' + c[0] + '; color: ' + c[1] };
+    });
+    return { folders: folders, files: files, empty: files.length === 0, hasFiles: files.length > 0, listTitle: s.folder === 'All files' ? 'Recent files' : s.folder };
+  }
+}
+</script>
+</body>
+</html>

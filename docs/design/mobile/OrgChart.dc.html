@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Org structure – Tropang Potchi app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<header style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; padding: 8px 16px 12px; border-bottom: 1px solid #E4E2D8">
+<a href="More.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; margin-left: -8px; padding: 0 8px; color: #3446B0; text-decoration: none; font-size: 15px; font-weight: 600"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>More</a>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.01em">Org structure</h1>
+<span style="font-size: 13px; color: #5C6070">{{subtitle}}</span>
+</div>
+<div role="group" aria-label="Version" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #ECEBE4">
+<sc-for list="{{views}}" as="v" hint-placeholder-count="2">
+<button type="button" aria-pressed="{{v.on}}" onClick="{{v.pick}}" style="{{v.style}}">{{v.label}}</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 24px">
+
+<section aria-label="Founders" style="display: flex; flex-direction: column; gap: 8px">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 16px; background: #1C2566; color: #FFFFFF">
+<span style="width: 48px; height: 48px; flex: 0 0 48px; border-radius: 50%; background: #F5D547; color: #16181D; display: flex; align-items: center; justify-content: center; font-weight: 800">ED</span>
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 11px; font-weight: 700; color: #F5D547; letter-spacing: 0.08em">FOUNDER · CHAIRMAN</span><span style="font-size: 16px; font-weight: 700">Edward J. Dugan</span></span>
+</div>
+</section>
+
+<div role="group" aria-label="Branch" style="display: flex; gap: 8px">
+<sc-for list="{{branchTabs}}" as="b" hint-placeholder-count="2">
+<button type="button" aria-pressed="{{b.on}}" onClick="{{b.pick}}" style="{{b.style}}">{{b.label}}</button>
+</sc-for>
+</div>
+
+<section aria-label="{{branch.title}}" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; overflow: hidden">
+<div style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #FFFBEA; border-bottom: 1px solid #F0E2A8">
+<span style="width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; background: #1C2566; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700">{{branch.leadIni}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto"><span style="font-size: 11px; font-weight: 700; color: #7A4A00; letter-spacing: 0.06em">{{branch.leadRole}}</span><span style="font-size: 15px; font-weight: 700">{{branch.lead}}</span></span>
+<span style="font-size: 12px; font-weight: 600; color: #5C6070">{{branch.note}}</span>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0">
+<sc-for list="{{branch.seats}}" as="s" hint-placeholder-count="8">
+<li style="{{s.row}}">
+<span style="flex: 0 0 72px; font-size: 12px; font-weight: 700; color: #3446B0">{{s.code}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; min-width: 0">
+<span style="font-size: 14px; font-weight: 600">{{s.name}}</span>
+<span style="{{s.metaStyle}}">{{s.meta}}</span>
+</span>
+<sc-if value="{{s.flag}}" hint-placeholder-val="{{ false }}">
+<button type="button" style="flex: 0 0 auto; min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #D6D3C6; background: #FFFFFF; color: #16181D; font: 600 12px Inter, sans-serif; cursor: pointer">{{s.action}}</button>
+</sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-labelledby="un-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+<h2 id="un-h" style="margin: 0; font-size: 15px; font-weight: 700">No position yet · 3</h2>
+<sc-for list="{{unassigned}}" as="u" hint-placeholder-count="3">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid #F0EEE6">
+<span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 600">{{u.name}}</span><span style="font-size: 12px; color: #5C6070">{{u.meta}}</span></span>
+<button type="button" style="flex: 0 0 auto; min-height: 40px; padding: 0 14px; border-radius: 8px; border: 0; background: #3446B0; color: #FFFFFF; font: 600 13px Inter, sans-serif; cursor: pointer">Assign</button>
+</div>
+</sc-for>
+</section>
+
+<section aria-labelledby="hist-h" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="hist-h" style="margin: 0; font-size: 15px; font-weight: 700">History</h2>
+<sc-for list="{{history}}" as="h" hint-placeholder-count="5">
+<div style="display: flex; gap: 12px">
+<span style="flex: 0 0 auto; width: 10px; height: 10px; margin-top: 5px; border-radius: 50%; background: #F5D547; border: 2px solid #1C2566"></span>
+<span style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 12px; font-weight: 700; color: #5C6070">{{h.date}}</span>
+<span style="font-size: 14px; font-weight: 600">{{h.title}}</span>
+<span style="font-size: 12px; color: #5C6070">{{h.detail}}</span>
+</span>
+</div>
+</sc-for>
+</section>
+
+</main>
+
+<nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px 20px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Home</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg></span>Members</a>
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg></span>Attendance</a>
+<a href="Calendar.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg></span>Birthdays</a>
+<a href="More.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #1C2566; font-size: 11px; font-weight: 700"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px; background: #F5D547"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>More</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var MAIN = [['TROP-2','Ricky S. Tilago Jr.','Pag-asa',''],['TROP-3','Jan Griz Cartagena','Pag-asa','c'],['TROP-4','Jedie Ezekiel O. Arcala','Pag-asa',''],['TROP-5','Randave N. Cagabhion','Pag-asa',''],['TROP-6','Bjaynel Cuizon','Villariez',''],['TROP-7','Axel N. Bartolome','Poblacion',''],['TROP-8','Chrej Rigel Simbahon','Villariez',''],['TROP-9','Jeffrey Oliver Gumobao','Villariez',''],['TROP-10','Loyd T. Rabe','Pag-asa',''],['TROP-11','John Lloyd Lagbawan','Villariez',''],['TROP-12','Louie Jan N. Cagabhion','Pag-asa',''],['TROP-13','Jade Andrey Curambao','Dalsa','i'],['TROP-14','Charles Louis Indab','Pag-asa','i'],['TROP-15','Christoff Liel Indab','Pag-asa','']];
+var EXT = [['TROPS-2','John Ronryl Edig','Pag-asa',''],['TROPS-3','Rey Tilago','Pag-asa',''],['TROPS-4','Clark Jiro Marquez','Pag-asa',''],['TROPS-5','Vince Dane Sumalinog','Pag-asa',''],['TROPS-6','John Michael Balones','Dalsa',''],['TROPS-7','Aidreianne Feb T. Serenio','Pag-asa',''],['TROPS-8','James Cartagena','Pag-asa',''],['TROPS-9','Jhonpaul M. Inting','Pag-asa',''],['TROPS-10','Jhon Akon Tilago','Pag-asa',''],['TROPS-11','Jan Francis Suzon','Villariez',''],['TROPS-12','Edrian M. Cagabhion','Pag-asa',''],['TROPS-13','Jerald Nonato','Dalsa',''],['TROPS-14','Rudy G. Omogos','Pag-asa','i'],['TROPS-15','Vincent D. Labendia','Davao','i']];
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { view: 'now', branch: 'main' }; }
+  seat(r, now) {
+    var flag = now ? r[3] : '';
+    var name = (!now && r[3] === 'c') ? 'Jan Griz C. Tulingin' : r[1];
+    return {
+      code: r[0], name: name, flag: !!flag, action: flag === 'i' ? 'Reassign' : 'Review',
+      meta: flag === 'i' ? 'Inactive since Mar 2, 2026' : flag === 'c' ? 'Name differs from org chart' : r[2],
+      metaStyle: 'font-size: 12px; font-weight: ' + (flag ? '600' : '400') + '; color: ' + (flag === 'i' ? '#8A3B12' : flag === 'c' ? '#6B4A00' : '#5C6070'),
+      row: 'display: flex; align-items: center; gap: 10px; min-height: 60px; padding: 8px 16px; border-bottom: 1px solid #F0EEE6; background: ' + (flag === 'i' ? '#FFF4EC' : flag === 'c' ? '#FFFBEA' : '#FFFFFF')
+    };
+  }
+  renderVals() {
+    var self = this, s = this.state, now = s.view === 'now';
+    var views = [['now', 'Today'], ['2024', 'Org Chart 2024']].map(function (v) {
+      var on = s.view === v[0];
+      return { label: v[1], on: on, pick: function () { self.setState({ view: v[0] }); },
+        style: 'min-height: 40px; border-radius: 9px; border: 0; cursor: pointer; font: 600 14px Inter, sans-serif; color: #16181D; background: ' + (on ? '#FFFFFF' : 'transparent') + '; box-shadow: ' + (on ? '0 1px 3px rgba(22,24,29,0.12)' : 'none') };
+    });
+    var branchTabs = [['main', 'TROP · Main'], ['ext', 'TROPS · Ext']].map(function (b) {
+      var on = s.branch === b[0];
+      return { label: b[1], on: on, pick: function () { self.setState({ branch: b[0] }); },
+        style: 'flex: 1 1 0; min-height: 44px; border-radius: 999px; cursor: pointer; font: 600 14px Inter, sans-serif; border: 1px solid ' + (on ? '#1C2566' : '#D6D3C6') + '; background: ' + (on ? '#1C2566' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#16181D') };
+    });
+    var isMain = s.branch === 'main';
+    var branch = isMain
+      ? { title: 'TROP · MAIN', note: now ? '3 need attention' : '15 positions', lead: 'Andrei Klaus T. Serenio', leadIni: 'AS', leadRole: 'CO-FOUNDER · TROP-1', seats: MAIN.map(function (r) { return self.seat(r, now); }) }
+      : { title: 'TROPS · EXT', note: now ? '2 need attention' : '15 positions', lead: 'Jayron A. Perez', leadIni: 'JP', leadRole: 'TROPS-1', seats: EXT.map(function (r) { return self.seat(r, now); }) };
+    var history = [
+      { date: 'Mar 2, 2026', title: '6 members moved to Inactive', detail: 'Includes TROP-13, TROP-14, TROPS-14, TROPS-15.' },
+      { date: 'Oct 5, 2025', title: 'Org chart updated', detail: 'Saved as a new version of the 2024 chart.' },
+      { date: 'Oct 1, 2025', title: 'Members list updated', detail: 'Saved as a new version.' },
+      { date: 'May 2, 2024', title: 'Org Chart 2024 published', detail: 'Founder, Co-Founder and 30 positions.' },
+      { date: '2020', title: 'Brotherhood founded', detail: 'Started with 2 people.' }
+    ];
+    var unassigned = [
+      { name: 'Zien V. Quilisadio', meta: '“Wewet” · Pag-asa' },
+      { name: 'Jhon Gabriel Suzon', meta: 'Villariez · Grade 7' },
+      { name: 'Arnel Jay Adrian S. Cañas', meta: '“Adrian” · Pag-asa · Grade 6' }
+    ];
+    return {
+      views: views, branchTabs: branchTabs, branch: branch, history: history, unassigned: unassigned,
+      subtitle: now ? 'As of today · 4 seats held by inactive members' : 'As published May 2, 2024 (view only)'
+    };
+  }
+}
+</script>
+</body>
+</html>

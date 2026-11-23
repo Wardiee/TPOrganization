@@ -1,0 +1,194 @@
+[
+  {
+    "code": "FOUNDER",
+    "title": "Founder / Chairman",
+    "branch": null,
+    "sort": 0
+  },
+  {
+    "code": "CO-FOUNDER",
+    "title": "Co-Founder",
+    "branch": null,
+    "sort": 1
+  },
+  {
+    "code": "TROP-1",
+    "title": "TROP-1",
+    "branch": "TROP",
+    "sort": 11
+  },
+  {
+    "code": "TROP-2",
+    "title": "TROP-2",
+    "branch": "TROP",
+    "sort": 12
+  },
+  {
+    "code": "TROP-3",
+    "title": "TROP-3",
+    "branch": "TROP",
+    "sort": 13
+  },
+  {
+    "code": "TROP-4",
+    "title": "TROP-4",
+    "branch": "TROP",
+    "sort": 14
+  },
+  {
+    "code": "TROP-5",
+    "title": "TROP-5",
+    "branch": "TROP",
+    "sort": 15
+  },
+  {
+    "code": "TROP-6",
+    "title": "TROP-6",
+    "branch": "TROP",
+    "sort": 16
+  },
+  {
+    "code": "TROP-7",
+    "title": "TROP-7",
+    "branch": "TROP",
+    "sort": 17
+  },
+  {
+    "code": "TROP-8",
+    "title": "TROP-8",
+    "branch": "TROP",
+    "sort": 18
+  },
+  {
+    "code": "TROP-9",
+    "title": "TROP-9",
+    "branch": "TROP",
+    "sort": 19
+  },
+  {
+    "code": "TROP-10",
+    "title": "TROP-10",
+    "branch": "TROP",
+    "sort": 20
+  },
+  {
+    "code": "TROP-11",
+    "title": "TROP-11",
+    "branch": "TROP",
+    "sort": 21
+  },
+  {
+    "code": "TROP-12",
+    "title": "TROP-12",
+    "branch": "TROP",
+    "sort": 22
+  },
+  {
+    "code": "TROP-13",
+    "title": "TROP-13",
+    "branch": "TROP",
+    "sort": 23
+  },
+  {
+    "code": "TROP-14",
+    "title": "TROP-14",
+    "branch": "TROP",
+    "sort": 24
+  },
+  {
+    "code": "TROP-15",
+    "title": "TROP-15",
+    "branch": "TROP",
+    "sort": 25
+  },
+  {
+    "code": "TROPS-1",
+    "title": "TROPS-1",
+    "branch": "TROPS",
+    "sort": 31
+  },
+  {
+    "code": "TROPS-2",
+    "title": "TROPS-2",
+    "branch": "TROPS",
+    "sort": 32
+  },
+  {
+    "code": "TROPS-3",
+    "title": "TROPS-3",
+    "branch": "TROPS",
+    "sort": 33
+  },
+  {
+    "code": "TROPS-4",
+    "title": "TROPS-4",
+    "branch": "TROPS",
+    "sort": 34
+  },
+  {
+    "code": "TROPS-5",
+    "title": "TROPS-5",
+    "branch": "TROPS",
+    "sort": 35
+  },
+  {
+    "code": "TROPS-6",
+    "title": "TROPS-6",
+    "branch": "TROPS",
+    "sort": 36
+  },
+  {
+    "code": "TROPS-7",
+    "title": "TROPS-7",
+    "branch": "TROPS",
+    "sort": 37
+  },
+  {
+    "code": "TROPS-8",
+    "title": "TROPS-8",
+    "branch": "TROPS",
+    "sort": 38
+  },
+  {
+    "code": "TROPS-9",
+    "title": "TROPS-9",
+    "branch": "TROPS",
+    "sort": 39
+  },
+  {
+    "code": "TROPS-10",
+    "title": "TROPS-10",
+    "branch": "TROPS",
+    "sort": 40
+  },
+  {
+    "code": "TROPS-11",
+    "title": "TROPS-11",
+    "branch": "TROPS",
+    "sort": 41
+  },
+  {
+    "code": "TROPS-12",
+    "title": "TROPS-12",
+    "branch": "TROPS",
+    "sort": 42
+  },
+  {
+    "code": "TROPS-13",
+    "title": "TROPS-13",
+    "branch": "TROPS",
+    "sort": 43
+  },
+  {
+    "code": "TROPS-14",
+    "title": "TROPS-14",
+    "branch": "TROPS",
+    "sort": 44
+  },
+  {
+    "code": "TROPS-15",
+    "title": "TROPS-15",
+    "branch": "TROPS",
+    "sort": 45
+  }
+]

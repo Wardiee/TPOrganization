@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home – Tropang Potchi app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<header style="flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 16px 16px 12px; background: #1C2566">
+<img src="/images/logo.png" alt="Tropang Potchi Brotherhood logo" style="width: 40px; height: 40px">
+<span style="display: flex; flex-direction: column; gap: 1px; flex: 1 1 auto">
+<span style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 15px; color: #FFFFFF; letter-spacing: 0.03em">TROPANG POTCHI</span>
+<span style="font-size: 12px; color: #B9C0E6">Management System</span>
+</span>
+<a href="More.dc.html" aria-label="Your account" style="width: 44px; height: 44px; border-radius: 50%; background: #F5D547; color: #16181D; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; text-decoration: none">ED</a>
+</header>
+
+<main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 0 0 24px">
+
+<section aria-label="Greeting" style="background: #1C2566; padding: 4px 16px 20px; display: flex; flex-direction: column; gap: 16px; border-radius: 0 0 24px 24px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span style="font-size: 13px; color: #B9C0E6">Sunday, November 22</span>
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 26px; color: #FFFFFF; letter-spacing: -0.01em">Good afternoon, Chairman</h1>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 72px; border-radius: 14px; background: #F5D547; color: #16181D; text-decoration: none; font-size: 12px; font-weight: 700; text-align: center"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>Take attendance</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 72px; border-radius: 14px; background: #27317A; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 600; text-align: center"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6 2 0 3.5.5 4.6 1.3M19 15v6M16 18h6"></path></svg>Add member</a>
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 72px; border-radius: 14px; background: #27317A; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 600; text-align: center"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"></path></svg>New activity</a>
+</div>
+</section>
+
+<section aria-label="Summary" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 0 16px">
+<a href="Members.dc.html" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #16181D">
+<span style="font-size: 11px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.06em">Members</span>
+<span style="font-family: Archivo, sans-serif; font-size: 32px; font-weight: 800; line-height: 1">42</span>
+<span style="font-size: 12px; color: #17603A; font-weight: 600">29 active · <span style="color: #7A4A00">7 floating</span></span>
+</a>
+<a href="Attendance.dc.html" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #16181D">
+<span style="font-size: 11px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.06em">Last turnout</span>
+<span style="font-family: Archivo, sans-serif; font-size: 32px; font-weight: 800; line-height: 1">9<span style="font-size: 16px; color: #5C6070"> / 29</span></span>
+<span style="font-size: 12px; color: #5C6070">Year-End Bonding</span>
+</a>
+<a href="Calendar.dc.html" style="background: #1C2566; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #FFFFFF">
+<span style="font-size: 11px; font-weight: 700; color: #F5D547; text-transform: uppercase; letter-spacing: 0.06em">Birthdays · 30 days</span>
+<span style="font-family: Archivo, sans-serif; font-size: 32px; font-weight: 800; line-height: 1">4</span>
+<span style="font-size: 12px; color: #DCE0F5">Next: Tope · Dec 14</span>
+</a>
+<a href="Members.dc.html" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 14px; display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #16181D">
+<span style="font-size: 11px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.06em">Profiles complete</span>
+<span style="font-family: Archivo, sans-serif; font-size: 32px; font-weight: 800; line-height: 1">12<span style="font-size: 16px; color: #5C6070"> / 42</span></span>
+<span style="height: 6px; border-radius: 999px; background: #ECEBE6; overflow: hidden; display: block; margin-top: 4px"><span style="display: block; height: 6px; width: 29%; background: #3446B0; border-radius: 999px"></span></span>
+</a>
+</section>
+
+<section aria-labelledby="todo-h" style="margin: 0 16px; background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 id="todo-h" style="margin: 0; font-size: 16px; font-weight: 700">Needs your attention</h2>
+<a href="Tasks.dc.html" style="font-size: 13px; font-weight: 600">All tasks</a>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{issues}}" as="i" hint-placeholder-count="5">
+<li style="border-bottom: 1px solid #F0EEE6">
+<a href="{{i.href}}" style="display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 10px 0; text-decoration: none; color: #16181D">
+<span style="flex: 0 0 auto; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; padding: 4px 7px; border-radius: 6px; background: {{i.bg}}; color: {{i.fg}}">{{i.tag}}</span>
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; min-width: 0">
+<span style="font-size: 14px; font-weight: 600">{{i.title}}</span>
+<span style="font-size: 12px; color: #5C6070">{{i.detail}}</span>
+</span>
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A8D99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: 0 0 auto"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-labelledby="bd-h" style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 0 16px">
+<h2 id="bd-h" style="margin: 0; font-size: 16px; font-weight: 700">Upcoming birthdays</h2>
+<a href="Calendar.dc.html" style="font-size: 13px; font-weight: 600">Calendar</a>
+</div>
+<div style="display: flex; gap: 10px; overflow-x: auto; padding: 0 16px 4px">
+<sc-for list="{{birthdays}}" as="p" hint-placeholder-count="4">
+<a href="Profile.dc.html" style="flex: 0 0 150px; display: flex; flex-direction: column; gap: 8px; padding: 14px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E4E2D8; text-decoration: none; color: #16181D">
+<span style="display: flex; align-items: center; justify-content: space-between">
+<span style="width: 44px; height: 44px; border-radius: 12px; background: #FFF6D1; display: flex; flex-direction: column; align-items: center; justify-content: center">
+<span style="font-size: 10px; font-weight: 700; color: #7A4A00; letter-spacing: 0.06em">{{p.mon}}</span>
+<span style="font-family: Archivo, sans-serif; font-size: 17px; font-weight: 800; line-height: 1">{{p.day}}</span>
+</span>
+<span style="font-size: 11px; font-weight: 600; color: #5C6070">{{p.inDays}}</span>
+</span>
+<span style="font-size: 14px; font-weight: 600">{{p.name}}</span>
+<span style="font-size: 12px; color: #5C6070">{{p.detail}}</span>
+</a>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="att-h" style="margin: 0 16px; background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+<h2 id="att-h" style="margin: 0; font-size: 16px; font-weight: 700">Attendance per activity</h2>
+<a href="Attendance.dc.html" style="font-size: 13px; font-weight: 600">View all</a>
+</div>
+<div style="display: flex; align-items: flex-end; gap: 10px; height: 140px; border-bottom: 1px solid #E4E2D8">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<div style="flex: 1 1 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 6px; height: 100%">
+<span style="font-size: 12px; font-weight: 700">{{b.count}}</span>
+<span style="width: 100%; border-radius: 6px 6px 0 0; background: {{b.color}}; height: {{b.h}}; display: block"></span>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 10px">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="6">
+<span style="flex: 1 1 0; font-size: 11px; font-weight: 600; color: #5C6070; text-align: center">{{b.short}}</span>
+</sc-for>
+</div>
+</section>
+
+</main>
+
+<nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px 20px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<a href="Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #1C2566; font-size: 11px; font-weight: 700"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px; background: #F5D547"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Home</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg></span>Members</a>
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg></span>Attendance</a>
+<a href="Calendar.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg></span>Birthdays</a>
+<a href="More.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>More</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var ev = [['Leiana', 3], ['Grad', 12], ['Oct 6', 17], ['No date', 15], ['Wake', 15], ['Year-End', 9]];
+    var bars = ev.map(function (e, i) {
+      return { short: e[0], count: e[1], h: Math.round(e[1] / 17 * 100) + 'px', color: i === ev.length - 1 ? '#F5C518' : '#3446B0' };
+    });
+    var birthdays = [
+      { mon: 'DEC', day: '14', name: 'Christoff Liel Indab', detail: 'Tope · TROP-15', inDays: 'in 22 days' },
+      { mon: 'DEC', day: '18', name: 'Edrian M. Cagabhion', detail: 'Samboy · TROPS-12', inDays: 'in 26 days' },
+      { mon: 'DEC', day: '25', name: 'John Ronryl Edig', detail: 'Jan² · turns 19', inDays: 'in 33 days' },
+      { mon: 'DEC', day: '26', name: 'Jan Griz Cartagena', detail: 'Kim² · turns 16', inDays: 'in 34 days' }
+    ];
+    var issues = [
+      { tag: 'VACANT', bg: '#FDE3D3', fg: '#8A3B12', title: '4 positions held by inactive members', detail: 'TROP-13, TROP-14, TROPS-14, TROPS-15', href: 'OrgChart.dc.html' },
+      { tag: 'CONFLICT', bg: '#FDE3D3', fg: '#8A3B12', title: 'Name mismatch for TROP-3', detail: 'Cartagena vs C. Tulingin', href: 'Members.dc.html' },
+      { tag: 'UNASSIGNED', bg: '#E3E7FA', fg: '#27317A', title: '3 active members have no position', detail: 'Zien, Jhon Gabriel, Adrian', href: 'OrgChart.dc.html' },
+      { tag: 'MISSING', bg: '#FFF0CC', fg: '#7A4A00', title: '11 members missing a birth year', detail: 'Ages can’t be calculated yet', href: 'Members.dc.html' },
+      { tag: 'MISSING', bg: '#FFF0CC', fg: '#7A4A00', title: '2 activities have no name', detail: 'Oct 6, 2024 and one undated', href: 'Attendance.dc.html' }
+    ];
+    return { bars: bars, birthdays: birthdays, issues: issues };
+  }
+}
+</script>
+</body>
+</html>

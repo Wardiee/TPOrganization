@@ -1,0 +1,38 @@
+[
+  {
+    "key": "leiana-outing",
+    "name": "Leiana Outing",
+    "starts_on": "2024-05-26",
+    "ends_on": null
+  },
+  {
+    "key": "graduation",
+    "name": "Graduation",
+    "starts_on": "2024-05-29",
+    "ends_on": "2024-05-30"
+  },
+  {
+    "key": "untitled-2024-10-06",
+    "name": null,
+    "starts_on": "2024-10-06",
+    "ends_on": null
+  },
+  {
+    "key": "untitled-undated",
+    "name": null,
+    "starts_on": null,
+    "ends_on": null
+  },
+  {
+    "key": "wake",
+    "name": "Wake",
+    "starts_on": "2025-12-16",
+    "ends_on": null
+  },
+  {
+    "key": "year-end-bonding",
+    "name": "Year-End Bonding",
+    "starts_on": "2025-12-30",
+    "ends_on": null
+  }
+]

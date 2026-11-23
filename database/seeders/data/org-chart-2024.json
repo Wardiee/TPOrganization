@@ -1,0 +1,200 @@
+{
+  "title": "Org Chart 2024",
+  "published_on": "2024-05-02",
+  "updated_on": "2025-10-05",
+  "seats": [
+    {
+      "position": "FOUNDER",
+      "branch": null,
+      "name_as_listed": "Edward J. Dugan",
+      "member": null,
+      "note": "Founder; not in the members list — likely the admin user"
+    },
+    {
+      "position": "CO-FOUNDER",
+      "branch": null,
+      "name_as_listed": "Andrei Klaus T. Serenio",
+      "member": "Andrei Klaus T. Serenio"
+    },
+    {
+      "position": "TROP-1",
+      "branch": "TROP",
+      "name_as_listed": "Andrei Klaus T. Serenio",
+      "member": "Andrei Klaus T. Serenio"
+    },
+    {
+      "position": "TROP-2",
+      "branch": "TROP",
+      "name_as_listed": "Ricky S. Tilago Jr.",
+      "member": "Ricky S. Tilago"
+    },
+    {
+      "position": "TROP-3",
+      "branch": "TROP",
+      "name_as_listed": "Jan Griz C. Tulingin",
+      "member": "Jan Griz Cartagena"
+    },
+    {
+      "position": "TROP-4",
+      "branch": "TROP",
+      "name_as_listed": "Jedie Ezekiel O. Arcala",
+      "member": "Jedie Ezekiel O. Arcala"
+    },
+    {
+      "position": "TROP-5",
+      "branch": "TROP",
+      "name_as_listed": "Randave N. Cagabhion",
+      "member": "Randave N. Cagabhion"
+    },
+    {
+      "position": "TROP-6",
+      "branch": "TROP",
+      "name_as_listed": "Bjaynel Cuizon",
+      "member": "Bjay Cuizon"
+    },
+    {
+      "position": "TROP-7",
+      "branch": "TROP",
+      "name_as_listed": "Axel N. Bartolome",
+      "member": "Axel Niza Bartolome"
+    },
+    {
+      "position": "TROP-8",
+      "branch": "TROP",
+      "name_as_listed": "Chrej Rigel Simbahon",
+      "member": "Chrej Rigel Simbahon"
+    },
+    {
+      "position": "TROP-9",
+      "branch": "TROP",
+      "name_as_listed": "Jeffrey Oliver Gumobao",
+      "member": "Jeffrey Oliver Gumobao"
+    },
+    {
+      "position": "TROP-10",
+      "branch": "TROP",
+      "name_as_listed": "Loyd T. Rabe",
+      "member": "Loyd T. Rabe"
+    },
+    {
+      "position": "TROP-11",
+      "branch": "TROP",
+      "name_as_listed": "John Lloyd Lagbawan",
+      "member": "John Lloyd Lagbawan"
+    },
+    {
+      "position": "TROP-12",
+      "branch": "TROP",
+      "name_as_listed": "Louie Jan N. Cagabhion",
+      "member": "Louie Jan N. Cagabhion"
+    },
+    {
+      "position": "TROP-13",
+      "branch": "TROP",
+      "name_as_listed": "Jade Andrey Curambao",
+      "member": "Jade Andrey Curambao"
+    },
+    {
+      "position": "TROP-14",
+      "branch": "TROP",
+      "name_as_listed": "Charles Louis Indab",
+      "member": "Charles Louis Indab"
+    },
+    {
+      "position": "TROP-15",
+      "branch": "TROP",
+      "name_as_listed": "Christoff Liel Indab",
+      "member": "Christoff Liel Indab"
+    },
+    {
+      "position": "TROPS-1",
+      "branch": "TROPS",
+      "name_as_listed": "Jayron A. Perez",
+      "member": "Jayron Perez"
+    },
+    {
+      "position": "TROPS-2",
+      "branch": "TROPS",
+      "name_as_listed": "John Ronryl Edig",
+      "member": "John Ronryl Edig"
+    },
+    {
+      "position": "TROPS-3",
+      "branch": "TROPS",
+      "name_as_listed": "Rey Tilago",
+      "member": "Rey Tilago"
+    },
+    {
+      "position": "TROPS-4",
+      "branch": "TROPS",
+      "name_as_listed": "Clark Jiro Marquez",
+      "member": "Clark Jiro Marquez"
+    },
+    {
+      "position": "TROPS-5",
+      "branch": "TROPS",
+      "name_as_listed": "Vince Dane Sumalinog",
+      "member": "Vince Dane Sumalinog"
+    },
+    {
+      "position": "TROPS-6",
+      "branch": "TROPS",
+      "name_as_listed": "John Michael Balones",
+      "member": "John Michael Balones"
+    },
+    {
+      "position": "TROPS-7",
+      "branch": "TROPS",
+      "name_as_listed": "Aidreianne Feb T. Serenio",
+      "member": "Aidreianne Feb T. Serenio"
+    },
+    {
+      "position": "TROPS-8",
+      "branch": "TROPS",
+      "name_as_listed": "James Cartagena",
+      "member": "James Cartagena"
+    },
+    {
+      "position": "TROPS-9",
+      "branch": "TROPS",
+      "name_as_listed": "Jhonpaul M. Inting",
+      "member": "Jhonpaul M. Inting"
+    },
+    {
+      "position": "TROPS-10",
+      "branch": "TROPS",
+      "name_as_listed": "Jhon Akon Tilago",
+      "member": "Jhon Akon Tilago"
+    },
+    {
+      "position": "TROPS-11",
+      "branch": "TROPS",
+      "name_as_listed": "Jan Francis Suzon",
+      "member": "Jan Francis Suzon"
+    },
+    {
+      "position": "TROPS-12",
+      "branch": "TROPS",
+      "name_as_listed": "Edrian M. Cagabhion",
+      "member": "Edrian M. Cagabhion"
+    },
+    {
+      "position": "TROPS-13",
+      "branch": "TROPS",
+      "name_as_listed": "Jerald Nonato",
+      "member": "Jerald Nonato"
+    },
+    {
+      "position": "TROPS-14",
+      "branch": "TROPS",
+      "name_as_listed": "Rudy G. Omogos",
+      "member": "Rudy G. Omogos"
+    },
+    {
+      "position": "TROPS-15",
+      "branch": "TROPS",
+      "name_as_listed": "Vincent D. Labendia",
+      "member": "Vincent Harvey D. Labendia"
+    }
+  ]
+}

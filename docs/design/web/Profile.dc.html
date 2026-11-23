@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Member profile – Tropang Potchi</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="display: flex; flex-wrap: wrap; min-height: 100vh; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<nav aria-label="Main" style="flex: 1 1 248px; background: #1C2566; color: #DCE0F5; padding: 24px 16px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; align-items: center; gap: 12px; padding: 0 8px">
+<img src="/images/logo.png" alt="Tropang Potchi Brotherhood logo" style="width: 52px; height: 52px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-family: Archivo, sans-serif; font-weight: 800; font-size: 16px; color: #FFFFFF; letter-spacing: 0.03em">TROPANG POTCHI</span>
+<span style="font-size: 12px; color: #B9C0E6">Management System</span>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<a href="Main.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg>Dashboard</a>
+<a href="Members.dc.html" aria-current="page" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; background: #F5D547; color: #16181D; font-size: 14px; font-weight: 600"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg>Members</a>
+<a href="OrgChart.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="5" rx="1"></rect><rect x="2" y="17" width="6" height="5" rx="1"></rect><rect x="16" y="17" width="6" height="5" rx="1"></rect><path d="M12 7v5M5 17v-5h14v5"></path></svg>Org Structure</a>
+<a href="Activities.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg>Activities &amp; Attendance</a>
+<a href="Birthdays.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg>Birthdays &amp; Dates</a>
+<a href="Tasks.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M8 12l3 3 5-6"></path></svg>Tasks</a>
+<a href="Documents.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>Documents &amp; Photos</a>
+<a href="#" style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 12px; border-radius: 10px; text-decoration: none; color: #DCE0F5; font-size: 14px; font-weight: 500"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>Reports</a>
+</div>
+<div style="margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 12px; background: #27317A">
+<span style="width: 40px; height: 40px; border-radius: 50%; background: #F5D547; color: #16181D; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px">ED</span>
+<div style="display: flex; flex-direction: column; gap: 2px; min-width: 0">
+<span style="font-size: 14px; font-weight: 600; color: #FFFFFF">Edward J. Dugan</span>
+<span style="font-size: 12px; color: #B9C0E6">Founder / Chairman</span>
+</div>
+</div>
+</nav>
+
+<main style="flex: 999 1 560px; min-width: 0; padding: 32px 40px 48px; box-sizing: border-box">
+<div style="max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px">
+
+<div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #5C6070">
+<a href="Members.dc.html" style="font-weight: 600">Members</a><span aria-hidden="true">/</span><span>Jeffrey Oliver Gumobao</span>
+</div>
+
+<section aria-label="Member summary" style="background: #1C2566; border-radius: 20px; padding: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; color: #FFFFFF">
+<div style="position: relative; width: 112px; height: 112px; flex: 0 0 112px">
+<span style="width: 112px; height: 112px; border-radius: 50%; background: #F5D547; color: #16181D; display: flex; align-items: center; justify-content: center; font-family: Archivo, sans-serif; font-weight: 800; font-size: 38px; border: 4px solid #FFFFFF; box-sizing: border-box">JG</span>
+<button type="button" aria-label="Change profile photo" style="position: absolute; right: -2px; bottom: -2px; width: 44px; height: 44px; border-radius: 50%; border: 3px solid #1C2566; background: #FFFFFF; color: #1C2566; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v12H4z"></path><circle cx="12" cy="13" r="3.5"></circle></svg></button>
+</div>
+<div style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 10px; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: #DFF3E6; color: #17603A">Active</span>
+<span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #F5D547; color: #16181D">TROP-9 · Main</span>
+</div>
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.01em; line-height: 1.1">Jeffrey Oliver Gumobao</h1>
+<span style="font-size: 15px; color: #DCE0F5">“Jepoy” · Villariez chapter · Member no. 10</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 10px">
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #4A55A0; background: transparent; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 7h10l-3-3M17 17H7l3 3"></path></svg>Change position</button>
+<button type="button" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 0; background: #F5D547; color: #16181D; font: 700 14px Inter, sans-serif; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg>Edit profile</button>
+</div>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+<div style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section aria-labelledby="pi-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="pi-h" style="margin: 0; font-size: 18px; font-weight: 700">Personal information</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Full name</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Jeffrey Oliver Gumobao</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Nickname</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Jepoy</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Birthday</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">October 19, 2006</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Age</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">20 <span style="font-size: 12px; font-weight: 500; color: #5C6070">(auto-calculated)</span></dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Grade level</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">1st Year College</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Chapter</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Villariez</dd></div>
+</dl>
+</section>
+
+<section aria-labelledby="ms-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<h2 id="ms-h" style="margin: 0; font-size: 18px; font-weight: 700">Membership</h2>
+<dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Member no.</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">10</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Status</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">Active</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Position</dt><dd style="margin: 0; font-size: 15px; font-weight: 600">TROP-9 (Main branch)</dd></div>
+<div style="display: flex; flex-direction: column; gap: 3px"><dt style="font-size: 12px; color: #5C6070">Date joined</dt><dd style="margin: 0; font-size: 15px; font-weight: 600; color: #8A5300">Not recorded · <a href="#" style="color: #3446B0">Add</a></dd></div>
+</dl>
+</section>
+
+<section aria-labelledby="nt-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="nt-h" style="margin: 0; font-size: 18px; font-weight: 700">Private notes</h2>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #5C6070">Only you can see these notes
+<textarea rows="4" placeholder="Write a note about this member…" style="border: 1px solid #D6D3C6; border-radius: 10px; padding: 12px; font: 14px Inter, sans-serif; color: #16181D; resize: vertical; background: #FAF9F4"></textarea>
+</label>
+</section>
+</div>
+
+<div style="flex: 1 1 400px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section aria-labelledby="at-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<h2 id="at-h" style="margin: 0; font-size: 18px; font-weight: 700">Attendance</h2>
+<span style="font-size: 14px; color: #5C6070"><strong style="font-family: Archivo, sans-serif; font-size: 22px; color: #16181D">5</strong> of 6 activities</span>
+</div>
+<span style="height: 8px; border-radius: 999px; background: #ECEBE6; display: block"><span style="display: block; height: 8px; width: 83%; border-radius: 999px; background: #3446B0"></span></span>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+<sc-for list="{{events}}" as="e" hint-placeholder-count="6">
+<li style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #F0EEE6">
+<span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">{{e.name}}</span><span style="font-size: 12px; color: #5C6070">{{e.date}}</span></span>
+<span style="{{e.style}}">{{e.label}}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<section aria-labelledby="ph-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="ph-h" style="margin: 0; font-size: 18px; font-weight: 700">Position &amp; record history</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0">
+<sc-for list="{{history}}" as="h" hint-placeholder-count="4">
+<li style="display: flex; gap: 14px">
+<span style="display: flex; flex-direction: column; align-items: center; flex: 0 0 14px">
+<span style="{{h.dot}}"></span>
+<span style="flex: 1 1 auto; width: 2px; background: #E4E2D8; min-height: 18px"></span>
+</span>
+<span style="display: flex; flex-direction: column; gap: 3px; padding-bottom: 16px">
+<span style="font-size: 14px; font-weight: 600">{{h.title}}</span>
+<span style="font-size: 13px; color: #5C6070">{{h.detail}}</span>
+</span>
+</li>
+</sc-for>
+</ol>
+</section>
+
+<section aria-labelledby="dc-h" style="background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="dc-h" style="margin: 0; font-size: 18px; font-weight: 700">Documents &amp; photos</h2>
+<button type="button" style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 28px 16px; border: 2px dashed #CFCCC0; border-radius: 12px; background: #FAF9F4; cursor: pointer; font-family: Inter, sans-serif; color: #16181D">
+<svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3446B0" stroke-width="2" stroke-linecap="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path></svg>
+<span style="font-size: 14px; font-weight: 600">Upload files for Jeffrey</span>
+<span style="font-size: 13px; color: #5C6070">Photos, forms, certificates · drag files here or browse</span>
+</button>
+</section>
+</div>
+
+</div>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var ev = [['Leiana Outing', 'May 26, 2024', ''], ['Graduation', 'May 29–30, 2024', 'y'], ['Untitled activity', 'Oct 6, 2024', 'y'], ['Untitled activity', 'Date not recorded', 'y'], ['Wake', 'Dec 16, 2025', 'y'], ['Year-End Bonding', 'Dec 30, 2025', 'y']];
+    var events = ev.reverse().map(function (e) {
+      var y = e[2] === 'y';
+      return { name: e[0], date: e[1], label: y ? 'Attended' : 'Absent',
+        style: 'font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: ' + (y ? '#E3E7FA' : '#F3F2EC') + '; color: ' + (y ? '#27317A' : '#5C6070') };
+    });
+    var cur = 'width: 14px; height: 14px; border-radius: 50%; background: #F5D547; border: 3px solid #1C2566; box-sizing: border-box; flex: 0 0 auto';
+    var past = 'width: 14px; height: 14px; border-radius: 50%; background: #FFFFFF; border: 3px solid #B9B6A8; box-sizing: border-box; flex: 0 0 auto';
+    var history = [
+      { title: 'Profile imported from Excel', detail: 'Nov 22, 2026 · TROPANGPOTCHI_INFO 2026', dot: cur },
+      { title: 'Org chart updated · still TROP-9', detail: 'Oct 5, 2025', dot: past },
+      { title: 'Assigned TROP-9 · Main branch', detail: 'Org Chart 2024 · May 2, 2024', dot: past },
+      { title: 'Earlier positions', detail: 'None recorded. Add one if he held another role.', dot: past }
+    ];
+    return { events: events, history: history };
+  }
+}
+</script>
+</body>
+</html>

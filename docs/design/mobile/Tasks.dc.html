@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tasks – Tropang Potchi app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<header style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 10px; padding: 8px 16px 12px; border-bottom: 1px solid #E4E2D8">
+<a href="More.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; min-height: 44px; margin-left: -8px; padding: 0 8px; color: #3446B0; text-decoration: none; font-size: 15px; font-weight: 600"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>More</a>
+<div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 26px; letter-spacing: -0.01em">Tasks</h1>
+<span style="font-size: 13px; color: #5C6070">{{openCount}} open · {{doneCount}} done</span>
+</div>
+<div role="group" aria-label="Show" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #ECEBE4">
+<sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{f.on}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; padding: 16px 16px 24px">
+<sc-if value="{{empty}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; padding: 40px 16px; text-align: center; font-size: 14px; color: #5C6070">Nothing here.</p>
+</sc-if>
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="2">
+<section style="display: flex; flex-direction: column; gap: 8px">
+<h2 style="margin: 0; display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: #5C6070; text-transform: uppercase; letter-spacing: 0.06em"><span>{{g.title}}</span><span>{{g.count}}</span></h2>
+<ul style="list-style: none; margin: 0; padding: 0; background: #FFFFFF; border: 1px solid #E4E2D8; border-radius: 16px; overflow: hidden">
+<sc-for list="{{g.items}}" as="t" hint-placeholder-count="4">
+<li style="display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-bottom: 1px solid #F0EEE6">
+<button type="button" role="checkbox" aria-checked="{{t.done}}" aria-label="{{t.ariaLabel}}" onClick="{{t.toggle}}" style="flex: 0 0 44px; width: 44px; height: 44px; margin: -9px -8px -9px -10px; padding: 0; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer">
+<span style="{{t.box}}"><sc-if value="{{t.done}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg></sc-if></span>
+</button>
+<a href="{{t.href}}" style="display: flex; flex-direction: column; gap: 5px; flex: 1 1 auto; min-width: 0; text-decoration: none; color: #16181D">
+<span style="{{t.titleStyle}}">{{t.title}}</span>
+<span style="font-size: 12px; color: #5C6070">{{t.detail}}</span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px; align-items: center">
+<span style="{{t.catStyle}}">{{t.cat}}</span>
+<sc-if value="{{t.hasPri}}" hint-placeholder-val="{{ false }}"><span style="{{t.priStyle}}">{{t.pri}}</span></sc-if>
+<span style="{{t.dueStyle}}">{{t.due}}</span>
+</span>
+</a>
+</li>
+</sc-for>
+</ul>
+</section>
+</sc-for>
+</main>
+
+<form onSubmit="{{add}}" style="flex: 0 0 auto; display: flex; gap: 8px; padding: 10px 16px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<label for="newtask" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap">New task</label>
+<input id="newtask" type="text" value="{{draft}}" onChange="{{onDraft}}" placeholder="Add a task" style="flex: 1 1 auto; min-width: 0; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1px solid #D6D3C6; background: #FAF9F4; font: 400 15px Inter, sans-serif; color: #16181D">
+<button type="submit" aria-label="Add task" style="flex: 0 0 48px; height: 48px; border-radius: 12px; border: 0; background: #3446B0; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</form>
+
+<nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px 20px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Home</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg></span>Members</a>
+<a href="Attendance.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg></span>Attendance</a>
+<a href="Calendar.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg></span>Birthdays</a>
+<a href="More.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #1C2566; font-size: 11px; font-weight: 700"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px; background: #F5D547"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>More</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var TP_TASKS = [
+  ['Birthday greeting: Christoff Liel Indab', '“Tope” · TROP-15 · birth year missing', 'Birthdays', '', '2026-12-14', 'Calendar.dc.html', 0],
+  ['Birthday greeting: Edrian M. Cagabhion', '“Samboy” · TROPS-12 · birth year missing', 'Birthdays', '', '2026-12-18', 'Calendar.dc.html', 0],
+  ['Birthday greeting: John Ronryl Edig', '“Jan²” · TROPS-2 · turns 19', 'Birthdays', '', '2026-12-25', 'Calendar.dc.html', 0],
+  ['Birthday greeting: Jan Griz Cartagena', '“Kim²” · TROP-3 · turns 16', 'Birthdays', '', '2026-12-26', 'Calendar.dc.html', 0],
+  ['Reassign TROP-13 and TROP-14', 'Held by inactive members since Mar 2, 2026.', 'Structure', 'High', '', 'OrgChart.dc.html', 0],
+  ['Reassign TROPS-14 and TROPS-15', 'Held by inactive members since Mar 2, 2026.', 'Structure', 'High', '', 'OrgChart.dc.html', 0],
+  ['Confirm the correct name for TROP-3', '“Jan Griz Cartagena” vs “Jan Griz C. Tulingin”.', 'Records', 'Medium', '', 'Members.dc.html', 0],
+  ['Assign positions to 3 active members', 'Zien, Jhon Gabriel, Adrian.', 'Structure', 'Medium', '', 'OrgChart.dc.html', 0],
+  ['Collect birth years from 11 members', 'Needed to calculate ages correctly.', 'Members', 'Medium', '', 'Members.dc.html', 0],
+  ['Follow up with the 7 floating members', '4 need more participation, 2 need more familiarity.', 'Members', 'Medium', '', 'Members.dc.html', 0],
+  ['Name the 2 untitled activities', 'Oct 6, 2024, and one with no date recorded.', 'Activities', 'Low', '', 'Attendance.dc.html', 0],
+  ['Import members list from Excel', 'TROPANGPOTCHI_INFO 2026 · 42 members, 6 activities.', 'Records', '', '2026-11-22', 'Members.dc.html', 1]
+];
+var TP_CAT = { Members: ['#E3E7FA', '#27317A'], Structure: ['#DDF1F2', '#0A5F63'], Activities: ['#EAE3F7', '#4B2E83'], Birthdays: ['#FFF1B8', '#4A3600'], Records: ['#ECEBE6', '#4A4A4A'] };
+var TP_PRI = { High: ['#FDE3D3', '#8A3B12'], Medium: ['#FFF0CC', '#7A4A00'], Low: ['#F0EFE8', '#4A4A4A'] };
+var TP_MN = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'open', draft: '', tasks: TP_TASKS.map(function (t) { return { title: t[0], detail: t[1], cat: t[2], pri: t[3], due: t[4], href: t[5], done: !!t[6] }; }) };
+  }
+  renderVals() {
+    var self = this, s = this.state;
+    var pill = function (c) { return 'font-size: 11px; font-weight: 600; padding: 3px 7px; border-radius: 6px; background: ' + c[0] + '; color: ' + c[1]; };
+    var fmt = function (d) { if (!d) return ''; var p = d.split('-'); return TP_MN[+p[1] - 1] + ' ' + (+p[2]); };
+    var view = s.tasks.map(function (t, i) {
+      return {
+        t: t, title: t.title, detail: t.detail, cat: t.cat, catStyle: pill(TP_CAT[t.cat]), pri: t.pri, hasPri: !!t.pri && !t.done,
+        priStyle: t.pri ? pill(TP_PRI[t.pri]) : '', done: t.done, href: t.href, due: t.done ? 'Done' : fmt(t.due),
+        ariaLabel: t.title,
+        dueStyle: 'font-size: 12px; font-weight: 600; color: ' + (t.done ? '#17603A' : '#16181D'),
+        titleStyle: 'font-size: 15px; font-weight: 600; ' + (t.done ? 'text-decoration: line-through; color: #5C6070' : ''),
+        box: 'width: 26px; height: 26px; box-sizing: border-box; border-radius: 8px; display: flex; align-items: center; justify-content: center; border: 2px solid ' + (t.done ? '#17603A' : '#8A8D99') + '; background: ' + (t.done ? '#17603A' : '#FFFFFF'),
+        toggle: function () { var ts = s.tasks.slice(); ts[i] = Object.assign({}, t, { done: !t.done }); self.setState({ tasks: ts }); }
+      };
+    });
+    var open = view.filter(function (v) { return !v.done; }), done = view.filter(function (v) { return v.done; });
+    var dated = open.filter(function (v) { return v.t.due; }).sort(function (a, b) { return a.t.due < b.t.due ? -1 : 1; });
+    var undated = open.filter(function (v) { return !v.t.due; });
+    var groups = [];
+    if (s.filter !== 'done') {
+      if (dated.length) groups.push({ title: 'Coming up', count: dated.length, items: dated });
+      if (undated.length) groups.push({ title: 'Anytime', count: undated.length, items: undated });
+    }
+    if (s.filter !== 'open' && done.length) groups.push({ title: 'Completed', count: done.length, items: done });
+    var filters = [['open', 'Open'], ['all', 'All'], ['done', 'Done']].map(function (f) {
+      var on = s.filter === f[0];
+      return { label: f[1], on: on, pick: function () { self.setState({ filter: f[0] }); },
+        style: 'min-height: 40px; border-radius: 9px; border: 0; cursor: pointer; font: 600 14px Inter, sans-serif; color: #16181D; background: ' + (on ? '#FFFFFF' : 'transparent') + '; box-shadow: ' + (on ? '0 1px 3px rgba(22,24,29,0.12)' : 'none') };
+    });
+    return {
+      groups: groups, filters: filters, empty: groups.length === 0, openCount: open.length, doneCount: done.length,
+      draft: s.draft,
+      onDraft: function (e) { self.setState({ draft: e.target.value }); },
+      add: function (e) {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!s.draft.trim()) return;
+        self.setState({ draft: '', filter: 'open', tasks: s.tasks.concat([{ title: s.draft.trim(), detail: 'Added by you', cat: 'Members', pri: '', due: '', href: 'Tasks.dc.html', done: false }]) });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

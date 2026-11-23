@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Attendance – Tropang Potchi app</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#3446B0}a:hover{color:#1C2566}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; display: flex; flex-direction: column; overflow: hidden; background: #F6F5EF; font-family: Inter, system-ui, sans-serif; color: #16181D">
+
+<header style="flex: 0 0 auto; display: flex; flex-direction: column; gap: 12px; padding: 16px 0 12px; background: #F6F5EF; border-bottom: 1px solid #E4E2D8">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 16px">
+<h1 style="margin: 0; font-family: Archivo, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.01em">Attendance</h1>
+<button type="button" style="display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; border-radius: 999px; border: 1px solid #D6D3C6; background: #FFFFFF; color: #16181D; font: 600 13px Inter, sans-serif; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Activity</button>
+</div>
+<div role="group" aria-label="Choose activity" style="display: flex; gap: 8px; overflow-x: auto; padding: 0 16px">
+<sc-for list="{{events}}" as="e" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{e.on}}" onClick="{{e.pick}}" style="{{e.style}}">
+<span style="font-size: 13px; font-weight: 700; white-space: nowrap">{{e.name}}</span>
+<span style="font-size: 11px; white-space: nowrap; color: {{e.sub}}">{{e.date}}</span>
+</button>
+</sc-for>
+</div>
+</header>
+
+<main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+<section aria-label="Totals" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 14px 16px">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px; background: #3446B0; color: #FFFFFF"><span style="font-family: Archivo, sans-serif; font-size: 24px; font-weight: 800; line-height: 1.1">{{sum.p}}</span><span style="font-size: 12px; font-weight: 600">Present</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E4E2D8"><span style="font-family: Archivo, sans-serif; font-size: 24px; font-weight: 800; line-height: 1.1">{{sum.e}}</span><span style="font-size: 12px; font-weight: 600; color: #5C6070">Excused</span></div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px; background: #FFFFFF; border: 1px solid #E4E2D8"><span style="font-family: Archivo, sans-serif; font-size: 24px; font-weight: 800; line-height: 1.1">{{sum.a}}</span><span style="font-size: 12px; font-weight: 600; color: #5C6070">Absent</span></div>
+</section>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 16px 8px">
+<span style="font-size: 13px; color: #5C6070">{{cur}} · 29 active members</span>
+<button type="button" onClick="{{allPresent}}" style="min-height: 40px; padding: 0 4px; border: 0; background: transparent; color: #3446B0; font: 600 13px Inter, sans-serif; cursor: pointer">Mark all present</button>
+</div>
+<ul style="list-style: none; margin: 0; padding: 0; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+<li style="display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 8px 12px 8px 16px; border-bottom: 1px solid #F0EEE6">
+<span style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 auto; min-width: 0">
+<span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span>
+<span style="font-size: 12px; color: #5C6070">{{r.pos}} · {{r.chapter}}</span>
+</span>
+<span role="group" aria-label="{{r.label}}" style="flex: 0 0 auto; display: flex; gap: 2px; padding: 3px; border-radius: 11px; background: #F0EFE8">
+<sc-for list="{{r.opts}}" as="o" hint-placeholder-count="3">
+<button type="button" aria-label="{{o.label}}" aria-pressed="{{o.on}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.short}}</button>
+</sc-for>
+</span>
+</li>
+</sc-for>
+</ul>
+</main>
+
+<div style="flex: 0 0 auto; padding: 10px 16px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<button type="button" style="width: 100%; min-height: 50px; border-radius: 12px; border: 0; background: #1C2566; color: #FFFFFF; font: 700 15px Inter, sans-serif; cursor: pointer">Save attendance · {{sum.pct}} present</button>
+</div>
+
+<nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 6px 4px 20px; background: #FFFFFF; border-top: 1px solid #E4E2D8">
+<a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg></span>Home</a>
+<a href="Members.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21c0-4 3-6 7-6s7 2 7 6"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21c0-3-2-5-4-5.6"></path></svg></span>Members</a>
+<a href="Attendance.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #1C2566; font-size: 11px; font-weight: 700"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px; background: #F5D547"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"></path></svg></span>Attendance</a>
+<a href="Calendar.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16v-8H4zM4 17h16M12 13V9M12 6a1.5 1.5 0 0 1-1.5-1.5C10.5 3 12 2 12 2s1.5 1 1.5 2.5A1.5 1.5 0 0 1 12 6z"></path><path d="M7 13v-2h10v2"></path></svg></span>Birthdays</a>
+<a href="More.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 52px; text-decoration: none; color: #5C6070; font-size: 11px; font-weight: 500"><span style="display: flex; align-items: center; justify-content: center; width: 56px; height: 30px; border-radius: 999px"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"></path></svg></span>More</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+var TP_EV = [['Leiana Outing', 'May 26, 2024'], ['Graduation', 'May 29–30, 2024'], ['Untitled', 'Oct 6, 2024'], ['Untitled', 'No date'], ['Wake', 'Dec 16, 2025'], ['Year-End Bonding', 'Dec 30, 2025']];
+var TP_ACT = [['TROP-1','Andrei Klaus T. Serenio','Pag-asa','y...yy'],['TROP-2','Ricky S. Tilago','Pag-asa','.yyyyy'],['TROP-3','Jan Griz Cartagena','Pag-asa','..yyy.'],['TROP-4','Jedie Ezekiel O. Arcala','Pag-asa','.yy.yy'],['TROP-5','Randave N. Cagabhion','Pag-asa','.yyyy.'],['TROP-6','Bjay Cuizon','Villariez','e.y.y.'],['TROP-7','Axel Niza Bartolome','Poblacion','...yyy'],['TROP-8','Chrej Rigel Simbahon','Villariez','e.y.y.'],['TROP-9','Jeffrey Oliver Gumobao','Villariez','.yyyyy'],['TROP-10','Loyd T. Rabe','Pag-asa','.y..y.'],['TROP-11','John Lloyd Lagbawan','Villariez','.yyy..'],['TROP-12','Louie Jan N. Cagabhion','Pag-asa','.yyyyy'],['TROP-15','Christoff Liel Indab','Pag-asa','..yy..'],['TROPS-1','Jayron Perez','Pag-asa','ey....'],['TROPS-2','John Ronryl Edig','Pag-asa','e.....'],['TROPS-3','Rey Tilago','Pag-asa','ey..yy'],['TROPS-4','Clark Jiro Marquez','Pag-asa','......'],['TROPS-5','Vince Dane Sumalinog','Pag-asa','.y....'],['TROPS-6','John Michael Balones','Dalsa','..yy..'],['TROPS-7','Aidreianne Feb T. Serenio','Pag-asa','..yyyy'],['TROPS-8','James Cartagena','Pag-asa','.y.y..'],['TROPS-9','Jhonpaul M. Inting','Pag-asa','.y.y..'],['TROPS-10','Jhon Akon Tilago','Pag-asa','..y...'],['TROPS-11','Jan Francis Suzon','Villariez','..yy..'],['TROPS-12','Edrian M. Cagabhion','Pag-asa','..y...'],['TROPS-13','Jerald Nonato','Dalsa','....y.'],['No position','Zien V. Quilisadio','Pag-asa','.....y'],['No position','Jhon Gabriel Suzon','Villariez','...y..'],['No position','Arnel Jay Adrian S. Cañas','Pag-asa','......']];
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { ev: 5, att: TP_ACT.map(function (r) { return r[3].split(''); }) };
+  }
+  setCell(i, k, v) {
+    var att = this.state.att.map(function (row) { return row.slice(); });
+    att[i][k] = v;
+    this.setState({ att: att });
+  }
+  renderVals() {
+    var self = this, s = this.state, k = s.ev;
+    var seg = function (on, kind) {
+      var c = kind === 'y' ? '#3446B0' : kind === 'e' ? '#6B6A62' : '#B5471B';
+      return 'width: 44px; height: 40px; border-radius: 8px; border: 0; cursor: pointer; font: 700 14px Inter, sans-serif; background: ' + (on ? c : 'transparent') + '; color: ' + (on ? '#FFFFFF' : '#4A4D58');
+    };
+    var events = TP_EV.map(function (e, i) {
+      var on = i === k;
+      return { name: e[0], date: e[1], on: on, sub: on ? '#DCE0F5' : '#5C6070',
+        pick: function () { self.setState({ ev: i }); },
+        style: 'flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 52px; padding: 8px 14px; border-radius: 12px; cursor: pointer; font-family: Inter, sans-serif; text-align: left; border: 1px solid ' + (on ? '#1C2566' : '#E4E2D8') + '; background: ' + (on ? '#1C2566' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#16181D') };
+    }).slice().reverse();
+    var p = 0, ex = 0, ab = 0;
+    var rows = TP_ACT.map(function (r, i) {
+      var v = s.att[i][k];
+      if (v === 'y') p++; else if (v === 'e') ex++; else ab++;
+      return { pos: r[0], name: r[1], chapter: r[2], label: 'Attendance for ' + r[1],
+        opts: [['y', 'P', 'Present'], ['e', 'E', 'Excused'], ['.', 'A', 'Absent']].map(function (o) {
+          return { short: o[1], label: o[2], on: v === o[0], style: seg(v === o[0], o[0]), pick: function () { self.setCell(i, k, o[0]); } };
+        }) };
+    });
+    return {
+      events: events, rows: rows, cur: TP_EV[k][0] + ' · ' + TP_EV[k][1],
+      sum: { p: p, e: ex, a: ab, pct: Math.round(p / TP_ACT.length * 100) + '%' },
+      allPresent: function () {
+        var att = s.att.map(function (row) { var c = row.slice(); c[k] = 'y'; return c; });
+        self.setState({ att: att });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>
