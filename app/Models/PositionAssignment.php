@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property CarbonImmutable|null $started_on
  * @property CarbonImmutable|null $ended_on
  * @property string|null $source
+ * @property-read Position $position
+ * @property-read Member|null $member
  */
 #[Fillable(['position_id', 'member_id', 'name_as_listed', 'started_on', 'ended_on', 'source'])]
 class PositionAssignment extends Model

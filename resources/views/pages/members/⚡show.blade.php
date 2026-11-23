@@ -9,6 +9,7 @@ use App\Models\PositionAssignment;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -29,6 +30,16 @@ new #[Title('Member profile')] class extends Component
         if (auth()->user()->can('viewPrivateNotes', $this->member)) {
             $this->privateNotes = (string) $this->member->private_notes;
         }
+    }
+
+    /**
+     * Reload positions and history after the "Change position" pop-up saves.
+     */
+    #[On('position-assigned')]
+    public function refreshPositions(): void
+    {
+        $this->member->load(['currentAssignments.position', 'positionAssignments.position']);
+        unset($this->history);
     }
 
     /**
@@ -190,10 +201,10 @@ new #[Title('Member profile')] class extends Component
 
         {{-- Desktop actions --}}
         <div class="hidden flex-wrap gap-2.5 lg:flex">
-            <a href="{{ route('org-structure') }}" wire:navigate class="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-[#4A55A0] px-4 text-sm font-semibold text-white hover:bg-navy-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow">
+            <button type="button" wire:click="$dispatch('open-assign-position', { memberId: {{ $member->id }} })" class="inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-[#4A55A0] px-4 text-sm font-semibold text-white hover:bg-navy-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow">
                 <x-icon name="swap" :size="16" />
                 Change position
-            </a>
+            </button>
             @can('update', $member)
                 <a href="{{ route('members.edit', $member) }}" wire:navigate class="inline-flex min-h-11 items-center gap-2 rounded-[10px] bg-yellow px-[18px] text-sm font-bold text-ink hover:bg-[#FBE27A] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow">
                     <x-icon name="pencil" :size="16" />
@@ -204,12 +215,18 @@ new #[Title('Member profile')] class extends Component
 
         {{-- Phone quick actions --}}
         <div class="mt-1.5 grid w-full grid-cols-3 gap-2 lg:hidden">
-            @foreach ([['Attendance', 'activities', 'activities'], ['Position', 'org-structure', 'org'], ['Upload', 'documents', 'upload']] as [$label, $route, $icon])
-                <a href="{{ route($route) }}" wire:navigate class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
-                    <x-icon :name="$icon" :size="20" />
-                    {{ $label }}
-                </a>
-            @endforeach
+            <a href="{{ route('activities') }}" wire:navigate class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
+                <x-icon name="activities" :size="20" />
+                Attendance
+            </a>
+            <button type="button" wire:click="$dispatch('open-assign-position', { memberId: {{ $member->id }} })" class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
+                <x-icon name="org" :size="20" />
+                Position
+            </button>
+            <a href="{{ route('documents') }}" wire:navigate class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
+                <x-icon name="upload" :size="20" />
+                Upload
+            </a>
         </div>
     </section>
 
@@ -389,4 +406,6 @@ new #[Title('Member profile')] class extends Component
             </x-card>
         </div>
     </div>
+
+    <livewire:assign-position />
 </div>
