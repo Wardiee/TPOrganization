@@ -193,7 +193,9 @@ new class extends Component
 
 <div>
     @if ($open)
+        {{-- wire:ignore.self keeps Livewire from stripping the dialog's "open" state when the form re-renders. --}}
         <dialog
+            wire:ignore.self
             x-data
             x-init="$el.showModal()"
             x-on:close="$wire.close()"

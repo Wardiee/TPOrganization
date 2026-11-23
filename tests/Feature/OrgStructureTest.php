@@ -19,7 +19,7 @@ beforeEach(function () {
 
 function seat(string $code, Branch $branch = Branch::Trop): Position
 {
-    return Position::factory()->create(['code' => $code, 'title' => $code, 'branch' => $branch, 'sort' => (int) filter_var($code, FILTER_SANITIZE_NUMBER_INT)]);
+    return Position::factory()->create(['code' => $code, 'title' => $code, 'branch' => $branch, 'sort' => (int) preg_replace('/\D/', '', $code)]);
 }
 
 test('reassigning a seat ends the old holder\'s time, opens a new one and keeps both', function () {
@@ -231,4 +231,36 @@ test('"leave the seat empty" is not offered for a seat that is already empty', f
         ->set('memberId', 'empty')
         ->call('save')
         ->assertHasErrors(['memberId']);
+});
+
+test('a new seat gets the next number in its branch and sorts after the others', function () {
+    $trop15 = seat('TROP-15');
+    seat('TROP-2');
+    $trops1 = Position::factory()->create(['code' => 'TROPS-1', 'title' => 'TROPS-1', 'branch' => Branch::Trops, 'sort' => 16]);
+
+    Livewire::test('pages::org-structure')
+        ->call('addSeat', 'TROP')
+        ->assertDispatched('open-assign-position');
+
+    $added = Position::where('code', 'TROP-16')->sole();
+    expect($added->branch)->toBe(Branch::Trop)
+        ->and($added->sort)->toBeGreaterThan($trop15->sort)
+        ->and(Position::ordered()->pluck('code')->all())->toBe(['TROP-2', 'TROP-15', 'TROP-16', 'TROPS-1'])
+        ->and(HistoryEvent::sole()->title)->toBe('New seat added: TROP-16');
+});
+
+test('a new seat starts empty and can then be assigned', function () {
+    seat('TROPS-15', Branch::Trops);
+    $member = Member::factory()->create();
+
+    Livewire::test('pages::org-structure')->call('addSeat', 'TROPS');
+    $trops16 = Position::where('code', 'TROPS-16')->sole();
+
+    Livewire::test('assign-position')
+        ->call('openFor', positionId: $trops16->id)
+        ->set('memberId', (string) $member->id)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    expect($trops16->fresh()->currentAssignment->member->is($member))->toBeTrue();
 });

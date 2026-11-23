@@ -75,11 +75,23 @@ class Position extends Model
     }
 
     /**
+     * Founder and Co-Founder first, then TROP seats, then TROPS seats; within each, by sort.
+     *
      * @param  Builder<Position>  $query
      */
     #[Scope]
     protected function ordered(Builder $query): void
     {
-        $query->orderBy('sort');
+        $query
+            ->orderByRaw('case when branch is null then 0 when branch = ? then 1 else 2 end', [Branch::Trop->value])
+            ->orderBy('sort');
+    }
+
+    /**
+     * The number in a seat code: 16 for "TROP-16", null for "FOUNDER".
+     */
+    public function number(): ?int
+    {
+        return preg_match('/-(\d+)$/', $this->code, $matches) === 1 ? (int) $matches[1] : null;
     }
 }

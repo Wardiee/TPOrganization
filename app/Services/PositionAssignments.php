@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\Branch;
 use App\Enums\DatePrecision;
 use App\Enums\HistoryKind;
 use App\Models\HistoryEvent;
@@ -61,6 +62,43 @@ class PositionAssignments
                 'detail' => $this->detail($previous, $note),
                 'kind' => HistoryKind::Org,
             ]);
+        });
+    }
+
+    /**
+     * The code the next new seat in a branch would get, e.g. "TROP-16".
+     */
+    public function nextSeatCode(Branch $branch): string
+    {
+        $highest = Position::query()->where('branch', $branch)->get()->map(fn (Position $position) => $position->number() ?? 0)->max() ?? 0;
+
+        return $branch->value.'-'.($highest + 1);
+    }
+
+    /**
+     * Add the next numbered seat to a branch (e.g. TROPS-16) as membership grows, and note it in history.
+     */
+    public function addSeat(Branch $branch, ?CarbonImmutable $on = null): Position
+    {
+        return DB::transaction(function () use ($branch, $on): Position {
+            $code = $this->nextSeatCode($branch);
+
+            $position = Position::create([
+                'code' => $code,
+                'title' => $code,
+                'branch' => $branch,
+                'sort' => (int) Position::query()->where('branch', $branch)->max('sort') + 1,
+            ]);
+
+            HistoryEvent::create([
+                'happened_on' => $on ?? CarbonImmutable::today(),
+                'date_precision' => DatePrecision::Day,
+                'title' => "New seat added: {$code}",
+                'detail' => $branch === Branch::Trop ? 'TROP · Main (long-term members).' : 'TROPS · Ext (newer members).',
+                'kind' => HistoryKind::Org,
+            ]);
+
+            return $position;
         });
     }
 

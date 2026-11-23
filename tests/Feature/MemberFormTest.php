@@ -1,11 +1,14 @@
 <?php
 
+use App\Enums\Branch;
 use App\Enums\HistoryKind;
 use App\Enums\MemberStatus;
 use App\Models\Chapter;
 use App\Models\HistoryEvent;
 use App\Models\Member;
 use App\Models\MemberStatusChange;
+use App\Models\Position;
+use App\Models\PositionAssignment;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Livewire\Livewire;
@@ -176,3 +179,68 @@ test('a birthday can be cleared by choosing the empty options', function () {
         ->birth_day->toBeNull()
         ->birth_year->toBeNull();
 });
+
+test('a new member can be placed in a new seat in the chosen branch', function () {
+    $trops15 = Position::factory()->create(['code' => 'TROPS-15', 'title' => 'TROPS-15', 'branch' => Branch::Trops, 'sort' => 45]);
+    PositionAssignment::factory()->for($trops15)->create();
+
+    Livewire::test('pages::members.create')
+        ->set('form.full_name', 'New Recruit')
+        ->set('form.placement', 'TROPS')
+        ->assertSet('form.seat', 'new')
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $member = Member::where('full_name', 'New Recruit')->sole();
+    $assignment = $member->currentAssignments()->with('position')->sole();
+
+    expect($assignment->position->code)->toBe('TROPS-16')
+        ->and($assignment->started_on->toDateString())->toBe('2026-11-22')
+        ->and(HistoryEvent::orderBy('id')->pluck('title')->all())->toBe([
+            'New Recruit added to members',
+            'New seat added: TROPS-16',
+            'New Recruit assigned to TROPS-16',
+        ]);
+});
+
+test('choosing a branch preselects its first empty seat, starting from the date joined', function () {
+    $filled = Position::factory()->create(['code' => 'TROP-12', 'title' => 'TROP-12', 'branch' => Branch::Trop, 'sort' => 22]);
+    PositionAssignment::factory()->for($filled)->create();
+    $empty = Position::factory()->create(['code' => 'TROP-13', 'title' => 'TROP-13', 'branch' => Branch::Trop, 'sort' => 23]);
+
+    Livewire::test('pages::members.create')
+        ->set('form.full_name', 'Long-term Member')
+        ->set('form.joined_on', '2021-06-12')
+        ->set('form.placement', 'TROP')
+        ->assertSet('form.seat', (string) $empty->id)
+        ->call('save')
+        ->assertHasNoErrors();
+
+    $assignment = Member::where('full_name', 'Long-term Member')->sole()->currentAssignments()->sole();
+    expect($assignment->position_id)->toBe($empty->id)
+        ->and($assignment->started_on->toDateString())->toBe('2021-06-12');
+});
+
+test('a new member is only placed when the choice makes sense', function (array $input, string $errorField) {
+    $filled = Position::factory()->create(['code' => 'TROP-9', 'title' => 'TROP-9', 'branch' => Branch::Trop, 'sort' => 19]);
+    PositionAssignment::factory()->for($filled)->create();
+    $tropsSeat = Position::factory()->create(['code' => 'TROPS-10', 'title' => 'TROPS-10', 'branch' => Branch::Trops, 'sort' => 40]);
+
+    $values = array_map(fn ($value) => match ($value) {
+        'filled' => (string) $filled->id,
+        'trops' => (string) $tropsSeat->id,
+        default => $value,
+    }, $input);
+
+    Livewire::test('pages::members.create')
+        ->set('form.full_name', 'Someone')
+        ->set($values)
+        ->call('save')
+        ->assertHasErrors([$errorField]);
+
+    expect(Member::count())->toBe(1);
+})->with([
+    'a floating member' => [['form.status' => 'floating', 'form.placement' => 'TROP'], 'form.placement'],
+    'a seat someone holds' => [['form.placement' => 'TROP', 'form.seat' => 'filled'], 'form.seat'],
+    'a seat from the other branch' => [['form.placement' => 'TROP', 'form.seat' => 'trops'], 'form.seat'],
+]);

@@ -2,13 +2,17 @@
 
 namespace App\Livewire\Forms;
 
+use App\Enums\Branch;
 use App\Enums\DatePrecision;
 use App\Enums\HistoryKind;
 use App\Enums\MemberStatus;
 use App\Models\HistoryEvent;
 use App\Models\Member;
+use App\Models\Position;
+use App\Services\PositionAssignments;
 use Carbon\CarbonImmutable;
 use Closure;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Form;
@@ -43,6 +47,32 @@ class MemberForm extends Form
     public string $joined_on = '';
 
     public string $remarks = '';
+
+    /** New members only: '' (no position yet), 'TROP' (Main) or 'TROPS' (Ext). */
+    public string $placement = '';
+
+    /** New members only: an empty seat's id, or 'new' to add the next seat in the branch. */
+    public string $seat = 'new';
+
+    /**
+     * When a branch is chosen, preselect its first empty seat (or a new one if none are empty).
+     */
+    public function updatedPlacement(): void
+    {
+        $this->seat = $this->placement === ''
+            ? 'new'
+            : (string) (self::emptySeats(Branch::from($this->placement))->pluck('id')->first() ?? 'new');
+    }
+
+    /**
+     * Seats in a branch that nobody holds right now.
+     *
+     * @return Collection<int, Position>
+     */
+    public static function emptySeats(Branch $branch): Collection
+    {
+        return Position::query()->where('branch', $branch)->whereDoesntHave('assignments', fn ($query) => $query->whereNull('ended_on'))->ordered()->get();
+    }
 
     public function setMember(Member $member): void
     {
@@ -79,6 +109,8 @@ class MemberForm extends Form
             'status_note' => ['nullable', 'string', 'max:500'],
             'joined_on' => ['nullable', 'date', 'before_or_equal:today'],
             'remarks' => ['nullable', 'string', 'max:1000'],
+            'placement' => ['nullable', Rule::enum(Branch::class), $this->onlyActiveCanBePlaced(...)],
+            'seat' => [$this->seatIsEmptyInBranch(...)],
         ];
     }
 
@@ -126,8 +158,29 @@ class MemberForm extends Form
         }
     }
 
+    private function onlyActiveCanBePlaced(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (filled($value) && $this->status !== MemberStatus::Active->value) {
+            $fail('Only active members can be given a seat.');
+        }
+    }
+
+    private function seatIsEmptyInBranch(string $attribute, mixed $value, Closure $fail): void
+    {
+        if ($this->placement === '' || $value === 'new') {
+            return;
+        }
+
+        $branch = Branch::tryFrom($this->placement);
+
+        if ($branch === null || ! self::emptySeats($branch)->contains('id', (int) $value)) {
+            $fail('Choose an empty seat in this branch, or a new seat.');
+        }
+    }
+
     /**
      * Create a new member with their starting status, and note it in "Recent changes".
+     * If a branch was chosen, give them a seat there (an empty one, or a newly added one).
      */
     public function store(): Member
     {
@@ -142,6 +195,16 @@ class MemberForm extends Form
                 'title' => "{$member->full_name} added to members",
                 'kind' => HistoryKind::Members,
             ]);
+
+            if ($this->placement !== '') {
+                $assignments = app(PositionAssignments::class);
+                $on = $member->joined_on ?? CarbonImmutable::today();
+                $position = $this->seat === 'new'
+                    ? $assignments->addSeat(Branch::from($this->placement))
+                    : Position::query()->findOrFail((int) $this->seat);
+
+                $assignments->assign($position, $member, $on, 'Placed when added.', moveFromOtherSeats: false);
+            }
 
             return $member;
         });

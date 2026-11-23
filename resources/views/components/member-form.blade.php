@@ -117,6 +117,39 @@
                 @error('form.status') <p class="text-sm text-absent">{{ $message }}</p> @enderror
             </fieldset>
 
+            @if ($form->member === null && $form->status === App\Enums\MemberStatus::Active->value)
+                @php
+                    $placementBranch = App\Enums\Branch::tryFrom($form->placement);
+                    $emptySeats = $placementBranch ? App\Livewire\Forms\MemberForm::emptySeats($placementBranch) : collect();
+                    $nextSeat = $placementBranch ? app(App\Services\PositionAssignments::class)->nextSeatCode($placementBranch) : null;
+                @endphp
+                <fieldset class="flex flex-col gap-1.5">
+                    <legend class="{{ $label }}">Place in the org structure</legend>
+                    <div class="grid grid-cols-3 gap-1 rounded-xl bg-[#ECEAE0] p-1">
+                        @foreach (['' => ['No position yet', ''], 'TROP' => ['TROP · Main', 'Long-term'], 'TROPS' => ['TROPS · Ext', 'Newer']] as $value => [$title, $hint])
+                            <label class="relative flex min-h-13 cursor-pointer flex-col items-center justify-center rounded-[9px] px-1 text-center text-[13px] leading-tight font-semibold text-ink has-checked:bg-white has-checked:shadow-[0_1px_3px_rgba(22,24,29,0.12)] has-focus-visible:outline-2 has-focus-visible:outline-blue">
+                                <input type="radio" wire:model.live="form.placement" value="{{ $value }}" class="sr-only">
+                                {{ $title }}
+                                @if ($hint)<span class="text-[11px] font-medium text-muted">{{ $hint }} members</span>@endif
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('form.placement') <p class="text-sm text-absent">{{ $message }}</p> @enderror
+
+                    @if ($placementBranch)
+                        <label for="seat" class="mt-1.5 text-[13px] font-semibold">Seat</label>
+                        <select id="seat" wire:model="form.seat" @error('form.seat') aria-invalid="true" @enderror class="{{ $input }}">
+                            @foreach ($emptySeats as $emptySeat)
+                                <option value="{{ $emptySeat->id }}">{{ $emptySeat->code }} (empty)</option>
+                            @endforeach
+                            <option value="new">New seat: {{ $nextSeat }}</option>
+                        </select>
+                        @error('form.seat') <p class="text-sm text-absent">{{ $message }}</p> @enderror
+                        <p class="text-[13px] text-muted">The seat starts on the date joined, or today if that’s empty. You can change it later from Org Structure.</p>
+                    @endif
+                </fieldset>
+            @endif
+
             @if ($statusChanged)
                 <div class="flex flex-col gap-1.5 rounded-[10px] bg-[#FFF6D9] p-3.5">
                     <label for="status_note" class="text-sm font-semibold text-[#5A3A00]">

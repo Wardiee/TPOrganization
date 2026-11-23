@@ -560,7 +560,9 @@ new #[Title('Activities & attendance')] class extends Component
 
     {{-- ───────────── New / edit activity dialog ───────────── --}}
     @if ($formOpen)
+        {{-- wire:ignore.self keeps Livewire from stripping the dialog's "open" state when the form re-renders. --}}
         <dialog
+            wire:ignore.self
             x-data
             x-init="$el.showModal()"
             x-on:close="$wire.closeForm()"

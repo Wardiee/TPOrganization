@@ -19,6 +19,14 @@ class PositionPolicy
     }
 
     /**
+     * Add a new seat to a branch.
+     */
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    /**
      * Assign, reassign or empty a seat.
      */
     public function update(User $user, Position $position): bool

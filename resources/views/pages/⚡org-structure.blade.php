@@ -11,6 +11,7 @@ use App\Models\OrgChartSeat;
 use App\Models\Position;
 use App\Models\PositionAssignment;
 use App\Services\NameMismatches;
+use App\Services\PositionAssignments;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -30,6 +31,24 @@ new #[Title('Org structure')] class extends Component
     public function mount(): void
     {
         $this->authorize('viewAny', Position::class);
+    }
+
+    /**
+     * Add the next numbered seat to a branch, then open the pop-up to fill it.
+     */
+    public function addSeat(string $branch, PositionAssignments $assignments): void
+    {
+        $this->authorize('create', Position::class);
+
+        $position = $assignments->addSeat(Branch::from($branch));
+
+        $this->refreshStructure();
+        $this->dispatch('open-assign-position', positionId: $position->id);
+    }
+
+    public function nextSeatCode(Branch $branch): string
+    {
+        return app(PositionAssignments::class)->nextSeatCode($branch);
     }
 
     #[On('position-assigned')]
@@ -293,6 +312,13 @@ new #[Title('Org structure')] class extends Component
                 </li>
             @endforeach
         </ul>
+        @if ($this->isToday)
+            @can('create', App\Models\Position::class)
+                <button type="button" wire:click="addSeat('{{ $phoneBranch['branch']->value }}')" wire:confirm="Add a new seat, {{ $this->nextSeatCode($phoneBranch['branch']) }}, to {{ $phoneBranch['title'] }}?" class="flex min-h-12 w-full items-center justify-center gap-2 border-t border-line-soft text-sm font-semibold text-blue focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue">
+                    <x-icon name="plus" :size="16" :stroke-width="2.4" />Add a seat ({{ $this->nextSeatCode($phoneBranch['branch']) }})
+                </button>
+            @endcan
+        @endif
     </section>
 
     {{-- ───────────── Desktop chart ───────────── --}}
@@ -359,6 +385,13 @@ new #[Title('Org structure')] class extends Component
                                 </div>
                             @endif
                         @endforeach
+                        @if ($this->isToday)
+                            @can('create', App\Models\Position::class)
+                                <button type="button" wire:click="addSeat('{{ $data['branch']->value }}')" wire:confirm="Add a new seat, {{ $this->nextSeatCode($data['branch']) }}, to {{ $data['title'] }}?" class="flex min-h-[62px] items-center justify-center gap-2 rounded-[10px] border border-dashed border-line-input text-[13px] font-semibold text-blue hover:bg-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+                                    <x-icon name="plus" :size="16" :stroke-width="2.4" />Add a seat ({{ $this->nextSeatCode($data['branch']) }})
+                                </button>
+                            @endcan
+                        @endif
                     </div>
                 </div>
             @endforeach
