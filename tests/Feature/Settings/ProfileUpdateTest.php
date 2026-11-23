@@ -108,3 +108,9 @@ test('correct password must be provided to delete account', function () {
 
     expect($user->fresh())->not->toBeNull();
 });
+
+test('the profile page does not offer to delete the only admin account', function () {
+    $this->actingAs(User::factory()->create());
+
+    $this->get(route('profile.edit'))->assertOk()->assertDontSee('Delete account');
+});

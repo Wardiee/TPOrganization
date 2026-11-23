@@ -74,6 +74,6 @@ new #[Title('Profile settings')] class extends Component {
             </div>
         </form>
 
-            <livewire:pages::settings.delete-user-form />
+        {{-- No "Delete account" here: this is the only admin account, and deleting it locks everyone out. --}}
     </x-pages::settings.layout>
 </section>
