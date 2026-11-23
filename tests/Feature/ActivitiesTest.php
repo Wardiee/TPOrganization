@@ -47,7 +47,7 @@ test('totals count present, excused and absent, and turnout is present over acti
         ->call('setStatus', $second->id, 'present')
         ->call('setStatus', $third->id, 'excused');
 
-    expect($page->instance()->totals)->toBe(['present' => 2, 'excused' => 1, 'absent' => 1, 'turnout' => 50]);
+    expect($page->instance()->totals)->toBe(['present' => 2, 'excused' => 1, 'absent' => 1, 'exempt' => 0, 'expected' => 4, 'turnout' => 50]);
 });
 
 test('an unknown status is rejected', function () {
@@ -103,7 +103,7 @@ test('with the real records, Leiana Outing shows 3 present, 6 excused and the in
 
     $page = Livewire::test('pages::activities')->call('selectActivity', $leiana->id);
 
-    expect($page->instance()->totals)->toBe(['present' => 3, 'excused' => 6, 'absent' => 23, 'turnout' => 10])
+    expect($page->instance()->totals)->toBe(['present' => 3, 'excused' => 6, 'absent' => 23, 'exempt' => 0, 'expected' => 29, 'turnout' => 10])
         ->and($page->instance()->rows)->toHaveCount(32)
         ->and($page->instance()->rows->first()->full_name)->toBe('Andrei Klaus T. Serenio');
 });
@@ -165,4 +165,58 @@ test('an untitled activity can be given a name later', function () {
 
     expect($activity->fresh()->name)->toBe('October Meetup')
         ->and(HistoryEvent::count())->toBe(0);
+});
+
+test('"not required" is saved, counted separately and left out of turnout', function () {
+    $activity = Activity::factory()->create();
+    [$first, $second, $third, $fourth] = Member::factory()->count(4)->create();
+
+    $page = Livewire::test('pages::activities')
+        ->call('setStatus', $first->id, 'present')
+        ->call('setStatus', $second->id, 'exempt')
+        ->call('setStatus', $third->id, 'exempt');
+
+    expect(storedMarks($activity))->toEqualCanonicalizing([$first->id => 'present', $second->id => 'exempt', $third->id => 'exempt'])
+        ->and($page->instance()->totals)->toBe(['present' => 1, 'excused' => 0, 'absent' => 1, 'exempt' => 2, 'expected' => 2, 'turnout' => 50])
+        ->and($activity->expectedCount())->toBe(2);
+});
+
+test('"Mark all present" leaves members marked "not required" as they are', function () {
+    $activity = Activity::factory()->create();
+    [$expected, $notRequired] = Member::factory()->count(2)->create();
+    Attendance::factory()->for($activity)->for($notRequired)->create(['status' => AttendanceStatus::Exempt]);
+
+    Livewire::test('pages::activities')->call('markAllPresent');
+
+    expect(storedMarks($activity))->toEqualCanonicalizing([$expected->id => 'present', $notRequired->id => 'exempt']);
+});
+
+test('deleting an activity hides it, keeps its records and notes it in recent changes', function () {
+    $older = Activity::factory()->create(['name' => 'Wake']);
+    $mistake = Activity::factory()->create(['name' => 'Added by mistake', 'starts_on' => '2026-11-20']);
+    Attendance::factory()->for($mistake)->create();
+
+    $page = Livewire::test('pages::activities')
+        ->assertSee('Added by mistake')
+        ->tap(fn ($page) => expect($page->instance()->deleteConfirmation())->toBe('Delete “Added by mistake” (Nov 20, 2026)? Its 1 attendance mark will be hidden too.'))
+        ->call('deleteActivity');
+
+    expect(Activity::pluck('name')->all())->toBe(['Wake'])
+        ->and(Activity::withTrashed()->find($mistake->id)->trashed())->toBeTrue()
+        ->and(Attendance::count())->toBe(1)
+        ->and($page->instance()->selected->is($older))->toBeTrue()
+        ->and(HistoryEvent::sole())
+        ->title->toBe('Activity removed: Added by mistake')
+        ->kind->toBe(HistoryKind::Activity);
+});
+
+test('attendance at a deleted activity no longer counts on the member profile', function () {
+    $member = Member::factory()->create();
+    $kept = Activity::factory()->create();
+    $deleted = Activity::factory()->create();
+    Attendance::factory()->for($member)->for($kept)->create();
+    Attendance::factory()->for($member)->for($deleted)->create();
+    $deleted->deleteWithHistory();
+
+    expect(Livewire::test('pages::members.show', ['member' => $member])->instance()->attendedCount)->toBe(1);
 });

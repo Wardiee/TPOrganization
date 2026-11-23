@@ -64,7 +64,7 @@ new #[Title('Member profile')] class extends Component
     #[Computed]
     public function attendance(): array
     {
-        return $this->member->attendances()->get()->mapWithKeys(fn (Attendance $attendance) => [$attendance->activity_id => $attendance->status])->all();
+        return $this->member->attendances()->whereHas('activity')->get()->mapWithKeys(fn (Attendance $attendance) => [$attendance->activity_id => $attendance->status])->all();
     }
 
     public function attendanceFor(Activity $activity): AttendanceStatus
@@ -145,7 +145,7 @@ new #[Title('Member profile')] class extends Component
         $member->chapter ? $member->chapter->name.' chapter' : null,
         $member->member_no ? 'Member no. '.$member->member_no : null,
     ])->filter()->implode(' · ');
-    $total = $this->activities->count();
+    $total = $this->activities->count() - collect($this->attendance)->filter(fn ($status) => $status === App\Enums\AttendanceStatus::Exempt)->count();
     $percent = $total > 0 ? round($this->attendedCount / $total * 100) : 0;
 @endphp
 
@@ -330,7 +330,7 @@ new #[Title('Member profile')] class extends Component
                 <span class="hidden h-2 rounded-full bg-inactive-bg lg:block" aria-hidden="true"><span class="block h-2 rounded-full bg-blue" style="width: {{ $percent }}%"></span></span>
                 <div class="grid gap-1.5 lg:hidden" style="grid-template-columns: repeat({{ max($total, 1) }}, minmax(0, 1fr))" aria-hidden="true">
                     @foreach ($this->activities->reverse() as $activity)
-                        <span wire:key="segment-{{ $activity->id }}" @class(['h-2 rounded-full', 'bg-blue' => $this->attendanceFor($activity) === App\Enums\AttendanceStatus::Present, 'bg-[#E2E0D6]' => $this->attendanceFor($activity) !== App\Enums\AttendanceStatus::Present])></span>
+                        <span wire:key="segment-{{ $activity->id }}" @class(['h-2 rounded-full', 'bg-blue' => $this->attendanceFor($activity) === App\Enums\AttendanceStatus::Present, 'bg-[#DDF1F2]' => $this->attendanceFor($activity) === App\Enums\AttendanceStatus::Exempt, 'bg-[#E2E0D6]' => ! in_array($this->attendanceFor($activity), [App\Enums\AttendanceStatus::Present, App\Enums\AttendanceStatus::Exempt], true)])></span>
                     @endforeach
                 </div>
                 <ul>
@@ -346,6 +346,7 @@ new #[Title('Member profile')] class extends Component
                                 'bg-info-bg text-info-fg' => $mark === App\Enums\AttendanceStatus::Present,
                                 'bg-inactive-bg text-inactive-fg' => $mark === App\Enums\AttendanceStatus::Excused,
                                 'bg-[#F3F2EC] text-muted' => $mark === App\Enums\AttendanceStatus::Absent,
+                                'bg-[#DDF1F2] text-[#0A5F63]' => $mark === App\Enums\AttendanceStatus::Exempt,
                             ])>{{ $mark === App\Enums\AttendanceStatus::Present ? 'Attended' : $mark->label() }}</span>
                         </li>
                     @endforeach

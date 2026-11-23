@@ -203,6 +203,8 @@ new #[Title('Dashboard')] class extends Component
 @php
     $counts = $this->memberCounts;
     $last = $this->lastActivity;
+    $lastExpected = $last?->expectedCount() ?? $counts['active'];
+    $lastExpectedLabel = $lastExpected === $counts['active'] ? 'active' : 'expected';
     $soon = $this->birthdaysSoon;
     $next = $soon->first();
     $profiles = $this->profiles;
@@ -252,7 +254,7 @@ new #[Title('Dashboard')] class extends Component
         </a>
         <a href="{{ route('activities') }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[11px] font-bold tracking-[0.06em] text-muted uppercase">Last turnout</span>
-            <span class="font-display text-[32px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-base text-muted"> / {{ $counts['active'] }}</span></span>
+            <span class="font-display text-[32px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-base text-muted"> / {{ $lastExpected }}</span></span>
             <span class="truncate text-xs text-muted">{{ $last?->display_name ?? 'No activities yet' }}</span>
         </a>
         <a href="{{ route('birthdays') }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl bg-navy p-3.5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
@@ -365,7 +367,7 @@ new #[Title('Dashboard')] class extends Component
         </a>
         <a href="{{ route('activities') }}" wire:navigate class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[13px] font-semibold tracking-[0.06em] text-muted uppercase">Last activity turnout</span>
-            <span class="font-display text-[40px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-xl text-muted"> / {{ $counts['active'] }} active</span></span>
+            <span class="font-display text-[40px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-xl text-muted"> / {{ $lastExpected }} {{ $lastExpectedLabel }}</span></span>
             <span class="text-[13px] text-muted">{{ $last ? $last->display_name.' · '.$last->date_label : 'No activities yet' }}</span>
         </a>
         <a href="#upcoming-birthdays" class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl bg-navy p-5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">

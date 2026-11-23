@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\Attendance;
 use App\Models\Member;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Title;
@@ -96,20 +97,26 @@ new #[Title('Activities & attendance')] class extends Component
     }
 
     /**
-     * @return array{present: int, excused: int, absent: int, turnout: int}
+     * Counts for the listed members. Turnout is present over active members expected to attend
+     * (those marked "not required" are left out).
+     *
+     * @return array{present: int, excused: int, absent: int, exempt: int, expected: int, turnout: int}
      */
     #[Computed]
     public function totals(): array
     {
         $statuses = $this->rows->map(fn (Member $member) => $this->markFor($member));
-        $present = $statuses->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Present)->count();
-        $excused = $statuses->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Excused)->count();
+        $count = fn (AttendanceStatus $wanted) => $statuses->filter(fn (AttendanceStatus $status) => $status === $wanted)->count();
+        $present = $count(AttendanceStatus::Present);
+        $expected = $this->selected?->expectedCount() ?? 0;
 
         return [
             'present' => $present,
-            'excused' => $excused,
-            'absent' => $statuses->count() - $present - $excused,
-            'turnout' => $this->activeCount > 0 ? (int) round($present / $this->activeCount * 100) : 0,
+            'excused' => $count(AttendanceStatus::Excused),
+            'absent' => $count(AttendanceStatus::Absent),
+            'exempt' => $count(AttendanceStatus::Exempt),
+            'expected' => $expected,
+            'turnout' => $expected > 0 ? (int) round($present / $expected * 100) : 0,
         ];
     }
 
@@ -137,7 +144,7 @@ new #[Title('Activities & attendance')] class extends Component
     }
 
     /**
-     * Mark every active member present for the selected activity.
+     * Mark every active member present for the selected activity, except those marked "not required".
      */
     public function markAllPresent(): void
     {
@@ -145,9 +152,38 @@ new #[Title('Activities & attendance')] class extends Component
         abort_if($activity === null, 404);
         $this->authorize('update', $activity);
 
-        Member::active()->get()->each(fn (Member $member) => $activity->recordAttendance($member, AttendanceStatus::Present));
+        Member::active()->get()
+            ->reject(fn (Member $member) => $this->markFor($member) === AttendanceStatus::Exempt)
+            ->each(fn (Member $member) => $activity->recordAttendance($member, AttendanceStatus::Present));
 
         unset($this->marks, $this->totals, $this->activities, $this->rows);
+    }
+
+    /**
+     * The question asked before deleting, with how much attendance goes with it.
+     */
+    public function deleteConfirmation(): string
+    {
+        $activity = $this->selected;
+        $marks = $activity?->attendances()->count() ?? 0;
+
+        return "Delete “{$activity?->display_name}” ({$activity?->date_label})?"
+            .($marks > 0 ? " Its {$marks} attendance ".Str::plural('mark', $marks).' will be hidden too.' : '');
+    }
+
+    /**
+     * Delete (soft) the selected activity and select the newest remaining one.
+     */
+    public function deleteActivity(): void
+    {
+        $activity = $this->selected;
+        abort_if($activity === null, 404);
+        $this->authorize('delete', $activity);
+
+        $activity->deleteWithHistory();
+
+        $this->selectedId = null;
+        unset($this->activities, $this->selected, $this->rows, $this->marks, $this->totals);
     }
 
     public function openCreate(): void
@@ -213,7 +249,7 @@ new #[Title('Activities & attendance')] class extends Component
     public function gridMembers(): Collection
     {
         $members = Member::query()
-            ->where(fn ($query) => $query->where('status', MemberStatus::Active)->orWhereHas('attendances'))
+            ->where(fn ($query) => $query->where('status', MemberStatus::Active)->orWhereHas('attendances', fn ($attendance) => $attendance->whereHas('activity')))
             ->with(['currentAssignments.position'])
             ->get();
 
@@ -261,6 +297,7 @@ new #[Title('Activities & attendance')] class extends Component
         ['status' => App\Enums\AttendanceStatus::Present, 'short' => 'P', 'on' => 'bg-blue text-white'],
         ['status' => App\Enums\AttendanceStatus::Excused, 'short' => 'E', 'on' => 'bg-[#6B6A62] text-white'],
         ['status' => App\Enums\AttendanceStatus::Absent, 'short' => 'A', 'on' => 'bg-absent text-white'],
+        ['status' => App\Enums\AttendanceStatus::Exempt, 'short' => 'N/A', 'on' => 'bg-[#0A5F63] text-white'],
     ];
     $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
 @endphp
@@ -328,16 +365,21 @@ new #[Title('Activities & attendance')] class extends Component
             <div class="flex flex-col gap-0.5 rounded-xl border border-line bg-white px-3 py-2.5"><span class="font-display text-2xl leading-tight font-extrabold">{{ $totals['absent'] }}</span><span class="text-xs font-semibold text-muted">Absent</span></div>
         </section>
 
-        <div class="-mb-2 flex items-center justify-between gap-2 lg:hidden">
-            <p class="min-w-0 text-[13px] text-muted">
+        <div class="-mb-2 flex flex-col gap-0.5 lg:hidden">
+            <p class="text-[13px] text-muted">
                 <span class="font-semibold text-ink">{{ $activity->display_name }}</span> · {{ $activity->date_label }}
-                @can('update', $activity)
-                    · <button type="button" wire:click="openEdit" class="font-semibold text-blue underline-offset-2 hover:underline">{{ filled($activity->name) && $activity->starts_on ? 'Edit' : 'Add details' }}</button>
-                @endcan
+                · {{ $totals['turnout'] }}% of {{ $totals['expected'] }} expected
+                @if ($totals['exempt'] > 0) · {{ $totals['exempt'] }} not required @endif
             </p>
-            @can('update', $activity)
-                <button type="button" wire:click="markAllPresent" wire:confirm="Mark all {{ $this->activeCount }} active members present for {{ $activity->display_name }}?" class="min-h-11 shrink-0 px-1 text-[13px] font-semibold text-blue">Mark all present</button>
-            @endcan
+            <div class="-ml-1 flex flex-wrap items-center gap-x-1">
+                @can('update', $activity)
+                    <button type="button" wire:click="openEdit" class="inline-flex min-h-11 items-center px-1 text-[13px] font-semibold text-blue">{{ filled($activity->name) && $activity->starts_on ? 'Edit details' : 'Add details' }}</button>
+                    <button type="button" wire:click="markAllPresent" wire:confirm="Mark all active members present for {{ $activity->display_name }}? Members marked “not required” stay as they are." class="inline-flex min-h-11 items-center px-1 text-[13px] font-semibold text-blue">Mark all present</button>
+                @endcan
+                @can('delete', $activity)
+                    <button type="button" wire:click="deleteActivity" wire:confirm="{{ $this->deleteConfirmation() }}" class="ml-auto inline-flex min-h-11 items-center px-1 text-[13px] font-semibold text-absent">Delete</button>
+                @endcan
+            </div>
         </div>
 
         <ul class="-mx-4 border-t border-line bg-white lg:hidden">
@@ -409,7 +451,10 @@ new #[Title('Activities & attendance')] class extends Component
                             @can('update', $activity)
                                 <div class="flex gap-2">
                                     <button type="button" wire:click="openEdit" class="min-h-11 rounded-[10px] border border-line-input bg-white px-3.5 text-[13px] font-semibold text-ink hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">Edit details</button>
-                                    <button type="button" wire:click="markAllPresent" wire:confirm="Mark all {{ $this->activeCount }} active members present for {{ $activity->display_name }}?" class="min-h-11 rounded-[10px] border border-line-input bg-white px-3.5 text-[13px] font-semibold text-ink hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">Mark all present</button>
+                                    @can('delete', $activity)
+                                        <button type="button" wire:click="deleteActivity" wire:confirm="{{ $this->deleteConfirmation() }}" class="min-h-11 rounded-[10px] border border-line-input bg-white px-3.5 text-[13px] font-semibold text-absent hover:bg-[#FFF4EC] focus-visible:outline-2 focus-visible:outline-blue">Delete</button>
+                                    @endcan
+                                    <button type="button" wire:click="markAllPresent" wire:confirm="Mark all active members present for {{ $activity->display_name }}? Members marked “not required” stay as they are." class="min-h-11 rounded-[10px] border border-line-input bg-white px-3.5 text-[13px] font-semibold text-ink hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">Mark all present</button>
                                 </div>
                             @endcan
                         </div>
@@ -417,7 +462,8 @@ new #[Title('Activities & attendance')] class extends Component
                             <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-info-bg px-3.5 py-3"><span class="text-xs font-semibold text-info-fg">Present</span><span class="font-display text-2xl font-extrabold">{{ $totals['present'] }}</span></span>
                             <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-[#F0EFE8] px-3.5 py-3"><span class="text-xs font-semibold text-inactive-fg">Excused</span><span class="font-display text-2xl font-extrabold">{{ $totals['excused'] }}</span></span>
                             <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-[#FFF4EC] px-3.5 py-3"><span class="text-xs font-semibold text-alert-fg">Absent</span><span class="font-display text-2xl font-extrabold">{{ $totals['absent'] }}</span></span>
-                            <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-navy px-3.5 py-3 text-white"><span class="text-xs font-semibold text-yellow">Turnout</span><span class="font-display text-2xl font-extrabold">{{ $totals['turnout'] }}%</span></span>
+                            <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-[#DDF1F2] px-3.5 py-3"><span class="text-xs font-semibold text-[#0A5F63]">Not required</span><span class="font-display text-2xl font-extrabold">{{ $totals['exempt'] }}</span></span>
+                            <span class="flex flex-[1_1_120px] flex-col gap-0.5 rounded-xl bg-navy px-3.5 py-3 text-white"><span class="text-xs font-semibold text-yellow">Turnout</span><span class="font-display text-2xl font-extrabold">{{ $totals['turnout'] }}%</span><span class="text-[11px] text-navy-text">of {{ $totals['expected'] }} expected</span></span>
                         </div>
                     </div>
                     <ul>
@@ -472,26 +518,31 @@ new #[Title('Activities & attendance')] class extends Component
                                     @endif
                                 </span>
                                 @php($attended = 0)
+                                @php($exemptCount = 0)
                                 @foreach ($this->gridActivities as $item)
                                     @php($cell = $this->gridMarks[$member->id][$item->id] ?? App\Enums\AttendanceStatus::Absent)
                                     @php($attended += $cell === App\Enums\AttendanceStatus::Present ? 1 : 0)
+                                    @php($exemptCount += $cell === App\Enums\AttendanceStatus::Exempt ? 1 : 0)
                                     <span role="cell" class="flex justify-center">
                                         <span title="{{ $item->display_name }}: {{ Str::lower($cell->label()) }}" @class([
                                             'flex size-7 items-center justify-center rounded-lg text-[13px] font-bold',
                                             'bg-blue text-white' => $cell === App\Enums\AttendanceStatus::Present,
                                             'bg-[#E2E0D6] text-inactive-fg' => $cell === App\Enums\AttendanceStatus::Excused,
                                             'border border-[#E2E0D6]' => $cell === App\Enums\AttendanceStatus::Absent,
+                                            'bg-[#DDF1F2] text-[#0A5F63]' => $cell === App\Enums\AttendanceStatus::Exempt,
                                         ])>
                                             @if ($cell === App\Enums\AttendanceStatus::Present)
                                                 <x-icon name="check" :size="14" :stroke-width="3" />
                                             @elseif ($cell === App\Enums\AttendanceStatus::Excused)
                                                 <span aria-hidden="true">E</span>
+                                            @elseif ($cell === App\Enums\AttendanceStatus::Exempt)
+                                                <span aria-hidden="true">–</span>
                                             @endif
                                             <span class="sr-only">{{ $cell->label() }}</span>
                                         </span>
                                     </span>
                                 @endforeach
-                                <span role="cell" class="text-center text-sm font-bold">{{ $attended }}/{{ $this->gridActivities->count() }}</span>
+                                <span role="cell" class="text-center text-sm font-bold">{{ $attended }}/{{ $this->gridActivities->count() - $exemptCount }}</span>
                             </div>
                         @endforeach
                         <div role="row" class="grid items-center gap-2 bg-navy px-5 py-3 text-white" style="{{ $columns }}">

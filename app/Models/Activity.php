@@ -3,15 +3,22 @@
 namespace App\Models;
 
 use App\Enums\AttendanceStatus;
+use App\Enums\DatePrecision;
+use App\Enums\HistoryKind;
+use App\Enums\MemberStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 /**
  * An activity or event. Real records may have no name and/or no date.
+ *
+ * Deleting is a soft delete: the activity and its attendance are hidden but kept.
  *
  * @property int $id
  * @property string|null $name
@@ -26,7 +33,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Activity extends Model
 {
     /** @use HasFactory<ActivityFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * @return array<string, string>
@@ -40,7 +47,7 @@ class Activity extends Model
     }
 
     /**
-     * Rows exist only for present and excused members; no row means absent.
+     * Rows exist for present, excused and not-required members; no row means absent.
      *
      * @return HasMany<Attendance, $this>
      */
@@ -69,6 +76,38 @@ class Activity extends Model
         }
 
         $this->attendances()->updateOrCreate(['member_id' => $member->id], ['status' => $status]);
+    }
+
+    /**
+     * Active members expected at this activity: all active members except those marked "not required".
+     * Turnout is present divided by this.
+     */
+    public function expectedCount(): int
+    {
+        $exempt = $this->attendances()
+            ->where('status', AttendanceStatus::Exempt)
+            ->whereRelation('member', 'status', MemberStatus::Active)
+            ->count();
+
+        return Member::active()->count() - $exempt;
+    }
+
+    /**
+     * Delete (soft) the activity and note it in "Recent changes".
+     */
+    public function deleteWithHistory(): void
+    {
+        DB::transaction(function (): void {
+            HistoryEvent::create([
+                'happened_on' => today(),
+                'date_precision' => DatePrecision::Day,
+                'title' => "Activity removed: {$this->display_name}",
+                'detail' => $this->date_label,
+                'kind' => HistoryKind::Activity,
+            ]);
+
+            $this->delete();
+        });
     }
 
     /**

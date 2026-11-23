@@ -30,4 +30,12 @@ class ActivityPolicy
     {
         return true;
     }
+
+    /**
+     * Delete (soft) an activity, e.g. one added by mistake.
+     */
+    public function delete(User $user, Activity $activity): bool
+    {
+        return true;
+    }
 }

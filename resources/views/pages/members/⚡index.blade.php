@@ -194,6 +194,16 @@ new #[Title('Members')] class extends Component
         return $this->attendance[$member->id][$activity->id] ?? AttendanceStatus::Absent;
     }
 
+    /**
+     * Recent activities the member was expected at (not marked "not required").
+     */
+    public function expectedCount(Member $member): int
+    {
+        $exempt = collect($this->attendance[$member->id] ?? [])->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Exempt)->count();
+
+        return $this->recentActivities->count() - $exempt;
+    }
+
     public function attendedCount(Member $member): int
     {
         return collect($this->attendance[$member->id] ?? [])->filter(fn (AttendanceStatus $status) => $status === AttendanceStatus::Present)->count();
@@ -379,9 +389,10 @@ new #[Title('Members')] class extends Component
                                         'size-2.5 bg-blue' => $mark === App\Enums\AttendanceStatus::Present,
                                         'size-2.5 bg-[#B9B6A8]' => $mark === App\Enums\AttendanceStatus::Excused,
                                         'size-2 border border-[#A8A598]' => $mark === App\Enums\AttendanceStatus::Absent,
+                                        'h-0.5 w-2.5 rounded-none bg-[#0A5F63]' => $mark === App\Enums\AttendanceStatus::Exempt,
                                     ])></span>
                                 @endforeach
-                                <span class="ml-1.5 text-xs text-muted">{{ $this->attendedCount($member) }}/{{ $this->recentActivities->count() }}</span>
+                                <span class="ml-1.5 text-xs text-muted">{{ $this->attendedCount($member) }}/{{ $this->expectedCount($member) }}</span>
                             </span>
                             <span><x-status-pill :status="$member->status" /></span>
                         </button>
@@ -400,6 +411,7 @@ new #[Title('Members')] class extends Component
                     <span class="inline-flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-blue"></span>Attended</span>
                     <span class="inline-flex items-center gap-1.5"><span class="size-2.5 rounded-full bg-[#B9B6A8]"></span>Excused</span>
                     <span class="inline-flex items-center gap-1.5"><span class="size-2 rounded-full border border-[#A8A598]"></span>Absent</span>
+                    <span class="inline-flex items-center gap-1.5"><span class="h-0.5 w-2.5 bg-[#0A5F63]"></span>Not required</span>
                 </span>
             </div>
         </section>
@@ -451,7 +463,7 @@ new #[Title('Members')] class extends Component
                     @endif
 
                     <div class="flex flex-col gap-2">
-                        <h2 class="text-[13px] font-bold">Attendance <span class="font-medium text-muted">· {{ $this->attendedCount($member) }}/{{ $this->recentActivities->count() }} activities</span></h2>
+                        <h2 class="text-[13px] font-bold">Attendance <span class="font-medium text-muted">· {{ $this->attendedCount($member) }}/{{ $this->expectedCount($member) }} activities</span></h2>
                         <ul>
                             @foreach ($this->recentActivities as $activity)
                                 @php($mark = $this->attendanceStatus($member, $activity))
