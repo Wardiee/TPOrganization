@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,5 +26,8 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             TaskSeeder::class,
         ]);
+
+        // Automatic tasks from the seeded records, as the daily schedule would create them.
+        Artisan::call('tasks:sync');
     }
 }

@@ -121,7 +121,7 @@ test('history lists the newest change first', function () {
 });
 
 test('the founder\'s own tasks are seeded, one open and one completed', function () {
-    $tasks = Task::orderBy('id')->get();
+    $tasks = Task::where('is_auto', false)->orderBy('id')->get();
 
     expect($tasks)->toHaveCount(2)
         ->and($tasks->every(fn (Task $task) => ! $task->is_auto))->toBeTrue()

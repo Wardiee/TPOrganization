@@ -5,6 +5,9 @@ use App\Models\Member;
 use App\Models\Position;
 use App\Models\PositionAssignment;
 use App\Models\User;
+use App\Services\NameMismatches;
+use App\Services\PositionAssignments;
+use Carbon\CarbonImmutable;
 use Database\Seeders\DatabaseSeeder;
 use Livewire\Livewire;
 
@@ -100,4 +103,15 @@ test('selecting a row shows that member in the side panel', function () {
         ->assertSet('selectedId', $bea->id)
         ->assertSee('Founder’s remark')
         ->assertSee('Needs more participation');
+});
+
+test('a seat reassigned since the chart was published is not a name mismatch', function () {
+    config(['admin.email' => 'chairman@example.com', 'admin.password' => 'a-strong-password']);
+    $this->seed(DatabaseSeeder::class);
+    $trop8 = Position::where('code', 'TROP-8')->sole();
+    $bjay = Member::where('full_name', 'Bjay Cuizon')->sole();
+
+    app(PositionAssignments::class)->assign($trop8, $bjay, CarbonImmutable::today());
+
+    expect(collect(app(NameMismatches::class)->find())->pluck('position_code')->all())->toBe(['TROP-3']);
 });

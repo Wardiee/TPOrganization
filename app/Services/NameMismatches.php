@@ -8,9 +8,11 @@ use App\Models\PositionAssignment;
 use App\Support\PersonName;
 
 /**
- * Seats where the member's name differs from the name printed on the latest published org chart.
+ * Members whose name differs from how the latest published org chart prints it for their seat.
  *
- * Only a different last name counts (see PersonName), so "Axel N. Bartolome" is not flagged.
+ * Only compared when the seat is still held by the same person the chart lists. A seat reassigned since
+ * the chart was published is a change, not a name conflict. Only a different last name counts (see
+ * PersonName), so "Axel N. Bartolome" is not flagged.
  */
 class NameMismatches
 {
@@ -27,23 +29,23 @@ class NameMismatches
             return [];
         }
 
-        $listedNames = $chart->seats()->get()->mapWithKeys(
-            fn (OrgChartSeat $seat): array => [$seat->position_id => $seat->name_as_listed],
-        );
+        $seats = $chart->seats()->whereNotNull('member_id')->get()->keyBy('position_id');
 
         $mismatches = [];
 
         PositionAssignment::current()
             ->whereNotNull('member_id')
-            ->whereIn('position_id', $listedNames->keys())
+            ->whereIn('position_id', $seats->keys())
             ->with(['member', 'position'])
             ->orderBy('id')
             ->get()
-            ->each(function (PositionAssignment $assignment) use ($listedNames, &$mismatches): void {
+            ->each(function (PositionAssignment $assignment) use ($seats, &$mismatches): void {
                 $member = $assignment->member;
-                $listed = $listedNames->get($assignment->position_id);
+                /** @var OrgChartSeat $seat */
+                $seat = $seats->get($assignment->position_id);
+                $listed = $seat->name_as_listed;
 
-                if ($member === null || PersonName::sameLastName($member->full_name, $listed)) {
+                if ($member === null || $seat->member_id !== $member->id || PersonName::sameLastName($member->full_name, $listed)) {
                     return;
                 }
 
