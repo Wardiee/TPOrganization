@@ -59,6 +59,22 @@ class Position extends Model
     }
 
     /**
+     * Short label for pills: "TROP-9 · Main", "TROPS-2 · Ext", or the title for "Co-Founder".
+     */
+    public function shortLabel(): string
+    {
+        return $this->branch === null ? $this->title : "{$this->code} · {$this->branch->label()}";
+    }
+
+    /**
+     * Long label for details: "TROP-9 (Main branch)", or the title for "Co-Founder".
+     */
+    public function longLabel(): string
+    {
+        return $this->branch === null ? $this->title : "{$this->code} ({$this->branch->label()} branch)";
+    }
+
+    /**
      * @param  Builder<Position>  $query
      */
     #[Scope]

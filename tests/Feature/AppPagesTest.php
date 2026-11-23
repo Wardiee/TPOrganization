@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Member;
 use App\Models\User;
 use Database\Seeders\AdminUserSeeder;
 
@@ -7,8 +8,8 @@ dataset('app pages', [
     'dashboard' => ['dashboard'],
     'members' => ['members.index'],
     'add member' => ['members.create'],
-    'member profile' => ['members.show', ['member' => 1]],
-    'edit member' => ['members.edit', ['member' => 1]],
+    'member profile' => ['members.show', fn () => ['member' => Member::factory()->create()->id]],
+    'edit member' => ['members.edit', fn () => ['member' => Member::factory()->create()->id]],
     'org structure' => ['org-structure'],
     'activities' => ['activities'],
     'birthdays' => ['birthdays'],

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\DatePrecision;
+use App\Enums\HistoryKind;
 use App\Enums\MemberStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\MemberFactory;
@@ -14,6 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -141,6 +145,76 @@ class Member extends Model
     public function hasBirthday(): bool
     {
         return $this->birth_month !== null && $this->birth_day !== null;
+    }
+
+    /**
+     * "Oct 19, 2006", "Apr 22" without a year, or null when there is no birthday.
+     */
+    public function shortBirthdayLabel(): ?string
+    {
+        if (! $this->hasBirthday()) {
+            return null;
+        }
+
+        $label = CarbonImmutable::create(2000, $this->birth_month, $this->birth_day)->format('M j');
+
+        return $this->birth_year === null ? $label : "{$label}, {$this->birth_year}";
+    }
+
+    /**
+     * Positions held now, in org chart order. Needs currentAssignments.position loaded.
+     *
+     * @return Collection<int, Position>
+     */
+    public function currentPositions(): Collection
+    {
+        return $this->currentAssignments
+            ->map(fn (PositionAssignment $assignment): Position => $assignment->position)
+            ->sortBy('sort')
+            ->values();
+    }
+
+    /**
+     * The seat to show when there is room for one: a TROP/TROPS seat before Founder/Co-Founder.
+     */
+    public function primaryPosition(): ?Position
+    {
+        $positions = $this->currentPositions();
+
+        return $positions->first(fn (Position $position): bool => $position->branch !== null) ?? $positions->first();
+    }
+
+    /**
+     * Change the member's status and keep the history: a status change row plus a "Recent changes" entry.
+     */
+    public function changeStatus(MemberStatus $to, ?string $note = null, ?CarbonImmutable $on = null): void
+    {
+        $from = $this->status;
+
+        if ($from === $to) {
+            return;
+        }
+
+        $on ??= CarbonImmutable::today();
+
+        DB::transaction(function () use ($from, $to, $note, $on): void {
+            $this->forceFill(['status' => $to, 'status_changed_on' => $on])->save();
+
+            $this->statusChanges()->create([
+                'from_status' => $from,
+                'to_status' => $to,
+                'changed_on' => $on,
+                'note' => $note,
+            ]);
+
+            HistoryEvent::create([
+                'happened_on' => $on,
+                'date_precision' => DatePrecision::Day,
+                'title' => "{$this->full_name} moved to {$to->label()}",
+                'detail' => $note,
+                'kind' => HistoryKind::Members,
+            ]);
+        });
     }
 
     /**
