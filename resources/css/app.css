@@ -9,8 +9,40 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    /* Fonts: --font-inter and --font-archivo come from the Vite font plugin (@fonts). */
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
+    /* Brand */
+    --color-navy: #1C2566;
+    --color-navy-2: #27317A;
+    --color-navy-text: #DCE0F5;
+    --color-navy-muted: #B9C0E6;
+    --color-yellow: #F5D547;
+    --color-blue: #3446B0;
+
+    /* Surfaces, lines, text */
+    --color-bg: #F6F5EF;
+    --color-line: #E4E2D8;
+    --color-line-soft: #F0EEE6;
+    --color-line-input: #D6D3C6;
+    --color-ink: #16181D;
+    --color-muted: #5C6070;
+
+    /* Status pills and tags */
+    --color-active-bg: #DFF3E6;
+    --color-active-fg: #17603A;
+    --color-floating-bg: #FFF0CC;
+    --color-floating-fg: #7A4A00;
+    --color-inactive-bg: #ECEBE6;
+    --color-inactive-fg: #4A4A4A;
+    --color-alert-bg: #FDE3D3;
+    --color-alert-fg: #8A3B12;
+    --color-info-bg: #E3E7FA;
+    --color-info-fg: #27317A;
+    --color-absent: #B5471B;
+
+    /* Flux neutrals */
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
     --color-zinc-200: #e5e5e5;
@@ -23,27 +55,19 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
-}
-
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
+    /* Flux accent = brand blue, so Flux buttons, links and checkboxes match the design. */
+    --color-accent: #3446B0;
+    --color-accent-content: #3446B0;
+    --color-accent-foreground: #FFFFFF;
 }
 
 @layer base {
-
     *,
     ::after,
     ::before,
     ::backdrop,
     ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
+        border-color: var(--color-line, currentColor);
     }
 }
 
@@ -52,15 +76,25 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
+}
+
+/* Restyle Flux form controls to the design tokens (unlayered, so it wins over Flux utilities). */
+input[data-flux-control],
+select[data-flux-control],
+textarea[data-flux-control] {
+    border-color: var(--color-line-input);
+    border-radius: 10px;
+    color: var(--color-ink);
+}
+
+input[data-flux-control],
+select[data-flux-control] {
+    min-height: 44px;
 }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    @apply outline-hidden ring-2 ring-blue ring-offset-1;
 }
-
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */

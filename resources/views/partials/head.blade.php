@@ -1,8 +1,9 @@
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#1C2566" />
 
 <title>
-    {{ filled($title ?? null) ? $title.' - '.config('app.name', 'Laravel') : config('app.name', 'Laravel') }}
+    {{ filled($title ?? null) ? $title.' - '.config('app.name') : config('app.name') }}
 </title>
 
 <link rel="icon" href="/favicon.ico" sizes="any">
@@ -12,4 +13,3 @@
 @fonts
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
-@fluxAppearance

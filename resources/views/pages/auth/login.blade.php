@@ -1,15 +1,13 @@
-<x-layouts::auth :title="__('Log in')">
+<x-layouts::auth :title="__('Sign in')">
     <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
+        <x-auth-header :title="__('Sign in')" :description="__('For the Founder / Chairman only.')" />
 
         <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <x-auth-session-status :status="session('status')" />
 
-
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 
-            <!-- Email Address -->
             <flux:input
                 name="email"
                 :label="__('Email address')"
@@ -18,37 +16,30 @@
                 required
                 autofocus
                 autocomplete="email"
-                placeholder="email@example.com"
             />
 
-            <!-- Password -->
-            <div class="relative">
+            <div class="flex flex-col gap-2">
                 <flux:input
                     name="password"
                     :label="__('Password')"
                     type="password"
                     required
                     autocomplete="current-password"
-                    :placeholder="__('Password')"
                     viewable
                 />
 
                 @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
+                    <a href="{{ route('password.request') }}" wire:navigate class="inline-flex min-h-11 items-center self-start text-sm font-semibold text-blue hover:text-navy focus-visible:outline-2 focus-visible:outline-blue">
                         {{ __('Forgot your password?') }}
-                    </flux:link>
+                    </a>
                 @endif
             </div>
 
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
+            <flux:checkbox name="remember" :label="__('Keep me signed in on this device')" :checked="old('remember')" />
 
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
+            <button type="submit" class="min-h-12 w-full rounded-[10px] bg-blue px-4 text-[15px] font-semibold text-white hover:bg-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue" data-test="login-button">
+                {{ __('Sign in') }}
+            </button>
         </form>
-
     </div>
 </x-layouts::auth>

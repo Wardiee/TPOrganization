@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import laravel from 'laravel-vite-plugin';
-import { bunny } from 'laravel-vite-plugin/fonts';
+import { google } from 'laravel-vite-plugin/fonts';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
 export default defineConfig({
@@ -12,8 +12,14 @@ export default defineConfig({
             ],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
+                // Downloaded at build time and served from the app (no runtime call to Google).
+                google('Inter', {
+                    weights: [400, 500, 600, 700],
+                    optimizedFallbacks: false,
+                }),
+                google('Archivo', {
+                    weights: [700, 800],
+                    optimizedFallbacks: false,
                 }),
             ],
         }),
