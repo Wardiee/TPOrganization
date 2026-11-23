@@ -1,0 +1,17 @@
+{
+    "name": "Tropang Potchi",
+    "short_name": "TP Admin",
+    "description": "Members, org structure, attendance, birthdays, tasks and files for the Tropang Potchi Brotherhood.",
+    "id": "/",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#1C2566",
+    "background_color": "#F6F5EF",
+    "icons": [
+        { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+        { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+        { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    ]
+}
