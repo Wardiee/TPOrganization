@@ -1,16 +1,18 @@
 <?php
 
 use App\Enums\MemberStatus;
+use App\Models\Document;
+use App\Models\Folder;
 use App\Models\Position;
 use App\Models\Task;
+use Illuminate\Support\Str;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 new #[Title('More')] class extends Component
 {
     /**
-     * Links under "Organization", with live badges: seats needing someone, and open tasks.
-     * (The file count joins when Documents is built in Phase 9.)
+     * Links under "Organization", with live badges and counts: seats needing someone, open tasks, files.
      *
      * @return list<array{label: string, detail: string, route: string, icon: string, tile: string, badge: string|null, badgeTone: string}>
      */
@@ -18,11 +20,13 @@ new #[Title('More')] class extends Component
     {
         $vacant = $this->vacantSeats();
         $openTasks = Task::query()->whereNull('completed_at')->count();
+        $files = Document::query()->count();
+        $folders = Folder::query()->count();
 
         return [
             ['label' => 'Org structure', 'detail' => 'TROP · TROPS positions and history', 'route' => 'org-structure', 'icon' => 'org', 'tile' => 'bg-[#DDF1F2] text-[#0A5F63]', 'badge' => $vacant > 0 ? "{$vacant} vacant" : null, 'badgeTone' => 'bg-alert-bg text-alert-fg'],
             ['label' => 'Tasks', 'detail' => 'Reminders and follow-ups', 'route' => 'tasks', 'icon' => 'tasks', 'tile' => 'bg-info-bg text-info-fg', 'badge' => $openTasks > 0 ? "{$openTasks} open" : null, 'badgeTone' => 'bg-navy text-white'],
-            ['label' => 'Documents & photos', 'detail' => 'Files and photos in folders', 'route' => 'documents', 'icon' => 'documents', 'tile' => 'bg-[#FFF1B8] text-[#4A3600]', 'badge' => null, 'badgeTone' => ''],
+            ['label' => 'Documents & photos', 'detail' => $files.' '.Str::plural('file', $files).' in '.$folders.' '.Str::plural('folder', $folders), 'route' => 'documents', 'icon' => 'documents', 'tile' => 'bg-[#FFF1B8] text-[#4A3600]', 'badge' => null, 'badgeTone' => ''],
         ];
     }
 

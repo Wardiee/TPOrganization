@@ -3,6 +3,7 @@
 use App\Enums\AttendanceStatus;
 use App\Models\Activity;
 use App\Models\Attendance;
+use App\Models\Document;
 use App\Models\Member;
 use App\Models\MemberStatusChange;
 use App\Models\PositionAssignment;
@@ -35,6 +36,23 @@ new #[Title('Member profile')] class extends Component
     /**
      * Reload positions and history after the "Change position" pop-up saves.
      */
+    /**
+     * Files linked to this member, newest first.
+     *
+     * @return Collection<int, Document>
+     */
+    #[Computed]
+    public function documents(): Collection
+    {
+        return $this->member->documents()->with('folder')->latest('id')->get();
+    }
+
+    #[On('documents-uploaded')]
+    public function refreshDocuments(): void
+    {
+        unset($this->documents);
+    }
+
     #[On('position-assigned')]
     public function refreshPositions(): void
     {
@@ -223,10 +241,10 @@ new #[Title('Member profile')] class extends Component
                 <x-icon name="org" :size="20" />
                 Position
             </button>
-            <a href="{{ route('documents') }}" wire:navigate class="flex min-h-16 flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
+            <label for="document-file" role="button" tabindex="0" x-on:keydown.enter.prevent="$el.click()" x-on:keydown.space.prevent="$el.click()" class="flex min-h-16 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl bg-navy-2 text-xs font-semibold text-white focus-visible:outline-2 focus-visible:outline-yellow">
                 <x-icon name="upload" :size="20" />
                 Upload
-            </a>
+            </label>
         </div>
     </section>
 
@@ -395,17 +413,38 @@ new #[Title('Member profile')] class extends Component
                 </ol>
             </x-card>
 
-            {{-- Documents & photos (desktop; uploads arrive in Phase 9) --}}
-            <x-card class="hidden flex-col gap-3.5 p-6 lg:flex">
-                <h2 class="text-lg font-bold">Documents &amp; photos</h2>
-                <div class="flex flex-col items-center gap-2 rounded-xl border-2 border-dashed border-[#CFCCC0] bg-[#FAF9F4] px-4 py-7 text-center">
-                    <x-icon name="upload" :size="24" class="text-muted" />
-                    <p class="text-sm font-semibold">Uploads for {{ Str::before($member->full_name, ' ') }} are coming in Phase 9</p>
-                    <p class="text-[13px] text-muted">Photos, forms and certificates will be stored privately.</p>
-                </div>
+            {{-- Documents & photos --}}
+            <x-card class="order-5 flex flex-col gap-3.5 p-4 lg:order-none lg:p-6">
+                <h2 class="text-base font-bold lg:text-lg">Documents &amp; photos</h2>
+                @if ($this->documents->isNotEmpty())
+                    <ul class="flex flex-col">
+                        @foreach ($this->documents as $document)
+                            <li wire:key="document-{{ $document->id }}" class="flex items-center gap-3 border-t border-line-soft py-2.5 first:border-t-0">
+                                @if ($document->isPreviewableImage())
+                                    <img src="{{ route('documents.preview', $document) }}" alt="" loading="lazy" class="size-11 shrink-0 rounded-lg bg-[#F0EFE8] object-cover">
+                                @else
+                                    <span class="flex size-11 shrink-0 items-center justify-center rounded-lg bg-info-bg text-[11px] font-extrabold tracking-[0.04em] text-info-fg">{{ $document->extension() }}</span>
+                                @endif
+                                <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+                                    <span class="truncate text-sm font-semibold">{{ $document->original_name }}</span>
+                                    <span class="truncate text-xs text-muted">{{ $document->folder->name }} · {{ $document->sizeLabel() }} · {{ $document->created_at->format('M j, Y') }}</span>
+                                </span>
+                                <a href="{{ route('documents.download', $document) }}" class="inline-flex min-h-11 shrink-0 items-center px-2 text-[13px] font-semibold text-blue hover:text-navy">Download<span class="sr-only"> {{ $document->original_name }}</span></a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+                @can('create', App\Models\Document::class)
+                    <label for="document-file" role="button" tabindex="0" x-on:keydown.enter.prevent="$el.click()" x-on:keydown.space.prevent="$el.click()" class="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-[#CFCCC0] bg-[#FAF9F4] px-4 py-6 text-center hover:border-blue focus-visible:outline-2 focus-visible:outline-blue lg:py-7">
+                        <x-icon name="upload" :size="24" class="text-muted" />
+                        <span class="text-sm font-semibold">Upload files for {{ Str::before($member->full_name, ' ') }}</span>
+                        <span class="text-[13px] text-muted">Photos, forms, certificates · stored privately</span>
+                    </label>
+                @endcan
             </x-card>
         </div>
     </div>
 
     <livewire:assign-position />
+    <livewire:document-upload :default-member-id="$member->id" />
 </div>

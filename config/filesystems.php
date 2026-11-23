@@ -33,7 +33,8 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'serve' => true,
+            // Member files are only served through the app's authorized download route.
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],
