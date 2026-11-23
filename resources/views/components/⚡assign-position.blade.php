@@ -176,7 +176,7 @@ new class extends Component
 ?>
 
 @php
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
     $holderLabel = function (App\Models\Position $position): string {
         $assignment = $position->currentAssignment;
         $name = $assignment?->member?->full_name ?? $assignment?->name_as_listed;
@@ -275,7 +275,7 @@ new class extends Component
 
                 @if ($this->otherSeats->isNotEmpty())
                     <label class="flex cursor-pointer items-start gap-3 rounded-[10px] border border-line px-3.5 py-3">
-                        <input type="checkbox" wire:model="moveFromOtherSeats" class="mt-0.5 size-5 accent-blue">
+                        <input type="checkbox" wire:model="moveFromOtherSeats" class="mt-0.5 size-5 accent-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
                         <span class="flex flex-col gap-0.5">
                             <span class="text-sm font-semibold">Move from {{ $this->otherSeats->pluck('code')->implode(', ') }}</span>
                             <span class="text-[13px] text-muted">That seat is ended on the same date. Leave unticked to hold both.</span>

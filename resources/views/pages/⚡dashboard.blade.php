@@ -272,7 +272,7 @@ new #[Title('Dashboard')] class extends Component
     <x-card class="flex flex-col gap-1 p-4 lg:hidden">
         <div class="flex items-baseline justify-between gap-2">
             <h2 class="text-base font-bold">Needs your attention</h2>
-            <a href="{{ route('tasks') }}" wire:navigate class="text-[13px] font-semibold text-blue hover:text-navy">All tasks</a>
+            <a href="{{ route('tasks') }}" wire:navigate class="inline-flex min-h-11 items-center text-[13px] font-semibold text-blue hover:text-navy">All tasks</a>
         </div>
         @if ($this->issues === [])
             <p class="py-3 text-sm text-muted">Nothing needs attention right now.</p>
@@ -298,9 +298,9 @@ new #[Title('Dashboard')] class extends Component
     <section aria-labelledby="phone-birthdays-heading" class="flex flex-col gap-2.5 lg:hidden">
         <div class="flex items-baseline justify-between gap-2">
             <h2 id="phone-birthdays-heading" class="text-base font-bold">Upcoming birthdays</h2>
-            <a href="{{ route('birthdays') }}" wire:navigate class="text-[13px] font-semibold text-blue hover:text-navy">Calendar</a>
+            <a href="{{ route('birthdays') }}" wire:navigate class="inline-flex min-h-11 items-center text-[13px] font-semibold text-blue hover:text-navy">Calendar</a>
         </div>
-        <div class="-mx-4 flex gap-2.5 overflow-x-auto px-4 pb-1">
+        <div class="-mx-4 flex gap-2.5 relative overflow-x-auto px-4 pb-1">
             @forelse ($this->nextBirthdays as $birthday)
                 <a href="{{ route('members.show', $birthday['member']) }}" wire:navigate wire:key="phone-birthday-{{ $birthday['member']->id }}" class="flex w-[150px] shrink-0 flex-col gap-2 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
                     <span class="flex items-center justify-between">
@@ -319,7 +319,7 @@ new #[Title('Dashboard')] class extends Component
     <x-card class="flex flex-col gap-3.5 p-4 lg:hidden">
         <div class="flex items-baseline justify-between gap-2">
             <h2 class="text-base font-bold">Attendance per activity</h2>
-            <a href="{{ route('activities') }}" wire:navigate class="text-[13px] font-semibold text-blue hover:text-navy">View all</a>
+            <a href="{{ route('activities') }}" wire:navigate class="inline-flex min-h-11 items-center text-[13px] font-semibold text-blue hover:text-navy">View all</a>
         </div>
         <div class="flex h-35 items-end gap-2.5 border-b border-line" role="img" aria-label="Members present per activity: {{ $this->chartActivities->map(fn ($activity) => $activity->display_name.' '.$activity->date_label.', '.$activity->present_count)->implode('; ') }}">
             @foreach ($this->chartActivities as $activity)
@@ -387,9 +387,9 @@ new #[Title('Dashboard')] class extends Component
         <x-card class="flex min-w-0 flex-[2_1_520px] flex-col gap-5 p-6">
             <div class="flex flex-wrap items-baseline justify-between gap-3">
                 <h2 class="text-lg font-bold">Attendance per activity</h2>
-                <a href="{{ route('activities') }}" wire:navigate class="text-sm font-semibold text-blue hover:text-navy">View all activities</a>
+                <a href="{{ route('activities') }}" wire:navigate class="inline-flex min-h-11 items-center text-sm font-semibold text-blue hover:text-navy">View all activities</a>
             </div>
-            <div class="overflow-x-auto">
+            <div class="relative overflow-x-auto">
                 <div class="flex h-60 min-w-[520px] items-end gap-4 border-b border-line px-1" role="img" aria-label="Members present per activity: {{ $this->chartActivities->map(fn ($activity) => $activity->display_name.' '.$activity->date_label.', '.$activity->present_count)->implode('; ') }}">
                     @foreach ($this->chartActivities as $activity)
                         <div wire:key="bar-{{ $activity->id }}" class="flex h-full flex-1 flex-col items-center justify-end gap-2" aria-hidden="true">
@@ -413,7 +413,7 @@ new #[Title('Dashboard')] class extends Component
         <x-card id="upcoming-birthdays" class="flex min-w-0 flex-[1_1_300px] flex-col gap-4 p-6">
             <div class="flex items-baseline justify-between gap-3">
                 <h2 class="text-lg font-bold">Upcoming birthdays</h2>
-                <a href="{{ route('birthdays') }}" wire:navigate class="text-sm font-semibold text-blue hover:text-navy">Calendar</a>
+                <a href="{{ route('birthdays') }}" wire:navigate class="inline-flex min-h-11 items-center text-sm font-semibold text-blue hover:text-navy">Calendar</a>
             </div>
             <ul class="flex flex-col gap-1">
                 @forelse ($this->nextBirthdays as $birthday)
@@ -451,7 +451,7 @@ new #[Title('Dashboard')] class extends Component
                                 <span class="text-sm font-semibold">{{ $issue->title }}</span>
                                 <span class="text-[13px] text-muted">{{ $issue->detail }}</span>
                             </span>
-                            <a href="{{ $issue->url }}" wire:navigate class="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold whitespace-nowrap text-blue hover:text-navy lg:min-h-0" aria-label="{{ $issue->actionLabel }}: {{ $issue->title }}">{{ $issue->actionLabel }}</a>
+                            <a href="{{ $issue->url }}" wire:navigate class="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold whitespace-nowrap text-blue hover:text-navy" aria-label="{{ $issue->actionLabel }}: {{ $issue->title }}">{{ $issue->actionLabel }}</a>
                         </li>
                     @endforeach
                 </ul>

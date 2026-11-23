@@ -193,7 +193,7 @@ new #[Title('Member profile')] class extends Component
 
     {{-- Desktop breadcrumb --}}
     <nav aria-label="Breadcrumb" class="hidden items-center gap-2 text-sm text-muted lg:flex">
-        <a href="{{ route('members.index') }}" wire:navigate class="font-semibold text-blue hover:text-navy">Members</a>
+        <a href="{{ route('members.index') }}" wire:navigate class="inline-flex min-h-11 items-center font-semibold text-blue hover:text-navy">Members</a>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{{ $member->full_name }}</span>
     </nav>

@@ -247,7 +247,7 @@ new #[Title('Documents & photos')] class extends Component
     };
     $currentFolder = $this->folders->firstWhere('id', $folderId);
     $selected = $this->selected;
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
     $folderTiles = collect([['id' => null, 'name' => 'All files', 'count' => $this->totals['count']]])
         ->concat($this->folders->map(fn ($folder) => ['id' => $folder->id, 'name' => $folder->name, 'count' => $folder->documents_count]));
 @endphp
@@ -319,7 +319,7 @@ new #[Title('Documents & photos')] class extends Component
 
         {{-- ───────────── Desktop file table ───────────── --}}
         <section aria-label="Files" class="hidden min-w-0 overflow-hidden rounded-2xl border border-line bg-white lg:block lg:flex-[999_1_600px]">
-            <div class="overflow-x-auto">
+            <div class="relative overflow-x-auto">
                 <div class="min-w-[640px]">
                     <div class="grid grid-cols-[minmax(240px,2.6fr)_1.2fr_80px_120px] gap-3 border-b border-line bg-[#FAF9F4] px-5 py-3 text-xs font-bold tracking-[0.06em] text-muted uppercase">
                         <span>Name</span><span>Folder</span><span>Size</span><span>Added</span>

@@ -187,7 +187,7 @@ new class extends Component
 ?>
 
 @php
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
     $accept = collect(App\Models\Document::ALLOWED_EXTENSIONS)->map(fn ($extension) => '.'.$extension)->implode(',');
 @endphp
 

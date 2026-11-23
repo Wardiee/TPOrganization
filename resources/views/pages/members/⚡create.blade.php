@@ -48,7 +48,7 @@ new #[Title('Add member')] class extends Component
 
 <div class="contents">
     <div class="flex flex-col gap-2.5 pt-2 lg:gap-1.5 lg:pt-0">
-        <a href="{{ route('members.index') }}" wire:navigate class="-ml-2 inline-flex min-h-11 items-center gap-1 self-start rounded-lg px-2 text-[15px] font-semibold text-blue hover:text-navy focus-visible:outline-2 focus-visible:outline-blue lg:min-h-0 lg:text-sm">
+        <a href="{{ route('members.index') }}" wire:navigate class="-ml-2 inline-flex min-h-11 items-center gap-1 self-start rounded-lg px-2 text-[15px] font-semibold text-blue hover:text-navy focus-visible:outline-2 focus-visible:outline-blue lg:text-sm">
             <x-icon name="chevron-left" :size="20" :stroke-width="2.2" />
             Members
         </a>

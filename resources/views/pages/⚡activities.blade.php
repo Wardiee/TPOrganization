@@ -299,7 +299,7 @@ new #[Title('Activities & attendance')] class extends Component
         ['status' => App\Enums\AttendanceStatus::Absent, 'short' => 'A', 'on' => 'bg-absent text-white'],
         ['status' => App\Enums\AttendanceStatus::Exempt, 'short' => 'N/A', 'on' => 'bg-[#0A5F63] text-white'],
     ];
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
 @endphp
 
 {{-- Designs: docs/design/web/Activities.dc.html (lg+), docs/design/mobile/Attendance.dc.html (phones) --}}
@@ -314,7 +314,7 @@ new #[Title('Activities & attendance')] class extends Component
                 </button>
             @endcan
         </div>
-        <div role="group" aria-label="Choose activity" class="flex gap-2 overflow-x-auto px-4">
+        <div role="group" aria-label="Choose activity" class="flex gap-2 relative overflow-x-auto px-4">
             @foreach ($this->activities as $item)
                 @php($on = $activity?->is($item))
                 <button type="button" wire:key="chip-{{ $item->id }}" wire:click="selectActivity({{ $item->id }})" aria-pressed="{{ $on ? 'true' : 'false' }}" @class([
@@ -339,7 +339,7 @@ new #[Title('Activities & attendance')] class extends Component
             <div role="group" aria-label="View" class="flex gap-1 rounded-xl bg-[#ECEAE0] p-1">
                 @foreach (['take' => 'Take attendance', 'grid' => 'Overview grid'] as $value => $label)
                     <button type="button" wire:click="$set('view', '{{ $value }}')" aria-pressed="{{ $view === $value ? 'true' : 'false' }}" @class([
-                        'min-h-10 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                        'min-h-11 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                         'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $view === $value,
                     ])>{{ $label }}</button>
                 @endforeach
@@ -496,7 +496,7 @@ new #[Title('Activities & attendance')] class extends Component
             {{-- ───────────── Desktop: overview grid ───────────── --}}
             @php($columns = 'grid-template-columns: minmax(240px, 2fr) repeat('.$this->gridActivities->count().', minmax(72px, 1fr)) 80px')
             <section aria-label="Attendance overview" class="hidden overflow-hidden rounded-2xl border border-line bg-white lg:block">
-                <div class="overflow-x-auto">
+                <div class="relative overflow-x-auto">
                     <div class="min-w-[900px]" role="table" aria-label="Attendance by member and activity">
                         <div role="row" class="grid items-end gap-2 border-b border-line bg-[#FAF9F4] px-5 py-3" style="{{ $columns }}">
                             <span role="columnheader" class="text-xs font-bold tracking-[0.06em] text-muted">MEMBER</span>

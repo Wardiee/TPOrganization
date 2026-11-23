@@ -8,7 +8,7 @@
 
 @php
     /** @var \App\Livewire\Forms\MemberForm $form */
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-[15px] text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
     $label = 'text-sm font-semibold text-ink';
     $months = collect(range(1, 12))->mapWithKeys(fn (int $month) => [$month => \Carbon\CarbonImmutable::create(2000, $month, 1)->format('F')]);
     $statusChanged = $form->member !== null && $form->status !== $form->member->status->value;

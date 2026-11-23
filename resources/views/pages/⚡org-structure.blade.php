@@ -238,7 +238,7 @@ new #[Title('Org structure')] class extends Component
         <div role="group" aria-label="Show structure as of" class="hidden gap-1 rounded-xl bg-[#ECEAE0] p-1 lg:flex">
             @foreach (['today' => 'Today', 'chart' => $this->chart?->title ?? 'Org chart'] as $value => $label)
                 <button type="button" wire:click="$set('view', '{{ $value }}')" aria-pressed="{{ $view === $value ? 'true' : 'false' }}" @class([
-                    'min-h-10 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                    'min-h-11 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                     'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $view === $value,
                 ])>{{ $label }}</button>
             @endforeach
@@ -249,7 +249,7 @@ new #[Title('Org structure')] class extends Component
     <div role="group" aria-label="Show structure as of" class="grid grid-cols-2 gap-1 rounded-xl bg-[#ECEAE0] p-1 lg:hidden">
         @foreach (['today' => 'Today', 'chart' => $this->chart?->title ?? 'Org chart'] as $value => $label)
             <button type="button" wire:click="$set('view', '{{ $value }}')" aria-pressed="{{ $view === $value ? 'true' : 'false' }}" @class([
-                'min-h-10 rounded-[9px] text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                'min-h-11 rounded-[9px] text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                 'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $view === $value,
             ])>{{ $label }}</button>
         @endforeach
@@ -333,7 +333,8 @@ new #[Title('Org structure')] class extends Component
             </div>
         </div>
         <div class="flex justify-center" aria-hidden="true"><span class="h-6 w-0.5 bg-navy"></span></div>
-        <div class="mx-[25%] border-t-2 border-navy" aria-hidden="true"></div>
+        {{-- The branch connector only makes sense when both branches sit side by side (xl and up). --}}
+        <div class="mx-[25%] hidden border-t-2 border-navy xl:block" aria-hidden="true"></div>
 
         <div class="flex flex-wrap gap-7">
             @foreach ($branches as $data)
@@ -408,7 +409,7 @@ new #[Title('Org structure')] class extends Component
             @forelse ($this->unassigned as $member)
                 <div wire:key="unassigned-{{ $member->id }}" class="flex items-center justify-between gap-3 border-t border-line-soft py-1.5 lg:border-t-0 lg:border-b lg:py-2">
                     <span class="flex min-w-0 flex-col gap-0.5">
-                        <a href="{{ route('members.show', $member) }}" wire:navigate class="text-sm font-semibold hover:text-blue">{{ $member->full_name }}</a>
+                        <a href="{{ route('members.show', $member) }}" wire:navigate class="-my-3 py-3 text-sm font-semibold hover:text-blue">{{ $member->full_name }}</a>
                         <span class="text-xs text-muted">{{ collect([$member->nickname ? '“'.$member->nickname.'”' : null, $member->chapter?->name, $member->grade_level])->filter()->implode(' · ') }}</span>
                     </span>
                     @can('update', $this->positions->first() ?? new App\Models\Position)

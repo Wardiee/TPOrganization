@@ -255,11 +255,11 @@ new #[Title('Members')] class extends Component
             <span class="sr-only">Search members</span>
             <input type="search" wire:model.live.debounce.250ms="search" placeholder="Name, nickname or position" class="min-w-0 flex-1 bg-transparent text-[15px] text-ink outline-none placeholder:text-muted">
         </label>
-        <div role="group" aria-label="Filter by status" class="-mx-4 flex gap-2 overflow-x-auto px-4">
+        <div role="group" aria-label="Filter by status" class="-mx-4 flex gap-2 relative overflow-x-auto px-4">
             @foreach ($this->statusTabs() as $tab)
                 @php($on = $status === $tab['value'])
                 <button type="button" wire:click="$set('status', '{{ $tab['value'] }}')" aria-pressed="{{ $on ? 'true' : 'false' }}" @class([
-                    'min-h-10 shrink-0 rounded-full border px-3.5 text-[13px] font-semibold whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue',
+                    'min-h-11 shrink-0 rounded-full border px-3.5 text-[13px] font-semibold whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue',
                     'border-navy bg-navy text-white' => $on,
                     'border-line-input bg-white text-ink' => ! $on,
                 ])>{{ $tab['label'] }} {{ $this->statusCounts[$tab['value']] }}</button>
@@ -323,7 +323,7 @@ new #[Title('Members')] class extends Component
             @foreach ($this->statusTabs() as $tab)
                 @php($on = $status === $tab['value'])
                 <button type="button" wire:click="$set('status', '{{ $tab['value'] }}')" aria-pressed="{{ $on ? 'true' : 'false' }}" @class([
-                    'min-h-10 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                    'min-h-11 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                     'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $on,
                 ])>{{ $tab['label'] }} <span class="font-medium text-muted">{{ $this->statusCounts[$tab['value']] }}</span></button>
             @endforeach
@@ -344,7 +344,7 @@ new #[Title('Members')] class extends Component
                 </select>
             </label>
             <label class="flex min-h-11 cursor-pointer items-center gap-2 text-sm text-ink">
-                <input type="checkbox" wire:model.live="missingOnly" class="size-[18px] accent-blue">
+                <input type="checkbox" wire:model.live="missingOnly" class="size-[18px] accent-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
                 Missing info only
             </label>
         </div>
@@ -353,7 +353,7 @@ new #[Title('Members')] class extends Component
     {{-- Desktop table + selected member panel --}}
     <div class="hidden flex-wrap items-start gap-5 lg:flex">
         <section aria-label="Member list" class="min-w-0 flex-[999_1_600px] overflow-hidden rounded-2xl border border-line bg-white">
-            <div class="overflow-x-auto">
+            <div class="relative overflow-x-auto">
                 <div class="min-w-[700px]">
                     <div class="grid grid-cols-[minmax(160px,2.4fr)_80px_84px_100px_124px_80px] gap-2.5 border-b border-line bg-[#FAF9F4] px-5 py-3 text-xs font-bold tracking-[0.06em] text-muted uppercase">
                         <span>Member</span><span>Position</span><span>Chapter</span><span>Birthday</span><span>Attendance</span><span>Status</span>

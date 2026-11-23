@@ -172,14 +172,14 @@ new #[Title('Birthdays & dates')] class extends Component
                     <span class="inline-flex items-center gap-1.5"><span class="size-2.5 rounded-[3px] bg-blue"></span>Activity</span>
                     <span class="inline-flex items-center gap-1.5"><span class="size-2.5 rounded-[3px] bg-[#0B7A80]"></span>Org milestone</span>
                     <label class="inline-flex min-h-11 cursor-pointer items-center gap-1.5">
-                        <input type="checkbox" wire:model.live="includeNotActive" class="size-[18px] accent-blue">
+                        <input type="checkbox" wire:model.live="includeNotActive" class="size-[18px] accent-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
                         Include floating &amp; inactive
                     </label>
                 </div>
             </div>
 
             {{-- Desktop month grid with chips --}}
-            <div class="hidden overflow-x-auto lg:block">
+            <div class="hidden relative overflow-x-auto lg:block">
                 <div class="flex min-w-[640px] flex-col gap-1.5" role="grid" aria-labelledby="calendar-heading">
                     <div class="grid grid-cols-7 gap-1.5" role="row">
                         @foreach (['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as $dayName)
@@ -322,7 +322,7 @@ new #[Title('Birthdays & dates')] class extends Component
                             @endif
                         @endforeach
                     </p>
-                    <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="text-sm font-semibold text-blue hover:text-navy">Fill in from Members</a>
+                    <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="inline-flex min-h-11 items-center self-start text-sm font-semibold text-blue hover:text-navy">Fill in from Members</a>
                 </x-card>
             @endif
         </div>

@@ -144,7 +144,7 @@ new #[Title('Tasks')] class extends Component
         'Low' => 'bg-[#F0EFE8] text-inactive-fg',
     ];
     $doneCount = $this->tasks->count() - $this->openCount;
-    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-sm text-ink focus-visible:outline-2 focus-visible:outline-blue aria-invalid:border-absent';
+    $input = 'min-h-11 w-full rounded-[10px] border border-line-input bg-white px-3 text-sm text-ink focus:outline-2 focus:outline-blue aria-invalid:border-absent';
 @endphp
 
 {{-- Designs: docs/design/web/Tasks.dc.html (lg+), docs/design/mobile/Tasks.dc.html (phones) --}}
@@ -153,7 +153,7 @@ new #[Title('Tasks')] class extends Component
         <div role="group" aria-label="Filter tasks" class="hidden gap-1 rounded-xl bg-[#ECEAE0] p-1 lg:flex">
             @foreach (['open' => 'Open', 'all' => 'All', 'done' => 'Completed'] as $value => $label)
                 <button type="button" wire:click="$set('filter', '{{ $value }}')" aria-pressed="{{ $filter === $value ? 'true' : 'false' }}" @class([
-                    'min-h-10 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                    'min-h-11 rounded-[9px] px-3.5 text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                     'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $filter === $value,
                 ])>{{ $label }}</button>
             @endforeach
@@ -163,7 +163,7 @@ new #[Title('Tasks')] class extends Component
     <div role="group" aria-label="Filter tasks" class="grid grid-cols-3 gap-1 rounded-xl bg-[#ECEBE4] p-1 lg:hidden">
         @foreach (['open' => 'Open', 'all' => 'All', 'done' => 'Completed'] as $value => $label)
             <button type="button" wire:click="$set('filter', '{{ $value }}')" aria-pressed="{{ $filter === $value ? 'true' : 'false' }}" @class([
-                'min-h-10 rounded-[9px] text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
+                'min-h-11 rounded-[9px] text-sm font-semibold text-ink focus-visible:outline-2 focus-visible:outline-blue',
                 'bg-white shadow-[0_1px_3px_rgba(22,24,29,0.12)]' => $filter === $value,
             ])>{{ $label }}</button>
         @endforeach
@@ -184,11 +184,11 @@ new #[Title('Tasks')] class extends Component
                             @php($link = $task->linkUrl())
                             <li wire:key="task-{{ $task->id }}" class="flex items-start gap-3 border-b border-line-soft px-3.5 py-3 last:border-b-0 lg:gap-3.5 lg:px-5 lg:py-3.5">
                                 <label class="-my-2.5 -mr-2 -ml-2.5 flex size-11 shrink-0 cursor-pointer items-center justify-center lg:m-0 lg:size-auto lg:pt-px">
-                                    <input type="checkbox" wire:click="toggle({{ $task->id }})" @checked($done) aria-label="{{ $done ? 'Mark not done' : 'Mark done' }}: {{ $task->title }}" class="size-[22px] cursor-pointer accent-blue">
+                                    <input type="checkbox" wire:click="toggle({{ $task->id }})" @checked($done) aria-label="{{ $done ? 'Mark not done' : 'Mark done' }}: {{ $task->title }}" class="size-[22px] cursor-pointer accent-blue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
                                 </label>
                                 <div class="flex min-w-0 flex-1 flex-col gap-[5px]">
                                     @if ($link)
-                                        <a href="{{ $link }}" wire:navigate @class(['text-[15px] font-semibold hover:text-blue lg:hidden', 'text-muted line-through' => $done])>{{ $task->title }}</a>
+                                        <a href="{{ $link }}" wire:navigate @class(['-my-3 block py-3 text-[15px] font-semibold hover:text-blue lg:hidden', 'text-muted line-through' => $done])>{{ $task->title }}</a>
                                     @endif
                                     <span @class(['text-[15px] font-semibold', 'hidden lg:inline' => (bool) $link, 'text-muted line-through' => $done])>{{ $task->title }}</span>
                                     @if ($task->detail)
@@ -212,10 +212,10 @@ new #[Title('Tasks')] class extends Component
                                         {{ $done ? 'Done' : ($task->due_on?->format('M j, Y') ?? 'No due date') }}
                                     </span>
                                     @if ($link)
-                                        <a href="{{ $link }}" wire:navigate class="text-[13px] font-semibold text-blue hover:text-navy">Open<span class="sr-only">: {{ $task->title }}</span></a>
+                                        <a href="{{ $link }}" wire:navigate class="inline-flex min-h-11 items-center text-[13px] font-semibold text-blue hover:text-navy">Open<span class="sr-only">: {{ $task->title }}</span></a>
                                     @endif
                                     @if (! $task->is_auto)
-                                        <button type="button" wire:click="deleteTask({{ $task->id }})" wire:confirm="Delete the task “{{ $task->title }}”?" class="text-[13px] font-semibold text-absent hover:underline">Delete<span class="sr-only">: {{ $task->title }}</span></button>
+                                        <button type="button" wire:click="deleteTask({{ $task->id }})" wire:confirm="Delete the task “{{ $task->title }}”?" class="inline-flex min-h-11 items-center text-[13px] font-semibold text-absent hover:underline">Delete<span class="sr-only">: {{ $task->title }}</span></button>
                                     @endif
                                 </div>
                                 @if (! $task->is_auto)

@@ -48,7 +48,7 @@
     --color-zinc-200: #e5e5e5;
     --color-zinc-300: #d4d4d4;
     --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
+    --color-zinc-500: #6B6B6B; /* darker than Flux default so muted text passes 4.5:1 on the page background */
     --color-zinc-600: #525252;
     --color-zinc-700: #404040;
     --color-zinc-800: #262626;
@@ -81,6 +81,19 @@
 
 [data-flux-label] {
     @apply !mb-0 !leading-tight;
+}
+
+/* Flux buttons and settings menu items: 44px touch targets */
+[data-flux-button],
+[data-flux-navlist-item] {
+    min-height: 44px;
+}
+
+/* Date fields: the calendar icon is its own keyboard stop, so give it a visible focus ring too. */
+input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 2px;
+    border-radius: 4px;
 }
 
 /* Restyle Flux form controls to the design tokens (unlayered, so it wins over Flux utilities). */
