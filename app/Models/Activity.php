@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\AttendanceStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\ActivityFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -54,6 +55,20 @@ class Activity extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Record one member's attendance. Absent is stored as no row.
+     */
+    public function recordAttendance(Member $member, AttendanceStatus $status): void
+    {
+        if ($status === AttendanceStatus::Absent) {
+            $this->attendances()->whereBelongsTo($member)->delete();
+
+            return;
+        }
+
+        $this->attendances()->updateOrCreate(['member_id' => $member->id], ['status' => $status]);
     }
 
     /**
