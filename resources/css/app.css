@@ -23,6 +23,7 @@
 
     /* Surfaces, lines, text */
     --color-bg: #F6F5EF;
+    --color-surface: #FFFFFF;
     --color-line: #E4E2D8;
     --color-line-soft: #F0EEE6;
     --color-line-input: #D6D3C6;
@@ -94,6 +95,319 @@ input[type="date"]::-webkit-calendar-picker-indicator:focus-visible {
     outline: 2px solid var(--color-blue);
     outline-offset: 2px;
     border-radius: 4px;
+}
+
+/* ───────────────────────── Navy surfaces ─────────────────────────
+   Sidebar, phone header, profile banner and navy tiles: a soft light-to-deep gradient with a faint
+   dot pattern, so the brand colour has some depth. Text contrast stays above 4.5:1. */
+@utility tp-navy {
+    background-color: var(--color-navy);
+    background-image:
+        radial-gradient(120% 70% at 0% 0%, rgb(255 255 255 / 0.09), transparent 60%),
+        radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1.3px),
+        linear-gradient(160deg, #232D7C 0%, #1C2566 45%, #151C52 100%);
+    background-size: auto, 18px 18px, auto;
+}
+
+/* Pattern only, for phone headers that join the section below them (no seam between the two). */
+@utility tp-navy-dots {
+    background-color: var(--color-navy);
+    background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1.3px);
+    background-size: 18px 18px;
+}
+
+/* Active menu pill: a warm glow under the yellow. */
+.tp-glow {
+    box-shadow: 0 6px 18px -6px rgb(245 213 71 / 0.6);
+}
+
+/* ───────────────────────── Hover & press ───────────────────────── */
+a,
+button,
+label,
+summary,
+[role="button"] {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 160ms;
+    transition-timing-function: ease-out;
+}
+
+/* Clickable cards: lift a little with a soft navy shadow. */
+.tp-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -14px rgb(28 37 102 / 0.35);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    button:not(:disabled):active,
+    [role="button"]:active,
+    .tp-lift:active {
+        transform: scale(0.97);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tp-lift:hover {
+        transform: none;
+    }
+}
+
+/* ───────────────────────── Motion ─────────────────────────
+   Only for people who haven't asked their device to reduce motion. Every animation ends at
+   "transform: none", so nothing is left shifted or creates stacking surprises afterwards. */
+@keyframes tp-rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes tp-grow-y {
+    from { transform: scaleY(0); }
+    to { transform: none; }
+}
+
+@keyframes tp-grow-x {
+    from { transform: scaleX(0); }
+    to { transform: none; }
+}
+
+@keyframes tp-pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes tp-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    /* Page sections rise in one after another when a screen opens. */
+    #main > div > * > :not([data-static]) {
+        animation: tp-rise 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+
+    #main > div > * > :nth-child(2) { animation-delay: 50ms; }
+    #main > div > * > :nth-child(3) { animation-delay: 100ms; }
+    #main > div > * > :nth-child(4) { animation-delay: 150ms; }
+    #main > div > * > :nth-child(5) { animation-delay: 200ms; }
+    #main > div > * > :nth-child(n + 6) { animation-delay: 250ms; }
+
+    /* Chart bars grow from their baseline. */
+    .tp-bar-y {
+        transform-origin: bottom;
+        animation: tp-grow-y 750ms cubic-bezier(0.2, 0.7, 0.2, 1) 150ms both;
+    }
+
+    .tp-bar-x {
+        transform-origin: left;
+        animation: tp-grow-x 750ms cubic-bezier(0.2, 0.7, 0.2, 1) 150ms both;
+    }
+
+    /* Pop-ups and menus. */
+    dialog[open],
+    .tp-pop {
+        animation: tp-pop 200ms ease-out;
+    }
+
+    dialog[open]::backdrop {
+        animation: tp-fade 200ms ease-out;
+    }
+}
+
+/* ───────────────────────── Dark mode ─────────────────────────
+   Switched in Account settings → Appearance (Flux adds .dark to <html>). The design tokens are
+   swapped here, so most of the app follows automatically; the rules below map the few fixed tints
+   used in the screens. Navy, yellow and the status colours keep their meaning. */
+.dark {
+    color-scheme: dark;
+
+    --color-bg: #0F121C;
+    --color-surface: #181C2A;
+    --color-line: #2C3245;
+    --color-line-soft: #232838;
+    --color-line-input: #3A4157;
+    --color-ink: #E9EAF0;
+    --color-muted: #B0B5C4;
+    --color-navy-2: #2A3482;
+
+    --color-active-bg: #173A28;
+    --color-active-fg: #8EDBAE;
+    --color-floating-bg: #3D2E0A;
+    --color-floating-fg: #F5C97A;
+    --color-inactive-bg: #2A2D36;
+    --color-inactive-fg: #C9CBD3;
+    --color-alert-bg: #45200F;
+    --color-alert-fg: #F6A47E;
+    --color-info-bg: #232C5C;
+    --color-info-fg: #BCC5F7;
+
+    --color-zinc-500: #B0B5C4;
+}
+
+/* Text and icons sitting on yellow stay dark in both modes. */
+.dark .bg-yellow,
+.dark [class~="bg-[#F5C518]"],
+.dark [class~="bg-[#FBE27A]"] {
+    --color-ink: #16181D;
+    color: #16181D;
+}
+
+/* Surfaces */
+.dark [class~="bg-white"],
+.dark [class~="lg:bg-white"],
+.dark [class~="hover:bg-white"]:hover {
+    background-color: var(--color-surface);
+}
+
+.dark [class~="bg-[#FAF9F4]"],
+.dark [class~="bg-[#F3F2EC]"],
+.dark [class~="bg-[#F0EFE8]"],
+.dark [class~="hover:bg-[#FAF9F4]"]:hover,
+.dark [class~="hover:bg-bg"]:hover {
+    background-color: #1F2435;
+}
+
+@media (width >= 64rem) {
+    .dark [class~="lg:bg-[#FAF9F4]"] {
+        background-color: #1F2435;
+    }
+}
+
+/* Segmented control tracks and their selected segment */
+.dark [class~="bg-[#ECEAE0]"],
+.dark [class~="bg-[#ECEBE4]"],
+.dark [class~="bg-[#E2E0D6]"] {
+    background-color: #262B3D;
+}
+
+.dark [class~="bg-white"][class*="shadow-[0_1px_3px"],
+.dark [class~="has-checked:bg-white"]:has(:checked) {
+    background-color: #3A4260;
+}
+
+/* Yellow, peach, teal and purple tints */
+.dark [class~="bg-[#FFFBEA]"],
+.dark [class~="bg-[#FFF6D1]"],
+.dark [class~="bg-[#FFF1B8]"],
+.dark [class~="bg-[#FFF6D9]"],
+.dark [class~="hover:bg-[#FFF0B8]"]:hover {
+    background-color: #2B2614;
+}
+
+.dark [class~="bg-[#FFF4EC]"],
+.dark [class~="hover:bg-[#FFF4EC]"]:hover {
+    background-color: #2E1E16;
+}
+
+.dark [class~="bg-[#EEF1FC]"] {
+    background-color: #20264A;
+}
+
+.dark [class~="bg-[#DDF1F2]"] {
+    background-color: #12302F;
+}
+
+.dark [class~="bg-[#EAE3F7]"] {
+    background-color: #2A2440;
+}
+
+.dark [class~="bg-[#CFCCC0]"],
+.dark [class~="bg-[#B9B6A8]"] {
+    background-color: #4A5066;
+}
+
+/* Text on those tints */
+.dark [class~="text-[#5A3A00]"],
+.dark [class~="text-[#4A3600]"],
+.dark [class~="text-[#6B4A00]"],
+.dark [class~="text-[#8A5300]"] {
+    color: #F2CF7A;
+}
+
+.dark [class~="text-[#0A5F63]"] {
+    color: #7FD3D6;
+}
+
+.dark [class~="text-[#4B2E83]"] {
+    color: #C6B3F0;
+}
+
+.dark [class~="text-[#4A4D58]"],
+.dark [class~="text-[#2A3A9A]"] {
+    color: #C3C7D3;
+}
+
+/* Lines */
+.dark [class~="border-[#CFCCC0]"],
+.dark [class~="border-[#B9B6A8]"],
+.dark [class~="border-[#A8A598]"],
+.dark [class~="border-[#C9C5B4]"],
+.dark [class~="border-[#E2E0D6]"],
+.dark [class~="border-[#EEECE3]"] {
+    border-color: var(--color-line-input);
+}
+
+.dark [class~="border-[#E4D9A8]"],
+.dark [class~="border-[#F0E2A8]"],
+.dark [class~="border-[#E9C46A]"] {
+    border-color: #5A4C1E;
+}
+
+.dark [class~="border-[#F0C2A4]"] {
+    border-color: #5E3524;
+}
+
+/* Links, blue and rust text need lighter shades to stay readable on dark. */
+.dark .text-blue,
+.dark [class~="hover:text-blue"]:hover {
+    color: #A3B0F5;
+}
+
+.dark .text-navy,
+.dark [class~="hover:text-navy"]:hover,
+.dark [class~="lg:text-navy"] {
+    color: #C9D1FF;
+}
+
+/* ...but navy text on yellow stays navy. */
+.dark .bg-yellow .text-navy,
+.dark .bg-yellow.text-navy {
+    color: var(--color-navy);
+}
+
+.dark .text-absent {
+    color: #F08A62;
+}
+
+/* Chart bars: lighter shades validated against the dark surface. */
+.dark .tp-bar.bg-blue {
+    background-color: #6E80E6;
+}
+
+.dark .tp-bar[class~="bg-[#C99A1E]"] {
+    background-color: #B48E27;
+}
+
+.dark .tp-bar.bg-absent {
+    background-color: #C24A3C;
+}
+
+/* Org chart connector lines */
+.dark .bg-navy[class~="w-0.5"] {
+    background-color: #4A55A0;
+}
+
+.dark .border-navy[class~="border-t-2"] {
+    border-color: #4A55A0;
+}
+
+/* Pop-up backdrops stay dark. */
+.dark dialog::backdrop {
+    background-color: rgb(0 0 0 / 0.65);
+}
+
+.dark .tp-lift:hover {
+    box-shadow: 0 12px 28px -14px rgb(0 0 0 / 0.7);
 }
 
 /* Restyle Flux form controls to the design tokens (unlayered, so it wins over Flux utilities). */

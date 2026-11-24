@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-dvh bg-navy font-sans text-ink antialiased">
+    <body class="tp-navy min-h-dvh bg-navy font-sans text-ink antialiased">
         <div class="flex min-h-dvh flex-col items-center justify-center gap-8 px-4 pt-[max(2.5rem,env(safe-area-inset-top))] pb-[max(2.5rem,env(safe-area-inset-bottom))]">
             <div class="flex flex-col items-center gap-3 text-center">
                 <img src="/images/logo.png" alt="Tropang Potchi Brotherhood logo" class="size-24">

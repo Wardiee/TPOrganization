@@ -265,7 +265,7 @@ new #[Title('Tasks')] class extends Component
                 </x-card>
             @endcan
 
-            <section aria-labelledby="auto-heading" class="flex flex-col gap-2.5 rounded-2xl bg-navy p-[22px] text-white">
+            <section aria-labelledby="auto-heading" class="tp-navy flex flex-col gap-2.5 rounded-2xl bg-navy p-[22px] text-white">
                 <h2 id="auto-heading" class="text-lg font-bold">Tasks the system adds for you</h2>
                 <p class="text-sm text-navy-text">A birthday greeting task {{ App\Services\TaskSync::BIRTHDAY_DAYS_AHEAD }} days before each active member’s birthday.</p>
                 <p class="text-sm text-navy-text">A task when a seat is held by an inactive member, or members have no position.</p>

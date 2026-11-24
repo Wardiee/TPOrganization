@@ -420,7 +420,7 @@ new #[Title('Members')] class extends Component
             @php($notes = $this->notesFor($member))
             @php($position = $member->primaryPosition())
             <aside aria-label="Selected member" wire:key="selected-{{ $member->id }}" class="min-w-0 flex-[1_1_340px] overflow-hidden rounded-2xl border border-line bg-white">
-                <div class="flex flex-col gap-3.5 bg-navy p-6 text-white">
+                <div class="tp-navy flex flex-col gap-3.5 bg-navy p-6 text-white">
                     <div class="flex items-center gap-3.5">
                         <x-avatar-initials :initials="$member->initials" :photo="$member->photoUrl()" size="xl" />
                         <div class="flex min-w-0 flex-col gap-1">

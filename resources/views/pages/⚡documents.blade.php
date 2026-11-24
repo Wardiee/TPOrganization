@@ -274,7 +274,7 @@ new #[Title('Documents & photos')] class extends Component
             @foreach ($folderTiles as $tile)
                 @php($on = $folderId === $tile['id'])
                 <button type="button" wire:key="folder-{{ $tile['id'] ?? 'all' }}" wire:click="showFolder({{ $tile['id'] ?? 'null' }})" aria-pressed="{{ $on ? 'true' : 'false' }}" @class([
-                    'flex min-h-23 flex-col items-start gap-1.5 rounded-[14px] border p-3.5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue lg:min-h-0 lg:flex-[1_1_150px] lg:px-4',
+                    'tp-lift flex min-h-23 flex-col items-start gap-1.5 rounded-[14px] border p-3.5 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue lg:min-h-0 lg:flex-[1_1_150px] lg:px-4',
                     'border-navy bg-navy text-white' => $on,
                     'border-line bg-white text-ink hover:border-line-input' => ! $on,
                 ])>

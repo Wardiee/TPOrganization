@@ -16,7 +16,7 @@
                         'font-medium text-muted' => ! $current,
                     ])
                 >
-                    <span @class(['flex h-7.5 w-14 items-center justify-center rounded-full', 'bg-yellow' => $current])>
+                    <span @class(['flex h-7.5 w-14 items-center justify-center rounded-full', 'tp-glow bg-yellow' => $current])>
                         <x-icon :name="$item['icon']" :size="20" />
                     </span>
                     {{ $item['label'] }}

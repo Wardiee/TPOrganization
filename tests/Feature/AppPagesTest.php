@@ -18,6 +18,7 @@ dataset('app pages', [
     'reports' => ['reports'],
     'more' => ['more'],
     'account settings' => ['profile.edit'],
+    'appearance settings' => ['appearance.edit'],
 ]);
 
 /**

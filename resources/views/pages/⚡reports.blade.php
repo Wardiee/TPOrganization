@@ -155,7 +155,7 @@ new #[Title('Reports')] class extends Component
                 <x-icon name="download" :size="16" />
                 Download
             </button>
-            <div x-show="open" x-cloak class="absolute right-0 z-20 mt-2 flex w-72 flex-col rounded-xl border border-line bg-white p-1 shadow-[0_8px_24px_rgba(22,24,29,0.18)]">
+            <div x-show="open" x-cloak class="tp-pop absolute right-0 z-20 mt-2 flex w-72 flex-col rounded-xl border border-line bg-white p-1 shadow-[0_8px_24px_rgba(22,24,29,0.18)]">
                 <a href="{{ route('reports.members', $downloadQuery) }}" x-on:click="open = false" class="flex min-h-11 flex-col justify-center rounded-lg px-3 py-2 hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">
                     <span class="text-sm font-semibold">Member list</span>
                     <span class="text-xs text-muted">Details and attendance · {{ $periodLabel }} · opens in Excel</span>
@@ -172,28 +172,28 @@ new #[Title('Reports')] class extends Component
     <section aria-label="Summary for {{ $periodLabel }}" class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <div class="{{ $tile }}">
             <span class="{{ $tileLabel }}">Average turnout</span>
-            <span class="{{ $tileNumber }}">{{ $this->percent($summary['average_turnout']) }}</span>
+            <span data-count-up class="{{ $tileNumber }}">{{ $this->percent($summary['average_turnout']) }}</span>
             <span class="text-xs text-muted lg:text-[13px]">Present ÷ expected · {{ $periodLabel }}</span>
         </div>
         <div class="{{ $tile }}">
             <span class="{{ $tileLabel }}">Activities</span>
-            <span class="{{ $tileNumber }}">{{ $summary['activities'] }}</span>
+            <span data-count-up class="{{ $tileNumber }}">{{ $summary['activities'] }}</span>
             <span class="truncate text-xs text-muted lg:text-[13px]">
                 {{ $summary['best'] ? 'Best: '.$summary['best']['activity']->display_name.' ('.$this->percent($summary['best']['turnout']).')' : 'None recorded' }}
             </span>
         </div>
         <div class="{{ $tile }}">
             <span class="{{ $tileLabel }}">Members</span>
-            <span class="{{ $tileNumber }}">{{ $counts['total'] }}</span>
+            <span data-count-up class="{{ $tileNumber }}">{{ $counts['total'] }}</span>
             <span class="flex flex-wrap gap-1">
                 <span class="rounded-full bg-active-bg px-2 py-0.5 text-xs font-semibold text-active-fg">{{ $counts['active'] }} active</span>
                 <span class="rounded-full bg-floating-bg px-2 py-0.5 text-xs font-semibold text-floating-fg">{{ $counts['floating'] }} floating</span>
                 <span class="rounded-full bg-inactive-bg px-2 py-0.5 text-xs font-semibold text-inactive-fg">{{ $counts['inactive'] }} inactive</span>
             </span>
         </div>
-        <a href="#member-attendance" wire:click="$set('order', 'lowest')" class="{{ $tile }} bg-navy! text-white hover:bg-navy-2! focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+        <a href="#member-attendance" wire:click="$set('order', 'lowest')" class="{{ $tile }} tp-navy tp-lift bg-navy! text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
             <span class="{{ $tileLabel }} text-yellow!">Below 50% attendance</span>
-            <span class="{{ $tileNumber }}">{{ $this->lowAttendance }}</span>
+            <span data-count-up class="{{ $tileNumber }}">{{ $this->lowAttendance }}</span>
             <span class="text-xs text-navy-text lg:text-[13px]">Active members · {{ $periodLabel }}</span>
         </a>
     </section>
@@ -230,10 +230,10 @@ new #[Title('Reports')] class extends Component
                             </span>
                             <span class="shrink-0 text-sm font-bold tabular-nums lg:hidden">{{ $row['present'] }} / {{ $row['expected'] }} · {{ $this->percent($row['turnout']) }}</span>
                         </div>
-                        <div class="flex h-3 min-w-0 shrink-0 gap-0.5 lg:flex-1" aria-hidden="true">
+                        <div class="tp-bar-x flex h-3 min-w-0 shrink-0 gap-0.5 lg:flex-1" aria-hidden="true">
                             @foreach ($segments as [$label, $value, $color])
                                 @if ($value > 0)
-                                    <span class="h-full rounded-[3px] {{ $color }}" style="width: {{ $value / $base * 100 }}%" title="{{ $label }}: {{ $value }}"></span>
+                                    <span class="tp-bar h-full rounded-[3px] {{ $color }}" style="width: {{ $value / $base * 100 }}%" title="{{ $label }}: {{ $value }}"></span>
                                 @endif
                             @endforeach
                         </div>
@@ -282,7 +282,7 @@ new #[Title('Reports')] class extends Component
                                 </span>
                             </span>
                             <span class="hidden h-2 w-28 shrink-0 overflow-hidden rounded-full bg-inactive-bg sm:block" aria-hidden="true">
-                                <span class="block h-full rounded-full bg-blue" style="width: {{ ($row['rate'] ?? 0) * 100 }}%"></span>
+                                <span class="tp-bar tp-bar-x block h-full rounded-full bg-blue" style="width: {{ ($row['rate'] ?? 0) * 100 }}%"></span>
                             </span>
                             <span class="flex w-20 shrink-0 flex-col items-end gap-0.5">
                                 <span @class(['text-sm font-bold tabular-nums', 'text-absent' => $row['rate'] !== null && $row['rate'] < 0.5])>{{ $this->percent($row['rate']) }}</span>
@@ -311,7 +311,7 @@ new #[Title('Reports')] class extends Component
                             <span class="font-semibold">{{ $data['branch']->value }} · {{ $data['branch']->label() }}</span>
                             <span class="text-muted tabular-nums">{{ $data['filled'] }} of {{ $data['seats'] }} filled</span>
                         </div>
-                        <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="block h-full rounded-full bg-blue" style="width: {{ $data['seats'] > 0 ? $data['filled'] / $data['seats'] * 100 : 0 }}%"></span></span>
+                        <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="tp-bar tp-bar-x block h-full rounded-full bg-blue" style="width: {{ $data['seats'] > 0 ? $data['filled'] / $data['seats'] * 100 : 0 }}%"></span></span>
                     </div>
                 @endforeach
                 <a href="{{ route('org-structure') }}" wire:navigate class="inline-flex min-h-11 items-center self-start text-sm font-semibold text-blue hover:text-navy">
@@ -327,7 +327,7 @@ new #[Title('Reports')] class extends Component
                             <span class="font-semibold">{{ $chapter->name }}</span>
                             <span class="text-muted tabular-nums">{{ $chapter->members_count }}</span>
                         </div>
-                        <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="block h-full rounded-full bg-blue" style="width: {{ $chapter->members_count / $maxChapter * 100 }}%"></span></span>
+                        <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="tp-bar tp-bar-x block h-full rounded-full bg-blue" style="width: {{ $chapter->members_count / $maxChapter * 100 }}%"></span></span>
                     </div>
                 @endforeach
             </div>

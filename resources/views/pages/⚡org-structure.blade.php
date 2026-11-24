@@ -256,7 +256,7 @@ new #[Title('Org structure')] class extends Component
     </div>
 
     {{-- ───────────── Phone ───────────── --}}
-    <section aria-label="Founder" class="flex items-center gap-3 rounded-2xl bg-navy p-3.5 text-white lg:hidden">
+    <section aria-label="Founder" class="tp-navy flex items-center gap-3 rounded-2xl bg-navy p-3.5 text-white lg:hidden">
         <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" :photo="($this->founder['member'] ?? null)?->photoUrl()" size="touch" class="size-12! font-extrabold" />
         <span class="flex flex-col gap-0.5">
             <span class="text-[11px] font-bold tracking-[0.08em] text-yellow">FOUNDER · CHAIRMAN</span>
@@ -325,7 +325,7 @@ new #[Title('Org structure')] class extends Component
     {{-- ───────────── Desktop chart ───────────── --}}
     <section aria-label="Organization chart" class="hidden flex-col items-stretch rounded-[20px] border border-line bg-white p-7 lg:flex">
         <div class="flex justify-center">
-            <div class="flex items-center gap-3.5 rounded-[14px] bg-navy px-5 py-3.5 text-white">
+            <div class="tp-navy flex items-center gap-3.5 rounded-[14px] bg-navy px-5 py-3.5 text-white">
                 <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" :photo="($this->founder['member'] ?? null)?->photoUrl()" class="size-13! font-display text-lg font-extrabold" />
                 <span class="flex flex-col gap-0.5">
                     <span class="text-base font-bold">{{ $founderName }}</span>
@@ -370,7 +370,7 @@ new #[Title('Org structure')] class extends Component
                         @foreach ($data['seats'] as $seat)
                             @php($styles = $flagStyles[$seat['flag']])
                             @if ($canEdit)
-                                <button type="button" wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" wire:click="$dispatch('open-assign-position', { positionId: {{ $seat['position']->id }} })" class="flex min-w-0 items-center gap-2.5 rounded-[10px] border px-3 py-2.5 text-left hover:border-line-input focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue {{ $styles['card'] }}" aria-label="{{ $seat['position']->code }}: {{ $seat['name'] ?? 'empty' }}{{ $seat['flag'] ? ', '.$seat['meta'] : '' }}. Change who holds this seat.">
+                                <button type="button" wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" wire:click="$dispatch('open-assign-position', { positionId: {{ $seat['position']->id }} })" class="tp-lift flex min-w-0 items-center gap-2.5 rounded-[10px] border px-3 py-2.5 text-left hover:border-line-input focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue {{ $styles['card'] }}" aria-label="{{ $seat['position']->code }}: {{ $seat['name'] ?? 'empty' }}{{ $seat['flag'] ? ', '.$seat['meta'] : '' }}. Change who holds this seat.">
                             @else
                                 <div wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" class="flex min-w-0 items-center gap-2.5 rounded-[10px] border px-3 py-2.5 {{ $styles['card'] }}">
                             @endif

@@ -63,7 +63,7 @@ new #[Title('More')] class extends Component
 <div class="contents">
     <x-page-header title="More" />
 
-    <section aria-label="Your account" class="flex items-center gap-3.5 rounded-[18px] bg-navy p-4 text-white">
+    <section aria-label="Your account" class="tp-navy flex items-center gap-3.5 rounded-[18px] bg-navy p-4 text-white">
         <x-avatar-initials :initials="auth()->user()->initials()" size="lg" />
         <span class="flex min-w-0 flex-1 flex-col gap-[3px]">
             <span class="truncate text-base font-bold">{{ auth()->user()->name }}</span>
@@ -119,7 +119,7 @@ new #[Title('More')] class extends Component
             <a href="{{ route('profile.edit') }}" wire:navigate class="flex min-h-15 items-center gap-3.5 px-4 hover:bg-bg focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue">
                 <span class="flex flex-1 flex-col gap-0.5">
                     <span class="text-[15px] font-semibold">Account settings</span>
-                    <span class="text-xs text-muted">Name, email, password and two-factor login</span>
+                    <span class="text-xs text-muted">Name, email, password, two-factor login and light/dark</span>
                 </span>
                 <x-icon name="chevron-right" class="text-[#8A8D99]" />
             </a>

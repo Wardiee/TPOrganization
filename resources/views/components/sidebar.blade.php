@@ -1,7 +1,7 @@
 @use('App\Support\Navigation')
 
 {{-- Desktop navigation (lg and up). Design: docs/design/web/Main.dc.html --}}
-<nav aria-label="Main" {{ $attributes->class(['flex-col gap-7 bg-navy px-4 py-6 text-navy-text']) }}>
+<nav aria-label="Main" {{ $attributes->class(['tp-navy flex-col gap-7 bg-navy px-4 py-6 text-navy-text']) }}>
     <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center gap-3 rounded-[10px] px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow">
         <img src="/images/logo.png" alt="Tropang Potchi Brotherhood logo" class="size-13">
         <span class="flex flex-col gap-0.5">
@@ -20,7 +20,7 @@
                     @if ($current) aria-current="page" @endif
                     @class([
                         'flex min-h-11 items-center gap-3 rounded-[10px] px-3 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow',
-                        'bg-yellow font-semibold text-ink' => $current,
+                        'tp-glow bg-yellow font-semibold text-ink' => $current,
                         'font-medium text-navy-text hover:bg-navy-2 hover:text-white' => ! $current,
                     ])
                 >

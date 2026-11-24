@@ -241,7 +241,7 @@ new #[Title('Member profile')] class extends Component
 {{-- Designs: docs/design/web/Profile.dc.html (lg+), docs/design/mobile/Profile.dc.html (phones) --}}
 <div class="contents">
     {{-- Phone top bar --}}
-    <div class="-mx-4 flex items-center justify-between gap-2 bg-navy px-2 pt-[max(0.625rem,env(safe-area-inset-top))] pb-2.5 text-white lg:hidden">
+    <div data-static class="tp-navy-dots -mx-4 flex items-center justify-between gap-2 bg-navy px-2 pt-[max(0.625rem,env(safe-area-inset-top))] pb-2.5 text-white lg:hidden">
         <a href="{{ route('members.index') }}" wire:navigate class="inline-flex min-h-11 items-center gap-1 rounded-lg px-2 text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-yellow">
             <x-icon name="chevron-left" :size="22" :stroke-width="2.2" />
             Members
@@ -259,7 +259,7 @@ new #[Title('Member profile')] class extends Component
     </nav>
 
     {{-- Summary --}}
-    <section aria-label="Member summary" class="-mx-4 -mt-4 flex flex-col items-center gap-2.5 rounded-b-3xl bg-navy px-4 pt-2 pb-6 text-center text-white lg:mx-0 lg:mt-0 lg:flex-row lg:flex-wrap lg:gap-6 lg:rounded-[20px] lg:p-7 lg:text-left">
+    <section aria-label="Member summary" data-static class="tp-navy-dots lg:tp-navy -mx-4 -mt-4 flex flex-col items-center gap-2.5 rounded-b-3xl bg-navy px-4 pt-2 pb-6 text-center text-white lg:mx-0 lg:mt-0 lg:flex-row lg:flex-wrap lg:gap-6 lg:rounded-[20px] lg:p-7 lg:text-left">
         @php($photoUrl = $member->photoUrl())
         <div class="relative shrink-0" x-data="{ menu: false }" x-on:keydown.escape="menu = false" x-on:click.outside="menu = false">
             <x-avatar-initials :initials="$member->initials" :photo="$photoUrl" size="profile" />
@@ -273,7 +273,7 @@ new #[Title('Member profile')] class extends Component
                     <button type="button" x-on:click="menu = ! menu" aria-haspopup="true" x-bind:aria-expanded="menu" aria-label="Change or remove photo" class="{{ $cameraButton }}">
                         <span class="flex size-9 items-center justify-center rounded-full border-3 border-navy bg-yellow text-ink"><x-icon name="camera" :size="16" /></span>
                     </button>
-                    <div x-show="menu" x-cloak class="absolute top-full left-1/2 z-20 mt-3 flex w-44 -translate-x-1/2 flex-col rounded-xl border border-line bg-white p-1 text-left text-sm font-semibold text-ink shadow-[0_8px_24px_rgba(22,24,29,0.18)]">
+                    <div x-show="menu" x-cloak x-transition.opacity.duration.150ms class="absolute top-full left-1/2 z-20 mt-3 flex w-44 -translate-x-1/2 flex-col rounded-xl border border-line bg-white p-1 text-left text-sm font-semibold text-ink shadow-[0_8px_24px_rgba(22,24,29,0.18)]">
                         <label for="member-photo" role="button" tabindex="0" x-on:click="menu = false" x-on:keydown.enter.prevent="$el.click()" x-on:keydown.space.prevent="$el.click()" class="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">
                             <x-icon name="camera" :size="16" />
                             Change photo
@@ -457,7 +457,7 @@ new #[Title('Member profile')] class extends Component
                         of {{ $total }}<span class="hidden lg:inline"> activities</span>
                     </p>
                 </div>
-                <span class="hidden h-2 rounded-full bg-inactive-bg lg:block" aria-hidden="true"><span class="block h-2 rounded-full bg-blue" style="width: {{ $percent }}%"></span></span>
+                <span class="hidden h-2 rounded-full bg-inactive-bg lg:block" aria-hidden="true"><span class="tp-bar tp-bar-x block h-2 rounded-full bg-blue" style="width: {{ $percent }}%"></span></span>
                 <div class="grid gap-1.5 lg:hidden" style="grid-template-columns: repeat({{ max($total, 1) }}, minmax(0, 1fr))" aria-hidden="true">
                     @foreach ($this->activities->reverse() as $activity)
                         <span wire:key="segment-{{ $activity->id }}" @class(['h-2 rounded-full', 'bg-blue' => $this->attendanceFor($activity) === App\Enums\AttendanceStatus::Present, 'bg-[#DDF1F2]' => $this->attendanceFor($activity) === App\Enums\AttendanceStatus::Exempt, 'bg-[#E2E0D6]' => ! in_array($this->attendanceFor($activity), [App\Enums\AttendanceStatus::Present, App\Enums\AttendanceStatus::Exempt], true)])></span>

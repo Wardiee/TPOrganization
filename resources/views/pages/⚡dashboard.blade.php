@@ -228,7 +228,7 @@ new #[Title('Dashboard')] class extends Component
     {{-- ───────────── Phone ───────────── --}}
     <x-mobile-top-bar />
 
-    <section aria-label="Greeting" class="-mx-4 -mt-4 flex flex-col gap-4 rounded-b-3xl bg-navy px-4 pt-1 pb-5 lg:hidden">
+    <section aria-label="Greeting" data-static class="tp-navy-dots -mx-4 -mt-4 flex flex-col gap-4 rounded-b-3xl bg-navy px-4 pt-1 pb-5 lg:hidden">
         <div class="flex flex-col gap-1">
             <p class="text-[13px] text-navy-muted">{{ $this->today->format('l, F j') }}</p>
             <h1 class="font-display text-[26px] font-extrabold tracking-[-0.01em] text-white">{{ $this->greeting }}</h1>
@@ -247,25 +247,25 @@ new #[Title('Dashboard')] class extends Component
     </section>
 
     <section aria-label="Summary" class="grid grid-cols-2 gap-2.5 lg:hidden">
-        <a href="{{ route('members.index') }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('members.index') }}" wire:navigate class="tp-lift flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[11px] font-bold tracking-[0.06em] text-muted uppercase">Members</span>
-            <span class="font-display text-[32px] leading-none font-extrabold">{{ $counts['total'] }}</span>
+            <span data-count-up class="font-display text-[32px] leading-none font-extrabold">{{ $counts['total'] }}</span>
             <span class="text-xs font-semibold text-active-fg">{{ $counts['active'] }} active · <span class="text-floating-fg">{{ $counts['floating'] }} floating</span></span>
         </a>
-        <a href="{{ route('activities') }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('activities') }}" wire:navigate class="tp-lift flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[11px] font-bold tracking-[0.06em] text-muted uppercase">Last turnout</span>
-            <span class="font-display text-[32px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-base text-muted"> / {{ $lastExpected }}</span></span>
+            <span data-count-up class="font-display text-[32px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-base text-muted"> / {{ $lastExpected }}</span></span>
             <span class="truncate text-xs text-muted">{{ $last?->display_name ?? 'No activities yet' }}</span>
         </a>
-        <a href="{{ route('birthdays') }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl bg-navy p-3.5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+        <a href="{{ route('birthdays') }}" wire:navigate class="tp-navy tp-lift flex flex-col gap-1.5 rounded-2xl bg-navy p-3.5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
             <span class="text-[11px] font-bold tracking-[0.06em] text-yellow uppercase">Birthdays · 30 days</span>
-            <span class="font-display text-[32px] leading-none font-extrabold">{{ $soon->count() }}</span>
+            <span data-count-up class="font-display text-[32px] leading-none font-extrabold">{{ $soon->count() }}</span>
             <span class="truncate text-xs text-navy-text">{{ $nextLabelShort }}</span>
         </a>
-        <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="tp-lift flex flex-col gap-1.5 rounded-2xl border border-line bg-white p-3.5 focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[11px] font-bold tracking-[0.06em] text-muted uppercase">Profiles complete</span>
-            <span class="font-display text-[32px] leading-none font-extrabold">{{ $profiles['complete'] }}<span class="text-base text-muted"> / {{ $profiles['total'] }}</span></span>
-            <span class="mt-1 block h-1.5 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="block h-1.5 rounded-full bg-blue" style="width: {{ $profiles['percent'] }}%"></span></span>
+            <span data-count-up class="font-display text-[32px] leading-none font-extrabold">{{ $profiles['complete'] }}<span class="text-base text-muted"> / {{ $profiles['total'] }}</span></span>
+            <span class="mt-1 block h-1.5 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="tp-bar tp-bar-x block h-1.5 rounded-full bg-blue" style="width: {{ $profiles['percent'] }}%"></span></span>
         </a>
     </section>
 
@@ -325,7 +325,7 @@ new #[Title('Dashboard')] class extends Component
             @foreach ($this->chartActivities as $activity)
                 <div wire:key="phone-bar-{{ $activity->id }}" class="flex h-full flex-1 flex-col items-center justify-end gap-1.5" aria-hidden="true">
                     <span class="text-xs font-bold">{{ $activity->present_count }}</span>
-                    <span @class(['block w-full rounded-t-md', 'bg-[#F5C518]' => $loop->last, 'bg-blue' => ! $loop->last]) style="height: {{ round($activity->present_count / $maxPresent * 100) }}px"></span>
+                    <span @class(['tp-bar tp-bar-y block w-full rounded-t-md', 'bg-[#F5C518]' => $loop->last, 'bg-blue' => ! $loop->last]) style="height: {{ round($activity->present_count / $maxPresent * 100) }}px"></span>
                 </div>
             @endforeach
         </div>
@@ -356,29 +356,29 @@ new #[Title('Dashboard')] class extends Component
     </header>
 
     <section aria-label="Summary" class="hidden flex-wrap gap-4 lg:flex">
-        <a href="{{ route('members.index') }}" wire:navigate class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('members.index') }}" wire:navigate class="tp-lift flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[13px] font-semibold tracking-[0.06em] text-muted uppercase">Members</span>
-            <span class="font-display text-[40px] leading-none font-extrabold">{{ $counts['total'] }}</span>
+            <span data-count-up class="font-display text-[40px] leading-none font-extrabold">{{ $counts['total'] }}</span>
             <span class="flex flex-wrap gap-1.5">
                 <span class="rounded-full bg-active-bg px-2 py-1 text-xs font-semibold text-active-fg">{{ $counts['active'] }} active</span>
                 <span class="rounded-full bg-floating-bg px-2 py-1 text-xs font-semibold text-floating-fg">{{ $counts['floating'] }} floating</span>
                 <span class="rounded-full bg-inactive-bg px-2 py-1 text-xs font-semibold text-inactive-fg">{{ $counts['inactive'] }} inactive</span>
             </span>
         </a>
-        <a href="{{ route('activities') }}" wire:navigate class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('activities') }}" wire:navigate class="tp-lift flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[13px] font-semibold tracking-[0.06em] text-muted uppercase">Last activity turnout</span>
-            <span class="font-display text-[40px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-xl text-muted"> / {{ $lastExpected }} {{ $lastExpectedLabel }}</span></span>
+            <span data-count-up class="font-display text-[40px] leading-none font-extrabold">{{ $last?->present_count ?? 0 }}<span class="text-xl text-muted"> / {{ $lastExpected }} {{ $lastExpectedLabel }}</span></span>
             <span class="text-[13px] text-muted">{{ $last ? $last->display_name.' · '.$last->date_label : 'No activities yet' }}</span>
         </a>
-        <a href="#upcoming-birthdays" class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl bg-navy p-5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+        <a href="#upcoming-birthdays" class="tp-navy tp-lift flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl bg-navy p-5 text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
             <span class="text-[13px] font-semibold tracking-[0.06em] text-yellow uppercase">Birthdays · next 30 days</span>
-            <span class="font-display text-[40px] leading-none font-extrabold">{{ $soon->count() }}</span>
+            <span data-count-up class="font-display text-[40px] leading-none font-extrabold">{{ $soon->count() }}</span>
             <span class="text-[13px] text-navy-text">{{ $nextLabel }}</span>
         </a>
-        <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
+        <a href="{{ route('members.index', ['missing' => 1]) }}" wire:navigate class="tp-lift flex flex-[1_1_230px] flex-col gap-2.5 rounded-2xl border border-line bg-white p-5 hover:border-line-input focus-visible:outline-2 focus-visible:outline-blue">
             <span class="text-[13px] font-semibold tracking-[0.06em] text-muted uppercase">Profiles missing info</span>
-            <span class="font-display text-[40px] leading-none font-extrabold">{{ $profiles['total'] - $profiles['complete'] }}<span class="text-xl text-muted"> / {{ $profiles['total'] }}</span></span>
-            <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="block h-2 rounded-full bg-blue" style="width: {{ $profiles['percent'] }}%"></span></span>
+            <span data-count-up class="font-display text-[40px] leading-none font-extrabold">{{ $profiles['total'] - $profiles['complete'] }}<span class="text-xl text-muted"> / {{ $profiles['total'] }}</span></span>
+            <span class="block h-2 overflow-hidden rounded-full bg-inactive-bg" aria-hidden="true"><span class="tp-bar tp-bar-x block h-2 rounded-full bg-blue" style="width: {{ $profiles['percent'] }}%"></span></span>
             <span class="text-[13px] text-muted">{{ $profiles['complete'] }} complete ({{ $profiles['percent'] }}%)</span>
         </a>
     </section>
@@ -394,7 +394,7 @@ new #[Title('Dashboard')] class extends Component
                     @foreach ($this->chartActivities as $activity)
                         <div wire:key="bar-{{ $activity->id }}" class="flex h-full flex-1 flex-col items-center justify-end gap-2" aria-hidden="true">
                             <span class="text-sm font-bold">{{ $activity->present_count }}</span>
-                            <span @class(['block w-full max-w-16 rounded-t-lg', 'bg-[#F5C518]' => $loop->last, 'bg-blue' => ! $loop->last]) style="height: {{ round($activity->present_count / $maxPresent * 190) }}px"></span>
+                            <span @class(['tp-bar tp-bar-y block w-full max-w-16 rounded-t-lg', 'bg-[#F5C518]' => $loop->last, 'bg-blue' => ! $loop->last]) style="height: {{ round($activity->present_count / $maxPresent * 190) }}px"></span>
                         </div>
                     @endforeach
                 </div>
@@ -464,7 +464,7 @@ new #[Title('Dashboard')] class extends Component
                 @foreach ($this->chapters as $chapter)
                     <div wire:key="chapter-{{ $chapter->id }}" class="flex flex-col gap-1.5">
                         <span class="flex justify-between text-sm"><span class="font-semibold">{{ $chapter->name }}</span><span class="text-muted">{{ $chapter->members_count }}</span></span>
-                        <span class="block h-2 rounded-full bg-line-soft" aria-hidden="true"><span class="block h-2 rounded-full bg-blue" style="width: {{ round($chapter->members_count / $maxChapter * 100) }}%"></span></span>
+                        <span class="block h-2 rounded-full bg-line-soft" aria-hidden="true"><span class="tp-bar tp-bar-x block h-2 rounded-full bg-blue" style="width: {{ round($chapter->members_count / $maxChapter * 100) }}%"></span></span>
                     </div>
                 @endforeach
             </x-card>

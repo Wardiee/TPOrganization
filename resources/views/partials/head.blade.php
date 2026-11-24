@@ -19,4 +19,7 @@
 
 @fonts
 
+{{-- Light / dark / auto (Account settings → Appearance). Runs before paint so there is no flash. --}}
+@fluxAppearance
+
 @vite(['resources/css/app.css', 'resources/js/app.js'])
