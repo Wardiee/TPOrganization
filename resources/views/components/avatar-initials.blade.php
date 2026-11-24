@@ -2,6 +2,7 @@
     'initials',
     'size' => 'md',
     'tone' => 'yellow',
+    'photo' => null,
 ])
 
 @php
@@ -26,4 +27,10 @@
     ];
 @endphp
 
-<span {{ $attributes->class(['box-border flex shrink-0 items-center justify-center rounded-full', $sizes[$size], $tones[$tone]]) }}>{{ $initials }}</span>
+{{-- With a photo the initials stay underneath, so a slow or failed image still shows something. The name is always next to the avatar, so the image is decorative (alt=""). --}}
+<span {{ $attributes->class(['relative box-border flex shrink-0 items-center justify-center overflow-hidden rounded-full', $sizes[$size], $tones[$tone]]) }}>
+    {{ $initials }}
+    @if ($photo)
+        <img src="{{ $photo }}" alt="" loading="lazy" decoding="async" class="absolute inset-0 size-full object-cover">
+    @endif
+</span>

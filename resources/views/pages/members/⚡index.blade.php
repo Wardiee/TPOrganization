@@ -279,7 +279,7 @@ new #[Title('Members')] class extends Component
                 @php($notes = $this->notesFor($member))
                 <li wire:key="phone-{{ $member->id }}" class="border-b border-line-soft">
                     <a href="{{ route('members.show', $member) }}" wire:navigate class="flex min-h-16 items-center gap-3 px-4 py-2.5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue">
-                        <x-avatar-initials :initials="$member->initials" size="touch" :tone="$tones[$member->status->value].'-solid'" />
+                        <x-avatar-initials :initials="$member->initials" :photo="$member->photoUrl()" size="touch" :tone="$tones[$member->status->value].'-solid'" />
                         <span class="flex min-w-0 flex-1 flex-col gap-[3px]">
                             <span class="truncate text-[15px] font-semibold">{{ $member->full_name }}</span>
                             <span class="truncate text-xs text-muted">
@@ -372,7 +372,7 @@ new #[Title('Members')] class extends Component
                             ])
                         >
                             <span class="flex min-w-0 items-center gap-3">
-                                <x-avatar-initials :initials="$member->initials" :tone="$tones[$member->status->value].'-soft'" />
+                                <x-avatar-initials :initials="$member->initials" :photo="$member->photoUrl()" :tone="$tones[$member->status->value].'-soft'" />
                                 <span class="flex min-w-0 flex-col gap-0.5">
                                     <span class="truncate text-sm font-semibold">{{ $member->full_name }}</span>
                                     <span class="truncate text-xs text-muted">{{ $member->nickname ?: 'No nickname' }}{{ $member->grade_level ? ' · '.$member->grade_level : '' }}</span>
@@ -422,7 +422,7 @@ new #[Title('Members')] class extends Component
             <aside aria-label="Selected member" wire:key="selected-{{ $member->id }}" class="min-w-0 flex-[1_1_340px] overflow-hidden rounded-2xl border border-line bg-white">
                 <div class="flex flex-col gap-3.5 bg-navy p-6 text-white">
                     <div class="flex items-center gap-3.5">
-                        <x-avatar-initials :initials="$member->initials" size="xl" />
+                        <x-avatar-initials :initials="$member->initials" :photo="$member->photoUrl()" size="xl" />
                         <div class="flex min-w-0 flex-col gap-1">
                             <p class="text-lg leading-tight font-bold">{{ $member->full_name }}</p>
                             <p class="text-[13px] text-navy-text">{{ $member->nickname ? '“'.$member->nickname.'”' : 'No nickname' }}{{ $member->chapter ? ' · '.$member->chapter->name.' chapter' : '' }}</p>

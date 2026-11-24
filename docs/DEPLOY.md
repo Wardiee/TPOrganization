@@ -265,7 +265,7 @@ sudo chmod -R ug+rwX storage bootstrap/cache
 
    ```bash
    scp -i path\to\key tropang_potchi.sql ubuntu@YOUR-SERVER-IP:/tmp/
-   scp -i path\to\key -r storage\app\private\documents ubuntu@YOUR-SERVER-IP:/tmp/documents
+   scp -i path\to\key -r storage\app\private ubuntu@YOUR-SERVER-IP:/tmp/private-files
    ```
 
 **On the server:**
@@ -274,10 +274,10 @@ sudo chmod -R ug+rwX storage bootstrap/cache
 cd /var/www/tropang-potchi
 mariadb -u tropang -p tropang_potchi < /tmp/tropang_potchi.sql      # enter the DB password
 php artisan migrate --force                                         # adds anything newer; safe to run
-mkdir -p storage/app/private/documents
-cp -r /tmp/documents/. storage/app/private/documents/
+mkdir -p storage/app/private
+cp -r /tmp/private-files/. storage/app/private/        # documents and profile photos
 sudo chown -R ubuntu:www-data storage && sudo chmod -R ug+rwX storage
-rm /tmp/tropang_potchi.sql && rm -r /tmp/documents
+rm /tmp/tropang_potchi.sql && rm -r /tmp/private-files
 ```
 
 Your login (email and password) comes across with the data. You can remove the three `ADMIN_` lines from `.env`.
@@ -395,7 +395,7 @@ php artisan schedule:list   # should show "0 6 * * *  php artisan tasks:sync"
 
 ## 13. Backups
 
-Two things need backing up: the **database** and the **uploaded files** (`storage/app/private`). The script below saves both every night and keeps 14 days.
+Two things need backing up: the **database** and the **uploaded files** (`storage/app/private`: documents and profile photos). The script below saves both every night and keeps 14 days.
 
 **Save the database password for backups** (replace the password):
 

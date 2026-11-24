@@ -7,16 +7,26 @@ use App\Models\Document;
 use App\Models\Member;
 use App\Models\MemberStatusChange;
 use App\Models\PositionAssignment;
+use App\Services\MemberPhotos;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 new #[Title('Member profile')] class extends Component
 {
+    use WithFileUploads;
+
     public Member $member;
+
+    /** A new profile photo, saved as soon as it arrives. */
+    public ?TemporaryUploadedFile $photo = null;
+
+    public string $photoError = '';
 
     public string $privateNotes = '';
 
@@ -26,7 +36,7 @@ new #[Title('Member profile')] class extends Component
     {
         $this->authorize('view', $this->member);
 
-        $this->member->load(['chapter', 'currentAssignments.position', 'positionAssignments.position', 'statusChanges']);
+        $this->loadProfileRelations();
 
         if (auth()->user()->can('viewPrivateNotes', $this->member)) {
             $this->privateNotes = (string) $this->member->private_notes;
@@ -34,8 +44,18 @@ new #[Title('Member profile')] class extends Component
     }
 
     /**
-     * Reload positions and history after the "Change position" pop-up saves.
+     * Livewire restores the member without its loaded relations on each action, so load them again.
      */
+    public function hydrate(): void
+    {
+        $this->loadProfileRelations();
+    }
+
+    private function loadProfileRelations(): void
+    {
+        $this->member->loadMissing(['chapter', 'currentAssignments.position', 'positionAssignments.position', 'statusChanges']);
+    }
+
     /**
      * Files linked to this member, newest first.
      *
@@ -58,6 +78,46 @@ new #[Title('Member profile')] class extends Component
     {
         $this->member->load(['currentAssignments.position', 'positionAssignments.position']);
         unset($this->history);
+    }
+
+    /**
+     * Save the chosen photo straight away (cropped square, location data removed).
+     */
+    public function updatedPhoto(MemberPhotos $photos): void
+    {
+        $this->authorize('update', $this->member);
+
+        $this->photoError = '';
+
+        $this->validate(
+            ['photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:20480']],
+            ['photo.image' => 'Choose a JPG, PNG or WebP photo.', 'photo.mimes' => 'Choose a JPG, PNG or WebP photo.', 'photo.max' => 'Photos can be up to 20 MB.'],
+        );
+
+        try {
+            $photos->store($this->member, $this->photo);
+        } catch (RuntimeException) {
+            $this->photoError = 'That photo couldn’t be read. Try a JPG or PNG.';
+        } finally {
+            $this->photo?->delete();
+            $this->photo = null;
+        }
+    }
+
+    /**
+     * The browser couldn't send the photo (usually because it is too big).
+     */
+    public function photoUploadFailed(): void
+    {
+        $this->photoError = 'The photo couldn’t be uploaded. Photos can be up to 20 MB.';
+    }
+
+    public function removePhoto(MemberPhotos $photos): void
+    {
+        $this->authorize('update', $this->member);
+
+        $photos->remove($this->member);
+        $this->photoError = '';
     }
 
     /**
@@ -200,7 +260,36 @@ new #[Title('Member profile')] class extends Component
 
     {{-- Summary --}}
     <section aria-label="Member summary" class="-mx-4 -mt-4 flex flex-col items-center gap-2.5 rounded-b-3xl bg-navy px-4 pt-2 pb-6 text-center text-white lg:mx-0 lg:mt-0 lg:flex-row lg:flex-wrap lg:gap-6 lg:rounded-[20px] lg:p-7 lg:text-left">
-        <x-avatar-initials :initials="$member->initials" size="profile" />
+        @php($photoUrl = $member->photoUrl())
+        <div class="relative shrink-0" x-data="{ menu: false }" x-on:keydown.escape="menu = false" x-on:click.outside="menu = false">
+            <x-avatar-initials :initials="$member->initials" :photo="$photoUrl" size="profile" />
+            <div wire:loading.flex wire:target="photo,removePhoto" class="absolute inset-0 items-center justify-center rounded-full bg-navy/75 text-xs font-semibold text-white">Saving…</div>
+
+            @can('update', $member)
+                @php($cameraButton = 'absolute -right-2 -bottom-2 flex size-11 cursor-pointer items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-yellow lg:-right-1 lg:-bottom-1')
+                <input id="member-photo" type="file" accept="image/*" wire:model="photo" x-on:livewire-upload-error="$wire.photoUploadFailed()" class="sr-only" tabindex="-1">
+
+                @if ($photoUrl)
+                    <button type="button" x-on:click="menu = ! menu" aria-haspopup="true" x-bind:aria-expanded="menu" aria-label="Change or remove photo" class="{{ $cameraButton }}">
+                        <span class="flex size-9 items-center justify-center rounded-full border-3 border-navy bg-yellow text-ink"><x-icon name="camera" :size="16" /></span>
+                    </button>
+                    <div x-show="menu" x-cloak class="absolute top-full left-1/2 z-20 mt-3 flex w-44 -translate-x-1/2 flex-col rounded-xl border border-line bg-white p-1 text-left text-sm font-semibold text-ink shadow-[0_8px_24px_rgba(22,24,29,0.18)]">
+                        <label for="member-photo" role="button" tabindex="0" x-on:click="menu = false" x-on:keydown.enter.prevent="$el.click()" x-on:keydown.space.prevent="$el.click()" class="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-lg px-3 hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">
+                            <x-icon name="camera" :size="16" />
+                            Change photo
+                        </label>
+                        <button type="button" wire:click="removePhoto" wire:confirm="Remove {{ $member->full_name }}’s photo?" x-on:click="menu = false" class="flex min-h-11 items-center gap-2.5 rounded-lg px-3 text-absent hover:bg-bg focus-visible:outline-2 focus-visible:outline-blue">
+                            <x-icon name="close" :size="16" />
+                            Remove photo
+                        </button>
+                    </div>
+                @else
+                    <label for="member-photo" role="button" tabindex="0" aria-label="Add photo" x-on:keydown.enter.prevent="$el.click()" x-on:keydown.space.prevent="$el.click()" class="{{ $cameraButton }}">
+                        <span class="flex size-9 items-center justify-center rounded-full border-3 border-navy bg-yellow text-ink"><x-icon name="camera" :size="16" /></span>
+                    </label>
+                @endif
+            @endcan
+        </div>
 
         <div class="flex min-w-0 flex-col items-center gap-2.5 lg:flex-[1_1_320px] lg:items-start">
             <div class="order-3 flex flex-wrap justify-center gap-2 lg:order-none">
@@ -214,6 +303,12 @@ new #[Title('Member profile')] class extends Component
             <h1 class="order-1 font-display text-2xl leading-tight font-extrabold lg:order-none lg:text-[34px] lg:tracking-[-0.01em]">{{ $member->full_name }}</h1>
             @if ($summary !== '')
                 <p class="order-2 text-sm text-navy-text lg:order-none lg:text-[15px]">{{ $summary }}</p>
+            @endif
+            @error('photo')
+                <p role="alert" class="order-4 text-sm font-semibold text-[#FFD2BF] lg:order-none">{{ $message }}</p>
+            @enderror
+            @if ($photoError !== '')
+                <p role="alert" class="order-4 text-sm font-semibold text-[#FFD2BF] lg:order-none">{{ $photoError }}</p>
             @endif
         </div>
 

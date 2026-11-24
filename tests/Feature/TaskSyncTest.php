@@ -45,7 +45,7 @@ test('with the real records, the seeded tasks match the design under the 30-day 
 });
 
 test('running the sync again does not duplicate tasks', function () {
-    Member::factory()->withoutBirthYear()->create();
+    Member::factory()->withoutBirthYear()->create(['birth_month' => 6, 'birth_day' => 1]);
     $sync = app(TaskSync::class);
 
     expect($sync->sync())->toMatchArray(['created' => 2, 'updated' => 0]);
@@ -54,7 +54,7 @@ test('running the sync again does not duplicate tasks', function () {
 });
 
 test('a task the admin completed is never reopened, even while the problem remains', function () {
-    Member::factory()->withoutBirthYear()->create();
+    Member::factory()->withoutBirthYear()->create(['birth_month' => 6, 'birth_day' => 1]);
     app(TaskSync::class)->sync();
 
     $task = Task::where('source_key', 'missing-birth-year')->sole();
@@ -110,7 +110,7 @@ test('the founder\'s own tasks are never touched by the sync', function () {
 });
 
 test('the command reports what it did and runs every day at 06:00 Manila time', function () {
-    Member::factory()->withoutBirthYear()->create();
+    Member::factory()->withoutBirthYear()->create(['birth_month' => 6, 'birth_day' => 1]);
 
     $this->artisan('tasks:sync')
         ->expectsOutput('Tasks synced: 2 created, 0 updated, 0 reopened, 0 closed.')

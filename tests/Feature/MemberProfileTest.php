@@ -72,6 +72,18 @@ test('private notes are saved, and clearing them removes the note', function () 
     expect($member->fresh()->private_notes)->toBeNull();
 });
 
+test('the profile of a member holding two positions still redraws after an action', function () {
+    $member = Member::factory()->create();
+    foreach (['FOUNDER', 'TROP-1'] as $code) {
+        PositionAssignment::factory()->for($member)->for(Position::factory()->state(['code' => $code, 'title' => $code]))->create(['started_on' => '2024-05-02']);
+    }
+
+    Livewire::test('pages::members.show', ['member' => $member])
+        ->set('privateNotes', 'Leads the Main branch.')
+        ->assertOk()
+        ->assertSee('TROP-1');
+});
+
 test('a removed member\'s profile is not found', function () {
     $member = Member::factory()->create();
     $member->delete();

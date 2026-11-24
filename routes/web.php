@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DocumentFileController;
+use App\Http\Controllers\MemberPhotoController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -10,6 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::livewire('members/create', 'pages::members.create')->name('members.create');
     Route::livewire('members/{member}', 'pages::members.show')->whereNumber('member')->name('members.show');
     Route::livewire('members/{member}/edit', 'pages::members.edit')->whereNumber('member')->name('members.edit');
+    Route::get('members/{member}/photo', MemberPhotoController::class)->whereNumber('member')->name('members.photo');
 
     Route::livewire('org-structure', 'pages::org-structure')->name('org-structure');
     Route::livewire('activities', 'pages::activities')->name('activities');

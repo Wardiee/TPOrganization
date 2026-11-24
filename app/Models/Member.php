@@ -185,6 +185,19 @@ class Member extends Model
     }
 
     /**
+     * Address of the profile photo (served through an authorized route), or null when there is none.
+     * The file name is part of the query so a new photo is never confused with the old one.
+     */
+    public function photoUrl(): ?string
+    {
+        if ($this->photo_path === null) {
+            return null;
+        }
+
+        return route('members.photo', ['member' => $this, 'v' => substr(md5($this->photo_path), 0, 8)]);
+    }
+
+    /**
      * Change the member's status and keep the history: a status change row plus a "Recent changes" entry.
      */
     public function changeStatus(MemberStatus $to, ?string $note = null, ?CarbonImmutable $on = null): void
