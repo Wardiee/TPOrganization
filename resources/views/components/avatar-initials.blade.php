@@ -7,6 +7,7 @@
 
 @php
     $sizes = [
+        'sm' => 'size-9 text-xs font-bold',
         'md' => 'size-10 text-[13px] font-bold',
         'touch' => 'size-11 text-sm font-bold',
         'lg' => 'size-14 font-display text-xl font-extrabold',

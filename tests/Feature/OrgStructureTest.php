@@ -264,3 +264,18 @@ test('a new seat starts empty and can then be assigned', function () {
 
     expect($trops16->fresh()->currentAssignment->member->is($member))->toBeTrue();
 });
+
+test('seat holders and members without a seat show their profile photos', function () {
+    $trop1 = seat('TROP-1');
+    $trop2 = seat('TROP-2');
+    $lead = Member::factory()->create(['photo_path' => 'member-photos/lead.jpg']);
+    $holder = Member::factory()->create(['photo_path' => 'member-photos/holder.jpg']);
+    $waiting = Member::factory()->create(['photo_path' => 'member-photos/waiting.jpg']);
+    PositionAssignment::factory()->for($trop1)->for($lead)->create(['started_on' => '2024-05-02']);
+    PositionAssignment::factory()->for($trop2)->for($holder)->create(['started_on' => '2024-05-02']);
+
+    Livewire::test('pages::org-structure')
+        ->assertSeeHtml($lead->photoUrl())
+        ->assertSeeHtml($holder->photoUrl())
+        ->assertSeeHtml($waiting->photoUrl());
+});

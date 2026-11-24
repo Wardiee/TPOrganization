@@ -257,7 +257,7 @@ new #[Title('Org structure')] class extends Component
 
     {{-- ───────────── Phone ───────────── --}}
     <section aria-label="Founder" class="flex items-center gap-3 rounded-2xl bg-navy p-3.5 text-white lg:hidden">
-        <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" size="touch" class="size-12! font-extrabold" />
+        <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" :photo="($this->founder['member'] ?? null)?->photoUrl()" size="touch" class="size-12! font-extrabold" />
         <span class="flex flex-col gap-0.5">
             <span class="text-[11px] font-bold tracking-[0.08em] text-yellow">FOUNDER · CHAIRMAN</span>
             <span class="text-base font-bold">{{ $founderName }}</span>
@@ -277,7 +277,7 @@ new #[Title('Org structure')] class extends Component
 
     <section aria-label="{{ $phoneBranch['title'] }}" class="overflow-hidden rounded-2xl border border-line bg-white lg:hidden">
         <div class="flex items-center gap-3 border-b border-[#F0E2A8] bg-[#FFFBEA] px-4 py-3.5">
-            <x-avatar-initials :initials="$this->initials($phoneBranch['lead']['name'] ?? null)" tone="active-solid" class="size-[42px]! bg-navy!" />
+            <x-avatar-initials :initials="$this->initials($phoneBranch['lead']['name'] ?? null)" :photo="($phoneBranch['lead']['member'] ?? null)?->photoUrl()" tone="active-solid" class="size-[42px]! bg-navy!" />
             <span class="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span class="text-[11px] font-bold tracking-[0.06em] text-floating-fg">{{ $phoneBranch['leadRole'] }}</span>
                 <span class="text-[15px] font-bold">{{ $phoneBranch['lead']['name'] ?? 'Empty seat' }}</span>
@@ -291,7 +291,8 @@ new #[Title('Org structure')] class extends Component
             @foreach ([$phoneBranch['lead'], ...$phoneBranch['seats']] as $seat)
                 @continue($seat === null)
                 <li wire:key="phone-seat-{{ $view }}-{{ $seat['position']->id }}" class="flex min-h-15 items-center gap-2.5 border-b border-line-soft px-4 py-2 last:border-b-0 {{ $flagStyles[$seat['flag']]['row'] }}">
-                    <span class="w-[72px] shrink-0 text-xs font-bold text-blue">{{ $seat['position']->code }}</span>
+                    <span class="w-[64px] shrink-0 text-xs font-bold text-blue">{{ $seat['position']->code }}</span>
+                    @include('partials.seat-avatar', ['seat' => $seat])
                     <span class="flex min-w-0 flex-1 flex-col gap-0.5">
                         <span class="truncate text-sm font-semibold">{{ $seat['name'] ?? 'Empty seat' }}</span>
                         @if ($seat['meta'] !== '' && $seat['name'] !== null)
@@ -325,7 +326,7 @@ new #[Title('Org structure')] class extends Component
     <section aria-label="Organization chart" class="hidden flex-col items-stretch rounded-[20px] border border-line bg-white p-7 lg:flex">
         <div class="flex justify-center">
             <div class="flex items-center gap-3.5 rounded-[14px] bg-navy px-5 py-3.5 text-white">
-                <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" class="size-13! font-display text-lg font-extrabold" />
+                <x-avatar-initials :initials="$this->initials($this->founder['name'] ?? null)" :photo="($this->founder['member'] ?? null)?->photoUrl()" class="size-13! font-display text-lg font-extrabold" />
                 <span class="flex flex-col gap-0.5">
                     <span class="text-base font-bold">{{ $founderName }}</span>
                     <span class="text-xs font-bold tracking-[0.08em] text-yellow">CHAIRMAN / FOUNDER</span>
@@ -347,7 +348,7 @@ new #[Title('Org structure')] class extends Component
                         @else
                             <div class="flex items-center gap-3 rounded-[14px] border-2 border-yellow bg-[#FFF6D1] px-4 py-3">
                         @endif
-                                <x-avatar-initials :initials="$this->initials($lead['name'] ?? null)" size="touch" class="bg-navy! text-white!" />
+                                <x-avatar-initials :initials="$this->initials($lead['name'] ?? null)" :photo="($lead['member'] ?? null)?->photoUrl()" size="touch" class="bg-navy! text-white!" />
                                 <span class="flex flex-col gap-0.5">
                                     <span class="text-[15px] font-bold">{{ $lead['name'] ?? 'Empty seat' }}</span>
                                     <span class="text-xs font-bold tracking-[0.06em] text-[#6B4A00]">{{ $data['leadRole'] }}</span>
@@ -369,16 +370,19 @@ new #[Title('Org structure')] class extends Component
                         @foreach ($data['seats'] as $seat)
                             @php($styles = $flagStyles[$seat['flag']])
                             @if ($canEdit)
-                                <button type="button" wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" wire:click="$dispatch('open-assign-position', { positionId: {{ $seat['position']->id }} })" class="flex min-w-0 flex-col gap-1.5 rounded-[10px] border px-3 py-2.5 text-left hover:border-line-input focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue {{ $styles['card'] }}" aria-label="{{ $seat['position']->code }}: {{ $seat['name'] ?? 'empty' }}{{ $seat['flag'] ? ', '.$seat['meta'] : '' }}. Change who holds this seat.">
+                                <button type="button" wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" wire:click="$dispatch('open-assign-position', { positionId: {{ $seat['position']->id }} })" class="flex min-w-0 items-center gap-2.5 rounded-[10px] border px-3 py-2.5 text-left hover:border-line-input focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue {{ $styles['card'] }}" aria-label="{{ $seat['position']->code }}: {{ $seat['name'] ?? 'empty' }}{{ $seat['flag'] ? ', '.$seat['meta'] : '' }}. Change who holds this seat.">
                             @else
-                                <div wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" class="flex min-w-0 flex-col gap-1.5 rounded-[10px] border px-3 py-2.5 {{ $styles['card'] }}">
+                                <div wire:key="seat-{{ $view }}-{{ $seat['position']->id }}" class="flex min-w-0 items-center gap-2.5 rounded-[10px] border px-3 py-2.5 {{ $styles['card'] }}">
                             @endif
+                                    @include('partials.seat-avatar', ['seat' => $seat])
+                                    <span class="flex min-w-0 flex-1 flex-col gap-1.5">
                                     <span class="flex min-w-0 items-center gap-2.5">
                                         <span class="shrink-0 rounded-md bg-navy px-1.5 py-[3px] text-[11px] font-extrabold text-white tabular-nums">{{ $seat['position']->code }}</span>
                                         <span class="truncate text-[13px] font-semibold">{{ $seat['name'] ?? 'Empty seat' }}</span>
                                     </span>
                                     <span class="text-xs {{ $styles['meta'] }}">
                                         {{ $seat['meta'] !== '' ? $seat['meta'] : ' ' }}{{ $seat['flag'] === 'inactive' ? ' · reassign' : '' }}{{ $seat['flag'] === 'mismatch' ? ' · review' : '' }}{{ $seat['flag'] === 'empty' ? ' · assign' : '' }}
+                                    </span>
                                     </span>
                             @if ($canEdit)
                                 </button>
@@ -408,7 +412,8 @@ new #[Title('Org structure')] class extends Component
             </h2>
             @forelse ($this->unassigned as $member)
                 <div wire:key="unassigned-{{ $member->id }}" class="flex items-center justify-between gap-3 border-t border-line-soft py-1.5 lg:border-t-0 lg:border-b lg:py-2">
-                    <span class="flex min-w-0 flex-col gap-0.5">
+                    <x-avatar-initials :initials="$member->initials" :photo="$member->photoUrl()" size="sm" tone="active-soft" />
+                    <span class="flex min-w-0 flex-1 flex-col gap-0.5">
                         <a href="{{ route('members.show', $member) }}" wire:navigate class="-my-3 py-3 text-sm font-semibold hover:text-blue">{{ $member->full_name }}</a>
                         <span class="text-xs text-muted">{{ collect([$member->nickname ? '“'.$member->nickname.'”' : null, $member->chapter?->name, $member->grade_level])->filter()->implode(' · ') }}</span>
                     </span>

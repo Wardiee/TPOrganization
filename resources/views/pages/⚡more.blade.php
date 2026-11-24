@@ -97,9 +97,9 @@ new #[Title('More')] class extends Component
                 </span>
                 <span class="flex flex-1 flex-col gap-0.5">
                     <span class="text-[15px] font-semibold">Reports</span>
-                    <span class="text-xs text-muted">Attendance and membership trends</span>
+                    <span class="text-xs text-muted">Attendance and membership, downloads</span>
                 </span>
-                <span class="text-[11px] font-semibold text-muted">Soon</span>
+                <x-icon name="chevron-right" class="text-[#8A8D99]" />
             </a>
         </x-card>
     </section>

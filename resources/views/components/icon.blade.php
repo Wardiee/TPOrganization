@@ -75,6 +75,9 @@
         @case('swap')
             <path d="M7 16V4M3 8l4-4 4 4M17 8v12M21 16l-4 4-4-4"></path>
             @break
+        @case('download')
+            <path d="M12 3v12M7 10l5 5 5-5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path>
+            @break
         @case('upload')
             <path d="M12 15V3M7 8l5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path>
             @break

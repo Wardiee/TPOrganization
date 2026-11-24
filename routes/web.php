@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DocumentFileController;
 use App\Http\Controllers\MemberPhotoController;
+use App\Http\Controllers\ReportExportController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('documents/{document}/download', [DocumentFileController::class, 'download'])->name('documents.download');
     Route::get('documents/{document}/preview', [DocumentFileController::class, 'preview'])->name('documents.preview');
     Route::livewire('reports', 'pages::reports')->name('reports');
+    Route::get('reports/members.csv', [ReportExportController::class, 'members'])->name('reports.members');
+    Route::get('reports/attendance.csv', [ReportExportController::class, 'attendance'])->name('reports.attendance');
     Route::livewire('more', 'pages::more')->name('more');
 });
 
